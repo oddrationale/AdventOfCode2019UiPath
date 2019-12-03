@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="MapOutWire" this:MapOutWire.in_WirePath="R8,U5,L5,D3" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="MapOutWire" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_WirePath" Type="InArgument(x:String)" />
     <x:Property Name="out_WireMap" Type="OutArgument(scg:List(s:Tuple(x:Int32, x:Int32)))" />
@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>636,1567</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>636,2998</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MapOutWire_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -59,7 +59,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence DisplayName="MapOutWire" sap:VirtualizedContainerService.HintSize="616,2602" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Outputs a &quot;WireMap&quot; from a given &quot;WirePath&quot;. A WirePath is the input which has the Direction (R, U, L, D) and Distance. For example, &quot;R8,U5,L5,D3&quot;. A WireMap, on the otherhand, is a list of all the x, y coordinates that the WirePath passes through, starting from the origin (0, 0). The x, y coordinate pair will be stored in a Tuple(Of Int32, Int32).&#xD;&#xA;&#xD;&#xA;Why use a Tuple to store the coordinate pair? Because Tuples can be directly compared, e.g., Tuple1 = Tuple2. This will make it easier later when we want to find the intersection of two lists of Tuples.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="MapOutWire" sap:VirtualizedContainerService.HintSize="616,2938" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="s:Tuple(x:Int32, x:Int32)" Name="GridPosition" />
       <Variable x:TypeArguments="x:String" Name="Direction" />
@@ -68,9 +68,10 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign sap:VirtualizedContainerService.HintSize="574,60" sap2010:WorkflowViewState.IdRef="Assign_8">
+    <Assign DisplayName="Initialize WireMap as a List of Tuples" sap:VirtualizedContainerService.HintSize="574,60" sap2010:WorkflowViewState.IdRef="Assign_8">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))">[out_WireMap]</OutArgument>
       </Assign.To>
@@ -78,7 +79,7 @@
         <InArgument x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))">[New List(Of Tuple(Of Int32, Int32))]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign sap:VirtualizedContainerService.HintSize="574,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Set the first position to the origin (0, 0)" sap:VirtualizedContainerService.HintSize="574,60" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32)">[GridPosition]</OutArgument>
       </Assign.To>
@@ -86,51 +87,61 @@
         <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32)">[New Tuple(Of Int32, Int32)(0, 0)]</InArgument>
       </Assign.Value>
     </Assign>
-    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="574,2310" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[Split(in_WirePath, &quot;,&quot;)]">
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For each path in the input" sap:VirtualizedContainerService.HintSize="574,2424" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[Split(in_WirePath, &quot;,&quot;)]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="x:String">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:String" Name="path" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="538,2176" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <Sequence DisplayName="Get direction and distance" sap:VirtualizedContainerService.HintSize="538,2290" sap2010:WorkflowViewState.IdRef="Sequence_3">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Assign sap:VirtualizedContainerService.HintSize="496,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+            <Assign sap2010:Annotation.AnnotationText="Up would increase the y-axis.&#xD;&#xA;Down would decrease the y-axis.&#xD;&#xA;Left would decrease the x-axis.&#xD;&#xA;Right would increase the x-axis." DisplayName="Direction" sap:VirtualizedContainerService.HintSize="496,132" sap2010:WorkflowViewState.IdRef="Assign_2">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:String">[Direction]</OutArgument>
               </Assign.To>
               <Assign.Value>
                 <InArgument x:TypeArguments="x:String">[Left(path, 1)]</InArgument>
               </Assign.Value>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
             </Assign>
-            <Assign sap:VirtualizedContainerService.HintSize="496,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+            <Assign sap2010:Annotation.AnnotationText="Get the substring after the first character and convert to Int." DisplayName="Distance" sap:VirtualizedContainerService.HintSize="496,102" sap2010:WorkflowViewState.IdRef="Assign_3">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Int32">[Distance]</OutArgument>
               </Assign.To>
               <Assign.Value>
                 <InArgument x:TypeArguments="x:Int32">[Integer.Parse(path.Substring(1))]</InArgument>
               </Assign.Value>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
             </Assign>
-            <Switch x:TypeArguments="x:String" DisplayName="Switch" Expression="[Direction]" sap:VirtualizedContainerService.HintSize="496,1884" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+            <Switch x:TypeArguments="x:String" DisplayName="Which direction?" Expression="[Direction]" sap:VirtualizedContainerService.HintSize="496,1884" sap2010:WorkflowViewState.IdRef="Switch`1_1">
               <Switch.Default>
                 <Throw DisplayName="Throw: Unknown direction" Exception="[New Exception(&quot;Unknown direction&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
               </Switch.Default>
-              <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" x:Key="U" DisplayName="ForEach&lt;Int32&gt;" sap:VirtualizedContainerService.HintSize="340,348" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Enumerable.Range(1, Distance)]">
+              <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" x:Key="U" DisplayName="Loop through the numbers" sap:VirtualizedContainerService.HintSize="340,348" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Enumerable.Range(1, Distance)]">
                 <ui:ForEach.Body>
                   <ActivityAction x:TypeArguments="x:Int32">
                     <ActivityAction.Argument>
                       <DelegateInArgument x:TypeArguments="x:Int32" Name="i" />
                     </ActivityAction.Argument>
-                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                    <Sequence DisplayName="Add to map" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_2">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                      <Assign DisplayName="y-axis + 1" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
                         <Assign.To>
                           <OutArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32)">[GridPosition]</OutArgument>
                         </Assign.To>
@@ -143,19 +154,19 @@
                   </ActivityAction>
                 </ui:ForEach.Body>
               </ui:ForEach>
-              <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" x:Key="D" DisplayName="ForEach&lt;Int32&gt;" sap:VirtualizedContainerService.HintSize="340,348" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[Enumerable.Range(1, Distance)]">
+              <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" x:Key="D" DisplayName="Loop through the numbers" sap:VirtualizedContainerService.HintSize="340,348" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[Enumerable.Range(1, Distance)]">
                 <ui:ForEach.Body>
                   <ActivityAction x:TypeArguments="x:Int32">
                     <ActivityAction.Argument>
                       <DelegateInArgument x:TypeArguments="x:Int32" Name="i" />
                     </ActivityAction.Argument>
-                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                    <Sequence DisplayName="Add to map" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_4">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                      <Assign DisplayName="y-axis - 1" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_5">
                         <Assign.To>
                           <OutArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32)">[GridPosition]</OutArgument>
                         </Assign.To>
@@ -168,19 +179,19 @@
                   </ActivityAction>
                 </ui:ForEach.Body>
               </ui:ForEach>
-              <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" x:Key="L" DisplayName="ForEach&lt;Int32&gt;" sap:VirtualizedContainerService.HintSize="340,348" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[Enumerable.Range(1, Distance)]">
+              <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" x:Key="L" DisplayName="Loop through the numbers" sap:VirtualizedContainerService.HintSize="340,348" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[Enumerable.Range(1, Distance)]">
                 <ui:ForEach.Body>
                   <ActivityAction x:TypeArguments="x:Int32">
                     <ActivityAction.Argument>
                       <DelegateInArgument x:TypeArguments="x:Int32" Name="i" />
                     </ActivityAction.Argument>
-                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                    <Sequence DisplayName="Add to map" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_5">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+                      <Assign DisplayName="x-axis - 1" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
                         <Assign.To>
                           <OutArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32)">[GridPosition]</OutArgument>
                         </Assign.To>
@@ -193,19 +204,19 @@
                   </ActivityAction>
                 </ui:ForEach.Body>
               </ui:ForEach>
-              <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" x:Key="R" DisplayName="ForEach&lt;Int32&gt;" sap:VirtualizedContainerService.HintSize="340,348" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[Enumerable.Range(1, Distance)]">
+              <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" x:Key="R" DisplayName="Loop through the numbers" sap:VirtualizedContainerService.HintSize="340,348" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[Enumerable.Range(1, Distance)]">
                 <ui:ForEach.Body>
                   <ActivityAction x:TypeArguments="x:Int32">
                     <ActivityAction.Argument>
                       <DelegateInArgument x:TypeArguments="x:Int32" Name="i" />
                     </ActivityAction.Argument>
-                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                    <Sequence DisplayName="Add to map" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_6">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_7">
+                      <Assign DisplayName="x-axis + 1" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_7">
                         <Assign.To>
                           <OutArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32)">[GridPosition]</OutArgument>
                         </Assign.To>

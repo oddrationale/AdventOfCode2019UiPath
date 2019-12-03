@@ -1,16 +1,16 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="CalcDistance" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="CalcSteps" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_WirePath1" Type="InArgument(x:String)" />
     <x:Property Name="in_WirePath2" Type="InArgument(x:String)" />
-    <x:Property Name="out_Distance" Type="OutArgument(x:Int32)" />
+    <x:Property Name="out_Steps" Type="OutArgument(x:Int32)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>396,895</sap:VirtualizedContainerService.HintSize>
-  <sap2010:WorkflowViewState.IdRef>CalcDistance_1</sap2010:WorkflowViewState.IdRef>
+  <sap:VirtualizedContainerService.HintSize>396,870</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>CalcSteps_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="21">
+    <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -32,10 +32,10 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
-    </scg:List>
+    </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="17">
+    <sco:Collection x:TypeArguments="AssemblyReference">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -53,14 +53,14 @@
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
-    </scg:List>
+    </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Calculate the Manhatten distance of the intersection closest to the central port (the origin).&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="CalcDistance" sap:VirtualizedContainerService.HintSize="376,795" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Find the least number of steps to an intersection.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="CalcSteps" sap:VirtualizedContainerService.HintSize="376,810" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))" Name="WireMap1" />
       <Variable x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))" Name="WireMap2" />
+      <Variable x:TypeArguments="scg:IEnumerable(x:Int32)" Default="[New List(Of Int32)]" Name="Steps" />
       <Variable x:TypeArguments="scg:IEnumerable(s:Tuple(x:Int32, x:Int32))" Name="Intersections" />
-      <Variable x:TypeArguments="scg:IEnumerable(x:Int32)" Default="[New List(Of Int32)]" Name="Distances" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -88,12 +88,12 @@
         <InArgument x:TypeArguments="scg:IEnumerable(s:Tuple(x:Int32, x:Int32))">[WireMap1.Intersect(WireMap2)]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign sap2010:Annotation.AnnotationText="For each intersection, calculate the Manhatten distance." DisplayName="Calculate all the Distances" sap:VirtualizedContainerService.HintSize="334,102" sap2010:WorkflowViewState.IdRef="Assign_3">
+    <Assign sap2010:Annotation.AnnotationText="Add the IndexOf each intersection. IndexOf will always find the first element in the list that matches. Need to add 2 at the end because index starts at 0." DisplayName="Calc steps for each intersection" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
-        <OutArgument x:TypeArguments="scg:IEnumerable(x:Int32)">[Distances]</OutArgument>
+        <OutArgument x:TypeArguments="scg:IEnumerable(x:Int32)">[Steps]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="scg:IEnumerable(x:Int32)">[From i In Intersections Select Math.Abs(i.Item1) + Math.Abs(i.Item2)]</InArgument>
+        <InArgument x:TypeArguments="scg:List(x:Int32)">[(From i In Intersections Select WireMap1.IndexOf(i) + WireMap2.IndexOf(i) + 2).ToList()]</InArgument>
       </Assign.Value>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -101,12 +101,12 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <Assign DisplayName="Find the smallest distance" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign DisplayName="Find the least number of steps" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_3">
       <Assign.To>
-        <OutArgument x:TypeArguments="x:Int32">[out_Distance]</OutArgument>
+        <OutArgument x:TypeArguments="x:Int32">[out_Steps]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32">[Distances.Min()]</InArgument>
+        <InArgument x:TypeArguments="x:Int32">[Steps.Min()]</InArgument>
       </Assign.Value>
     </Assign>
   </Sequence>

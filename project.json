@@ -1,6 +1,6 @@
 {
   "name": "AdventOfCode2019",
-  "description": "Advent of Code 2019 (https://adventofcode.com/2019)",
+  "description": "Advent of Code 2019 solutions in UiPath Studio",
   "main": "Main.xaml",
   "dependencies": {
     "UiPath.System.Activities": "[19.10.1]"

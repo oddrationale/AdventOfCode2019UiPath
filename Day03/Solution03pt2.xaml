@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution03pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="396,674" sap2010:WorkflowViewState.IdRef="Solution03pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution03pt2" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="396,659" sap2010:WorkflowViewState.IdRef="Solution03pt2_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
       <x:String>System.Activities</x:String>
@@ -45,10 +45,10 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Calculate the Manhatten distance of the intersection closest to the central port (the origin).&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exists and has valid two valid wire paths on the first two lines.&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution03pt1" sap:VirtualizedContainerService.HintSize="376,614" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Find the least number of steps to an intersection.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exists and has valid two valid wire paths on the first two lines.&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution03pt2" sap:VirtualizedContainerService.HintSize="376,599" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
-      <Variable x:TypeArguments="x:Int32" Name="Distance" />
+      <Variable x:TypeArguments="x:Int32" Name="Steps" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -57,13 +57,13 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day03\input.txt" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CalcDistance workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day03\CalcDistance.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CalcSteps workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day03\CalcSteps.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:String" x:Key="in_WirePath1">[Split(Input, vbLf)(0)]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_WirePath2">[Split(Input, vbLf)(1)]</InArgument>
-        <OutArgument x:TypeArguments="x:Int32" x:Key="out_Distance">[Distance]</OutArgument>
+        <OutArgument x:TypeArguments="x:Int32" x:Key="out_Steps">[Steps]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Distance: &quot; &amp; Distance]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Steps: &quot; &amp; Steps]" />
   </Sequence>
 </Activity>
