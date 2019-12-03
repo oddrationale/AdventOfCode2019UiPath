@@ -1,16 +1,16 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution02pt1" this:Solution02pt1.in_Noun="12" this:Solution02pt1.in_Verb="02" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution02pt1" this:Solution02pt1.in_Noun="12" this:Solution02pt1.in_Verb="2" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_Noun" Type="InArgument(x:String)">
+    <x:Property Name="in_Noun" Type="InArgument(x:Int32)">
       <x:Property.Attributes>
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
-    <x:Property Name="in_Verb" Type="InArgument(x:String)">
+    <x:Property Name="in_Verb" Type="InArgument(x:Int32)">
       <x:Property.Attributes>
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
-    <x:Property Name="out_Answer" Type="OutArgument(x:String)" />
+    <x:Property Name="out_Answer" Type="OutArgument(x:Int32)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -76,7 +76,7 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:ReadTextFile Content="[Input]" DisplayName="Read the input text file" FileName="Day02\input.txt" sap:VirtualizedContainerService.HintSize="338,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Read the input to an array.&#xD;&#xA;Overwrite position 1 with the Noun.&#xD;&#xA;Overwrite position 2 with the Verb." DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,217" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Read the input to an array.&#xA;Overwrite position 1 with the Noun.&#xA;Overwrite position 2 with the Verb." DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,217" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -92,7 +92,7 @@
               <OutArgument x:TypeArguments="x:String">[IntcodeStrArray(1)]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">[in_Noun]</InArgument>
+              <InArgument x:TypeArguments="x:String">[CStr(in_Noun)]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
@@ -100,7 +100,7 @@
               <OutArgument x:TypeArguments="x:String">[IntcodeStrArray(2)]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">[in_Verb]</InArgument>
+              <InArgument x:TypeArguments="x:String">[CStr(in_Verb)]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
         </scg:List>
@@ -119,10 +119,10 @@
     </ui:InvokeWorkflowFile>
     <Assign DisplayName="Get the answer in position 0" sap:VirtualizedContainerService.HintSize="338,60" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[out_Answer]</OutArgument>
+        <OutArgument x:TypeArguments="x:Int32">[out_Answer]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[Split(Intcode, ",").First()]</InArgument>
+        <InArgument x:TypeArguments="x:Int32">[Integer.Parse(Split(Intcode, ",").First())]</InArgument>
       </Assign.Value>
     </Assign>
     <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="338,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[&quot;Answer: &quot; &amp; out_Answer]" />
