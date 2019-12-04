@@ -1,6 +1,10 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="MapOutWire" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_WirePath" Type="InArgument(x:String)" />
+    <x:Property Name="in_WirePath" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
     <x:Property Name="out_WireMap" Type="OutArgument(scg:List(s:Tuple(x:Int32, x:Int32)))" />
   </x:Members>
   <mva:VisualBasic.Settings>
@@ -59,7 +63,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Outputs a &quot;WireMap&quot; from a given &quot;WirePath&quot;. A WirePath is the input which has the Direction (R, U, L, D) and Distance. For example, &quot;R8,U5,L5,D3&quot;. A WireMap, on the otherhand, is a list of all the x, y coordinates that the WirePath passes through, starting from the origin (0, 0). The x, y coordinate pair will be stored in a Tuple(Of Int32, Int32).&#xD;&#xA;&#xD;&#xA;Why use a Tuple to store the coordinate pair? Because Tuples can be directly compared, e.g., Tuple1 = Tuple2. This will make it easier later when we want to find the intersection of two lists of Tuples.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="MapOutWire" sap:VirtualizedContainerService.HintSize="616,2938" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Outputs a &quot;WireMap&quot; from a given &quot;WirePath&quot;. A WirePath is the input which has the Direction (R, U, L, D) and Distance. For example, &quot;R8,U5,L5,D3&quot;. A WireMap, on the otherhand, is a list of all the x, y coordinates that the WirePath passes through, starting from the origin (0, 0). The x, y coordinate pair will be stored in a Tuple(Of Int32, Int32).&#xA;&#xA;Why use a Tuple to store the coordinate pair? Because Tuples can be directly compared, e.g., Tuple1 = Tuple2. This will make it easier later when we want to find the intersection of two lists of Tuples.&#xA;&#xA;Pre-conditions:&#xA;None&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="MapOutWire" sap:VirtualizedContainerService.HintSize="616,2938" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="s:Tuple(x:Int32, x:Int32)" Name="GridPosition" />
       <Variable x:TypeArguments="x:String" Name="Direction" />
@@ -99,7 +103,7 @@
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Assign sap2010:Annotation.AnnotationText="Up would increase the y-axis.&#xD;&#xA;Down would decrease the y-axis.&#xD;&#xA;Left would decrease the x-axis.&#xD;&#xA;Right would increase the x-axis." DisplayName="Direction" sap:VirtualizedContainerService.HintSize="496,132" sap2010:WorkflowViewState.IdRef="Assign_2">
+            <Assign sap2010:Annotation.AnnotationText="Up would increase the y-axis.&#xA;Down would decrease the y-axis.&#xA;Left would decrease the x-axis.&#xA;Right would increase the x-axis." DisplayName="Direction" sap:VirtualizedContainerService.HintSize="496,132" sap2010:WorkflowViewState.IdRef="Assign_2">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:String">[Direction]</OutArgument>
               </Assign.To>
