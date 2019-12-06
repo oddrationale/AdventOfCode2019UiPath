@@ -15,7 +15,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>324,846</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>324,806</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Solution04pt0_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -60,24 +60,25 @@
       <AssemblyReference>System.Xaml</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Find the number of passwords that match these criteria:&#xD;&#xA;- It is a six-digit number.&#xD;&#xA;- The value is within the range given in your puzzle input.&#xD;&#xA;- Two adjacent digits are the same (like 22 in 122345).&#xD;&#xA;- Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution04pt1" sap:VirtualizedContainerService.HintSize="304,746" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Find the number of passwords that match these criteria:&#xA;- It is a six-digit number.&#xA;- The value is within the range given in your puzzle input.&#xA;- Two adjacent digits are the same (like 22 in 122345).&#xA;- Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).&#xA;&#xA;Pre-conditions:&#xA;None&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution04pt1" sap:VirtualizedContainerService.HintSize="304,746" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign sap2010:Annotation.AnnotationText="Uses LINQ. To get the Never Decrease criteria, get the characters in the password and sort them in ascending order. Then compare the sorted string with the password. If it matches, then the password is already sorted.&#xD;&#xA;&#xD;&#xA;To get the Has Repeats criteria, for each character in the password, see if the password contains two repeating characters. The StrDup returns the repeating characters. For example, with the password 122345, check if the string contains 11, 22, 33, 44, and 55." DisplayName="Get count" sap:VirtualizedContainerService.HintSize="262,286" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign sap2010:Annotation.AnnotationText="Uses LINQ. To get the Never Decrease criteria, get the characters in the password and sort them in ascending order. Then compare the sorted string with the password. If it matches, then the password is already sorted.&#xA;&#xA;To get the Has Repeats criteria, for each character in the password, see if the password contains two repeating characters. The StrDup returns the repeating characters. For example, with the password 122345, check if the string contains 11, 22, 33, 44, and 55." DisplayName="Get count" sap:VirtualizedContainerService.HintSize="262,286" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int32">[out_Count]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32" xml:space="preserve">[(From pw In Enumerable.Range(in_Min, in_Max - in_Min + 1) 
-Where CStr(pw).SequenceEqual(From i In CStr(pw) Order By i Select i) AndAlso
-            (From i In Enumerable.Range(0, CStr(pw).Length) Where CStr(pw).Contains(StrDup(2, CStr(pw)(i))) Select i).Count() &gt; 0
-Select pw).Count()]</InArgument>
+        <InArgument x:TypeArguments="x:Int32" xml:space="preserve">[Aggregate pw In Enumerable.Range(in_Min, in_Max - in_Min + 1)
+Where CStr(pw).SequenceEqual(From i In CStr(pw) Order By i Select i)
+Where (Aggregate i In Enumerable.Range(0, CStr(pw).Length) Where CStr(pw).Contains(StrDup(2, CStr(pw)(i))) Into Count) &gt; 0
+Into Count]</InArgument>
       </Assign.Value>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">

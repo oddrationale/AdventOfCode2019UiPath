@@ -70,16 +70,16 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign sap2010:Annotation.AnnotationText="Uses LINQ. To get the Never Decrease criteria, get the characters in the password and sort them in ascending order. Then compare the sorted string with the password. If it matches, then the password is already sorted.&#xD;&#xA;&#xD;&#xA;To get the Has Repeats criteria, for each character in the password, see if the password contains two repeating characters. The StrDup returns the repeating characters. For example, with the password 122345, check if the string contains 11, 22, 33, 44, and 55.&#xD;&#xA;&#xD;&#xA;To get the Has At Least a Two repeating group, count how many times each character appears in the password. For example, in 122345, count 1 appears once, 2 appears twice, 3 appears once, 4 appears once, and 5 appears once. Check if at least on character appears twice. Because this is evaluated last, passwords like 122341 have already been eliminated." sap:VirtualizedContainerService.HintSize="262,436" sap2010:WorkflowViewState.IdRef="Assign_9">
+    <Assign sap2010:Annotation.AnnotationText="Uses LINQ. To get the Never Decrease criteria, get the characters in the password and sort them in ascending order. Then compare the sorted string with the password. If it matches, then the password is already sorted.&#xA;&#xA;To get the Has Repeats criteria, for each character in the password, see if the password contains two repeating characters. The StrDup returns the repeating characters. For example, with the password 122345, check if the string contains 11, 22, 33, 44, and 55.&#xA;&#xA;To get the Has At Least a Two repeating group, count how many times each character appears in the password. For example, in 122345, count 1 appears once, 2 appears twice, 3 appears once, 4 appears once, and 5 appears once. Check if at least on character appears twice. Because this is evaluated last, passwords like 122341 have already been eliminated." sap:VirtualizedContainerService.HintSize="262,436" sap2010:WorkflowViewState.IdRef="Assign_9">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int32">[out_Count]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32" xml:space="preserve">[(From pw In Enumerable.Range(in_Min, in_Max - in_Min + 1) 
-Where CStr(pw).SequenceEqual(From i In CStr(pw) Order By i Select i) AndAlso
-            (From i In Enumerable.Range(0, CStr(pw).Length) Where CStr(pw).Contains(StrDup(2, CStr(pw)(i))) Select i).Count() &gt; 0 AndAlso
-			(From i In Enumerable.Range(0, CStr(pw).Length) Select (From c In CStr(pw) Where c = CStr(pw)(i) Select c).ToArray().Count()).Contains(2)
-Select pw).Count()]</InArgument>
+        <InArgument x:TypeArguments="x:Int32" xml:space="preserve">[Aggregate pw In Enumerable.Range(in_Min, in_Max - in_Min + 1) 
+Where CStr(pw).SequenceEqual(From i In CStr(pw) Order By i Select i)
+Where (Aggregate i In Enumerable.Range(0, CStr(pw).Length) Where CStr(pw).Contains(StrDup(2, CStr(pw)(i))) Into Count) &gt; 0
+Where (From i In Enumerable.Range(0, CStr(pw).Length) Select (Aggregate c In CStr(pw) Where c = CStr(pw)(i) Into Count)).Contains(2)
+Into Count]</InArgument>
       </Assign.Value>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">

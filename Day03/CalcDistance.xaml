@@ -15,7 +15,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>396,855</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>396,755</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CalcDistance_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
@@ -63,12 +63,11 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Calculate the Manhatten distance of the intersection closest to the central port (the origin).&#xA;&#xA;Pre-conditions:&#xA;None&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="CalcDistance" sap:VirtualizedContainerService.HintSize="376,795" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Calculate the Manhatten distance of the intersection closest to the central port (the origin).&#xA;&#xA;Pre-conditions:&#xA;None&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="CalcDistance" sap:VirtualizedContainerService.HintSize="376,695" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))" Name="WireMap1" />
       <Variable x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))" Name="WireMap2" />
       <Variable x:TypeArguments="scg:IEnumerable(s:Tuple(x:Int32, x:Int32))" Name="Intersections" />
-      <Variable x:TypeArguments="scg:IEnumerable(x:Int32)" Default="[New List(Of Int32)]" Name="Distances" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -96,26 +95,18 @@
         <InArgument x:TypeArguments="scg:IEnumerable(s:Tuple(x:Int32, x:Int32))">[WireMap1.Intersect(WireMap2)]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign sap2010:Annotation.AnnotationText="For each intersection, calculate the Manhatten distance." DisplayName="Calculate all the Distances" sap:VirtualizedContainerService.HintSize="334,102" sap2010:WorkflowViewState.IdRef="Assign_3">
+    <Assign sap2010:Annotation.AnnotationText="For each intersection, calculate the Manhatten distance." DisplayName="Find the smallest distance" sap:VirtualizedContainerService.HintSize="334,102" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
-        <OutArgument x:TypeArguments="scg:IEnumerable(x:Int32)">[Distances]</OutArgument>
+        <OutArgument x:TypeArguments="x:Int32">[out_Distance]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="scg:IEnumerable(x:Int32)">[From i In Intersections Select Math.Abs(i.Item1) + Math.Abs(i.Item2)]</InArgument>
+        <InArgument x:TypeArguments="x:Int32">[Aggregate i In Intersections Into Min(Math.Abs(i.Item1) + Math.Abs(i.Item2))]</InArgument>
       </Assign.Value>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-    </Assign>
-    <Assign DisplayName="Find the smallest distance" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_2">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:Int32">[out_Distance]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32">[Distances.Min()]</InArgument>
-      </Assign.Value>
     </Assign>
   </Sequence>
 </Activity>
