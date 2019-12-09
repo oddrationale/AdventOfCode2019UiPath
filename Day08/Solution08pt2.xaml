@@ -1,0 +1,251 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution08pt2" this:Solution08pt2.in_Width="25" this:Solution08pt2.in_Height="6" this:Solution08pt2.in_SifInputFilePath="Day08\input.txt" this:Solution08pt2.in_PngOutputFilePath="Day08\password.png" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Drawing;assembly=System.Drawing" xmlns:sdi="clr-namespace:System.Drawing.Imaging;assembly=System.Drawing" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_Width" Type="InArgument(x:Int32)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="in_Height" Type="InArgument(x:Int32)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="in_SifInputFilePath" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="in_PngOutputFilePath" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>655,2068</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>Solution08pt2_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="42">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Drawing.Imaging</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="32">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exists and contains a valid Space Image Format image.&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;SIF image is converted to PNG and written to the given output path." DisplayName="Solution08pt2" sap:VirtualizedContainerService.HintSize="635,1968" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="SifStr" />
+      <Variable x:TypeArguments="s:Int32[]" Name="SifArr" />
+      <Variable x:TypeArguments="s:Int32[][]" Name="SifLayers" />
+      <Variable x:TypeArguments="x:Int32" Name="Pixels" />
+      <Variable x:TypeArguments="s:Int32[]" Name="SifFinalLayer" />
+      <Variable x:TypeArguments="s:Int32[][]" Name="SifImg" />
+      <Variable x:TypeArguments="sd:Bitmap" Name="SifBitmap" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:ReadTextFile Content="[SifStr]" DisplayName="Read Space Image Format as String" FileName="[in_SifInputFilePath]" sap:VirtualizedContainerService.HintSize="593,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:MultipleAssign DisplayName="Initialize values" sap:VirtualizedContainerService.HintSize="593,222" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+      <ui:MultipleAssign.AssignOperations>
+        <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="s:Int32[]">[SifArr]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="s:Int32[]">[Array.ConvertAll(SifStr.ToCharArray(), Function(c) Int32.Parse(c))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Int32">[Pixels]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Int32">[in_Width * in_Height]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="s:Int32[][]">[SifLayers]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="s:Int32[][]">[(From i In Enumerable.Range(0, SifArr.Length \ Pixels) Select SifArr.Skip(i * Pixels).Take(Pixels).ToArray()).ToArray()]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="s:Int32[]">[SifFinalLayer]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="s:Int32[]">[New Int32(Pixels - 1) {}]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="sd:Bitmap">[SifBitmap]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="sd:Bitmap">[New Bitmap(in_Width, in_Height)]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+        </scg:List>
+      </ui:MultipleAssign.AssignOperations>
+    </ui:MultipleAssign>
+    <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For each pixel" sap:VirtualizedContainerService.HintSize="593,450" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Enumerable.Range(0, Pixels)]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:Int32">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Int32" Name="p" />
+          </ActivityAction.Argument>
+          <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For each layer" sap:VirtualizedContainerService.HintSize="532,316" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Enumerable.Range(0, SifLayers.Length-1)]">
+            <ui:ForEach.Body>
+              <ActivityAction x:TypeArguments="x:Int32">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="x:Int32" Name="l" />
+                </ActivityAction.Argument>
+                <Switch x:TypeArguments="x:Int32" DisplayName="Check pixel value" Expression="[SifLayers(l)(p)]" sap:VirtualizedContainerService.HintSize="496,182" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+                  <Sequence x:Key="0" DisplayName="Set pixel to 0. Break loop." sap:VirtualizedContainerService.HintSize="304,211" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign DisplayName="Pixel is 0" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[SifFinalLayer(p)]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">0</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:Break sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Break_1" />
+                  </Sequence>
+                  <Sequence x:Key="1" DisplayName="Set pixel to 1. Break loop." sap:VirtualizedContainerService.HintSize="304,211" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign DisplayName="Set pixel to 1" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[SifFinalLayer(p)]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">1</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:Break sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Break_2" />
+                  </Sequence>
+                  <Assign x:Key="2" DisplayName="Transparent. Set pixel to next layer's pixel." sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_7">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Int32">[SifFinalLayer(p)]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Int32">[SifLayers(l+1)(p)]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </Switch>
+              </ActivityAction>
+            </ui:ForEach.Body>
+          </ui:ForEach>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <Assign DisplayName="Img is an Array (Height) of Pixels (Width" sap:VirtualizedContainerService.HintSize="593,60" sap2010:WorkflowViewState.IdRef="Assign_8">
+      <Assign.To>
+        <OutArgument x:TypeArguments="s:Int32[][]">[SifImg]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="s:Int32[][]">[(From i In Enumerable.Range(0, in_Height) Select SifFinalLayer.Skip(i * in_Width).Take(in_Width).ToArray()).ToArray()]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For each y pixel" sap:VirtualizedContainerService.HintSize="593,548" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[Enumerable.Range(0, in_Height)]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:Int32">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Int32" Name="y" />
+          </ActivityAction.Argument>
+          <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For each x pixel" sap:VirtualizedContainerService.HintSize="557,414" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[Enumerable.Range(0, in_Width)]">
+            <ui:ForEach.Body>
+              <ActivityAction x:TypeArguments="x:Int32">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="x:Int32" Name="x" />
+                </ActivityAction.Argument>
+                <If Condition="[SifImg(y)(x) = 0]" DisplayName="If pixel is black (0) or white (1)" sap:VirtualizedContainerService.HintSize="521,280" sap2010:WorkflowViewState.IdRef="If_2">
+                  <If.Then>
+                    <InvokeMethod DisplayName="Set pixel to Black" sap:VirtualizedContainerService.HintSize="238,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="SetPixel">
+                      <InvokeMethod.TargetObject>
+                        <InArgument x:TypeArguments="sd:Bitmap">[SifBitmap]</InArgument>
+                      </InvokeMethod.TargetObject>
+                      <InArgument x:TypeArguments="x:Int32">[x]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32">[y]</InArgument>
+                      <InArgument x:TypeArguments="sd:Color">[Color.Black]</InArgument>
+                    </InvokeMethod>
+                  </If.Then>
+                  <If.Else>
+                    <InvokeMethod DisplayName="Set pixel to White" sap:VirtualizedContainerService.HintSize="238,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_2" MethodName="SetPixel">
+                      <InvokeMethod.TargetObject>
+                        <InArgument x:TypeArguments="sd:Bitmap">[SifBitmap]</InArgument>
+                      </InvokeMethod.TargetObject>
+                      <InArgument x:TypeArguments="x:Int32">[x]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32">[y]</InArgument>
+                      <InArgument x:TypeArguments="sd:Color">[Color.White]</InArgument>
+                    </InvokeMethod>
+                  </If.Else>
+                </If>
+              </ActivityAction>
+            </ui:ForEach.Body>
+          </ui:ForEach>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <InvokeMethod DisplayName="Save PNG file" sap:VirtualizedContainerService.HintSize="593,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_3" MethodName="Save">
+      <InvokeMethod.TargetObject>
+        <InArgument x:TypeArguments="sd:Bitmap">[SifBitmap]</InArgument>
+      </InvokeMethod.TargetObject>
+      <InArgument x:TypeArguments="x:String">[in_PngOutputFilePath]</InArgument>
+      <InArgument x:TypeArguments="sdi:ImageFormat">[System.Drawing.Imaging.ImageFormat.Png]</InArgument>
+    </InvokeMethod>
+  </Sequence>
+</Activity>
