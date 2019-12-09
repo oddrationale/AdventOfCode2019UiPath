@@ -7,7 +7,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1148,1180</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1148,1352</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetPermutations_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -55,49 +55,56 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="GetPermutations" sap:VirtualizedContainerService.HintSize="1128,1120" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Implements Heap's Algorithm (https://en.wikipedia.org/wiki/Heap%27s_algorithm) to get the permutations of an Array of Integers.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Needs to be provided an empty List of Arrays to store the outputs.&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;Resulting List will contain all the permutations." DisplayName="GetPermutations" sap:VirtualizedContainerService.HintSize="1128,1252" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" Name="Temp" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <If Condition="[in_Size = 1]" sap:VirtualizedContainerService.HintSize="1086,1028" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[in_Size = 1]" DisplayName="If size is 1" sap:VirtualizedContainerService.HintSize="1086,1028" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
-        <AddToCollection x:TypeArguments="s:Int32[]" Collection="[io_Arrays]" DisplayName="Add To Collection" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[DirectCast(in_Array.Clone(), Int32())]" />
+        <AddToCollection x:TypeArguments="s:Int32[]" sap2010:Annotation.AnnotationText="Be sure to add a Clone of the array. Otherwise you will add a reference to the array and it will be modified." Collection="[io_Arrays]" DisplayName="Add output to array" sap:VirtualizedContainerService.HintSize="200,94" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[DirectCast(in_Array.Clone(), Int32())]">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </AddToCollection>
       </If.Then>
       <If.Else>
-        <Sequence sap:VirtualizedContainerService.HintSize="841,880" sap2010:WorkflowViewState.IdRef="Sequence_3">
+        <Sequence DisplayName="Generate permutation" sap:VirtualizedContainerService.HintSize="841,880" sap2010:WorkflowViewState.IdRef="Sequence_3">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetPermutations workflow" sap:VirtualizedContainerService.HintSize="799,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day07\GetPermutations.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Set Size - 1" sap:VirtualizedContainerService.HintSize="799,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day07\GetPermutations.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="x:Int32" x:Key="in_Size">[in_Size - 1]</InArgument>
               <InArgument x:TypeArguments="s:Int32[]" x:Key="in_Array">[in_Array]</InArgument>
               <InOutArgument x:TypeArguments="scg:List(s:Int32[])" x:Key="io_Arrays">[io_Arrays]</InOutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="799,661" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Enumerable.Range(0, in_Size - 1)]">
+          <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For each item" sap:VirtualizedContainerService.HintSize="799,661" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Enumerable.Range(0, in_Size - 1)]">
             <ui:ForEach.Body>
               <ActivityAction x:TypeArguments="x:Int32">
                 <ActivityAction.Argument>
                   <DelegateInArgument x:TypeArguments="x:Int32" Name="i" />
                 </ActivityAction.Argument>
-                <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="763,527" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                <Sequence DisplayName="Permute" sap:VirtualizedContainerService.HintSize="763,527" sap2010:WorkflowViewState.IdRef="Sequence_2">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <If Condition="[in_Size Mod 2 = 0]" sap:VirtualizedContainerService.HintSize="721,308" sap2010:WorkflowViewState.IdRef="If_2">
+                  <If Condition="[in_Size Mod 2 = 0]" DisplayName="If size is even" sap:VirtualizedContainerService.HintSize="721,308" sap2010:WorkflowViewState.IdRef="If_2">
                     <If.Then>
-                      <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+                      <ui:MultipleAssign DisplayName="Swap the ith and last" sap:VirtualizedContainerService.HintSize="338,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
                         <ui:MultipleAssign.AssignOperations>
                           <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                             <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -129,7 +136,7 @@
                       </ui:MultipleAssign>
                     </If.Then>
                     <If.Else>
-                      <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+                      <ui:MultipleAssign DisplayName="Swap the first and last" sap:VirtualizedContainerService.HintSize="338,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
                         <ui:MultipleAssign.AssignOperations>
                           <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                             <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">

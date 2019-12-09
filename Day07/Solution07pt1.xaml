@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution07pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="552,1522" sap2010:WorkflowViewState.IdRef="Solution07pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution07pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="396,939" sap2010:WorkflowViewState.IdRef="Solution07pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
       <x:String>System.Activities</x:String>
@@ -25,7 +25,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="16">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="32">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -42,108 +42,142 @@
       <AssemblyReference>System.Xaml</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Solution07pt1" sap:VirtualizedContainerService.HintSize="532,1462" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Run the Amps in Sequence and find the Phase Setting that produces the highest output to the Thrusters.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exist and is valid Intcode.&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution07pt1" sap:VirtualizedContainerService.HintSize="376,839" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="AmpSoftware" />
-      <Variable x:TypeArguments="scg:List(s:Int32[])" Name="PhaseSettingPermutations" />
-      <Variable x:TypeArguments="scg:List(x:Int32)" Name="OutputSignals" />
-      <Variable x:TypeArguments="x:Int32" Name="InputSignal" />
-      <Variable x:TypeArguments="scg:List(x:Int32)" Name="PhaseOutputSignals" />
+      <Variable x:TypeArguments="scg:List(s:Int32[])" Default="[New List(Of Int32())]" Name="PhaseSettingPermutations" />
+      <Variable x:TypeArguments="x:Int32" Name="ToThrusters" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[AmpSoftware]" DisplayName="Get the Amplifier Controller Software" FileName="Day07\input.txt" sap:VirtualizedContainerService.HintSize="490,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="490,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
-      <ui:MultipleAssign.AssignOperations>
-        <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="scg:List(s:Int32[])">[PhaseSettingPermutations]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="scg:List(s:Int32[])">[New List(Of Int32())]</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="scg:List(x:Int32)">[PhaseOutputSignals]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="scg:List(x:Int32)">[New List(Of Int32)]</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-        </scg:List>
-      </ui:MultipleAssign.AssignOperations>
-    </ui:MultipleAssign>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetPermutations workflow" sap:VirtualizedContainerService.HintSize="490,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day07\GetPermutations.xaml">
+    <ui:ReadTextFile Content="[AmpSoftware]" DisplayName="Get the Amplifier Controller Software" FileName="Day07\input.txt" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetPermutations workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day07\GetPermutations.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:Int32" x:Key="in_Size">5</InArgument>
         <InArgument x:TypeArguments="s:Int32[]" x:Key="in_Array">[{0,1,2,3,4}]</InArgument>
         <InOutArgument x:TypeArguments="scg:List(s:Int32[])" x:Key="io_Arrays">[PhaseSettingPermutations]</InOutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:ForEach x:TypeArguments="s:Int32[]" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="490,801" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[PhaseSettingPermutations]">
+    <ui:ForEach x:TypeArguments="s:Int32[]" CurrentIndex="{x:Null}" DisplayName="For each Phase Setting permutation" sap:VirtualizedContainerService.HintSize="334,200" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[PhaseSettingPermutations]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="s:Int32[]">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="s:Int32[]" Name="phaseSettings" />
           </ActivityAction.Argument>
-          <Sequence sap:VirtualizedContainerService.HintSize="454,667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <Sequence DisplayName="Run Amps" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="scg1:Queue(x:Int32)" Default="[New Queue(Of Int32)]" Name="AmpA" />
+              <Variable x:TypeArguments="scg1:Queue(x:Int32)" Default="[New Queue(Of Int32)]" Name="AmpB" />
+              <Variable x:TypeArguments="scg1:Queue(x:Int32)" Default="[New Queue(Of Int32)]" Name="AmpC" />
+              <Variable x:TypeArguments="scg1:Queue(x:Int32)" Default="[New Queue(Of Int32)]" Name="AmpD" />
+              <Variable x:TypeArguments="scg1:Queue(x:Int32)" Default="[New Queue(Of Int32)]" Name="AmpE" />
+              <Variable x:TypeArguments="scg1:Queue(x:Int32)" Default="[New Queue(Of Int32)]" Name="Thrusters" />
+            </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Assign sap:VirtualizedContainerService.HintSize="412,60" sap2010:WorkflowViewState.IdRef="Assign_4">
-              <Assign.To>
-                <OutArgument x:TypeArguments="x:Int32">[InputSignal]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="x:Int32">0</InArgument>
-              </Assign.Value>
-            </Assign>
-            <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="412,413" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[phaseSettings]">
-              <ui:ForEach.Body>
-                <ActivityAction x:TypeArguments="x:Int32">
-                  <ActivityAction.Argument>
-                    <DelegateInArgument x:TypeArguments="x:Int32" Name="p" />
-                  </ActivityAction.Argument>
-                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="376,279" sap2010:WorkflowViewState.IdRef="Sequence_2">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day07\RunIntcode.xaml">
-                      <ui:InvokeWorkflowFile.Arguments>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[AmpSoftware]</InArgument>
-                        <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
-                        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_Inputs">[{p, InputSignal}]</InArgument>
-                        <OutArgument x:TypeArguments="scg:List(x:Int32)" x:Key="out_Outputs">[OutputSignals]</OutArgument>
-                      </ui:InvokeWorkflowFile.Arguments>
-                    </ui:InvokeWorkflowFile>
-                    <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_5">
-                      <Assign.To>
-                        <OutArgument x:TypeArguments="x:Int32">[InputSignal]</OutArgument>
-                      </Assign.To>
-                      <Assign.Value>
-                        <InArgument x:TypeArguments="x:Int32">[OutputSignals.First()]</InArgument>
-                      </Assign.Value>
-                    </Assign>
-                  </Sequence>
-                </ActivityAction>
-              </ui:ForEach.Body>
-            </ui:ForEach>
-            <AddToCollection x:TypeArguments="x:Int32" Collection="[PhaseOutputSignals]" DisplayName="Add To Collection" sap:VirtualizedContainerService.HintSize="412,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[InputSignal]" />
+            <InvokeMethod DisplayName="AmpA Phase Setting" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Enqueue">
+              <InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="scg1:Queue(x:Int32)">[AmpA]</InArgument>
+              </InvokeMethod.TargetObject>
+              <InArgument x:TypeArguments="x:Int32">[phaseSettings(0)]</InArgument>
+            </InvokeMethod>
+            <InvokeMethod DisplayName="AmpB Phase Setting" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_2" MethodName="Enqueue">
+              <InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="scg1:Queue(x:Int32)">[AmpB]</InArgument>
+              </InvokeMethod.TargetObject>
+              <InArgument x:TypeArguments="x:Int32">[phaseSettings(1)]</InArgument>
+            </InvokeMethod>
+            <InvokeMethod DisplayName="AmpC Phase Setting" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_3" MethodName="Enqueue">
+              <InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="scg1:Queue(x:Int32)">[AmpC]</InArgument>
+              </InvokeMethod.TargetObject>
+              <InArgument x:TypeArguments="x:Int32">[phaseSettings(2)]</InArgument>
+            </InvokeMethod>
+            <InvokeMethod DisplayName="AmpD Phase Setting" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_4" MethodName="Enqueue">
+              <InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="scg1:Queue(x:Int32)">[AmpD]</InArgument>
+              </InvokeMethod.TargetObject>
+              <InArgument x:TypeArguments="x:Int32">[phaseSettings(3)]</InArgument>
+            </InvokeMethod>
+            <InvokeMethod DisplayName="AmpE Phase Setting" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_5" MethodName="Enqueue">
+              <InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="scg1:Queue(x:Int32)">[AmpE]</InArgument>
+              </InvokeMethod.TargetObject>
+              <InArgument x:TypeArguments="x:Int32">[phaseSettings(4)]</InArgument>
+            </InvokeMethod>
+            <InvokeMethod DisplayName="Initialize AmpA w/ 0" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_6" MethodName="Enqueue">
+              <InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="scg1:Queue(x:Int32)">[AmpA]</InArgument>
+              </InvokeMethod.TargetObject>
+              <InArgument x:TypeArguments="x:Int32">0</InArgument>
+            </InvokeMethod>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Amp A" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Day07/RunIntcode.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[AmpSoftware]</InArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
+                <InOutArgument x:TypeArguments="scg1:Queue(x:Int32)" x:Key="io_InputQueue">[AmpA]</InOutArgument>
+                <InOutArgument x:TypeArguments="scg1:Queue(x:Int32)" x:Key="io_OutputQueue">[AmpB]</InOutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Amp B" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Day07/RunIntcode.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[AmpSoftware]</InArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
+                <InOutArgument x:TypeArguments="scg1:Queue(x:Int32)" x:Key="io_InputQueue">[AmpB]</InOutArgument>
+                <InOutArgument x:TypeArguments="scg1:Queue(x:Int32)" x:Key="io_OutputQueue">[AmpC]</InOutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Amp C" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Day07/RunIntcode.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[AmpSoftware]</InArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
+                <InOutArgument x:TypeArguments="scg1:Queue(x:Int32)" x:Key="io_InputQueue">[AmpC]</InOutArgument>
+                <InOutArgument x:TypeArguments="scg1:Queue(x:Int32)" x:Key="io_OutputQueue">[AmpD]</InOutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Amp D" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Day07/RunIntcode.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[AmpSoftware]</InArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
+                <InOutArgument x:TypeArguments="scg1:Queue(x:Int32)" x:Key="io_InputQueue">[AmpD]</InOutArgument>
+                <InOutArgument x:TypeArguments="scg1:Queue(x:Int32)" x:Key="io_OutputQueue">[AmpE]</InOutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Amp E" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Day07/RunIntcode.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[AmpSoftware]</InArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
+                <InOutArgument x:TypeArguments="scg1:Queue(x:Int32)" x:Key="io_InputQueue">[AmpE]</InOutArgument>
+                <InOutArgument x:TypeArguments="scg1:Queue(x:Int32)" x:Key="io_OutputQueue">[Thrusters]</InOutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <If Condition="[Thrusters.Peek() &gt; ToThrusters]" DisplayName="Keep the largest output" sap:VirtualizedContainerService.HintSize="484,208" sap2010:WorkflowViewState.IdRef="If_1">
+              <If.Then>
+                <Assign DisplayName="Signal to Thrusters" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Int32">[ToThrusters]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Int32">[Thrusters.Dequeue()]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </If.Then>
+            </If>
           </Sequence>
         </ActivityAction>
       </ui:ForEach.Body>
     </ui:ForEach>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="490,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[CStr(PhaseOutputSignals.Max())]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[&quot;Signal to Thrusters: &quot; &amp; ToThrusters]" />
   </Sequence>
 </Activity>
