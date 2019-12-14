@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>618,728</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>618,875</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetAstroids_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="42">
@@ -55,7 +55,7 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="GetAstroids" sap:VirtualizedContainerService.HintSize="598,668" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;From an Astroid map, return a list of Tuples representing each astroid and its x, y coordinates. Upper left is (0, 0).&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="GetAstroids" sap:VirtualizedContainerService.HintSize="598,815" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" Name="y" />
       <Variable x:TypeArguments="x:Int32" Name="x" />
@@ -63,9 +63,10 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign sap:VirtualizedContainerService.HintSize="556,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Initialize Astroid list" sap:VirtualizedContainerService.HintSize="556,60" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))">[out_Astroids]</OutArgument>
       </Assign.To>
@@ -73,21 +74,21 @@
         <InArgument x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))">[New List(Of Tuple(Of Int32, Int32))]</InArgument>
       </Assign.Value>
     </Assign>
-    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="[y]" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="556,476" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[Split(in_AstroidMap, vbLf)]">
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="[y]" DisplayName="For each line in the astroid map" sap:VirtualizedContainerService.HintSize="556,476" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[Split(in_AstroidMap, vbLf)]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="x:String">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:String" Name="line" />
           </ActivityAction.Argument>
-          <ui:ForEach x:TypeArguments="x:Char" CurrentIndex="[x]" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="520,342" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[line.ToCharArray()]">
+          <ui:ForEach x:TypeArguments="x:Char" CurrentIndex="[x]" DisplayName="For each character in the line" sap:VirtualizedContainerService.HintSize="520,342" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[line.ToCharArray()]">
             <ui:ForEach.Body>
               <ActivityAction x:TypeArguments="x:Char">
                 <ActivityAction.Argument>
                   <DelegateInArgument x:TypeArguments="x:Char" Name="c" />
                 </ActivityAction.Argument>
-                <If Condition="[c.ToString() = &quot;#&quot;]" sap:VirtualizedContainerService.HintSize="484,208" sap2010:WorkflowViewState.IdRef="If_1">
+                <If Condition="[c.ToString() = &quot;#&quot;]" DisplayName="Astroid are represented by a #" sap:VirtualizedContainerService.HintSize="484,208" sap2010:WorkflowViewState.IdRef="If_1">
                   <If.Then>
-                    <AddToCollection x:TypeArguments="s:Tuple(x:Int32, x:Int32)" Collection="[out_Astroids]" DisplayName="Add To Collection" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[Tuple.Create(x, y)]" />
+                    <AddToCollection x:TypeArguments="s:Tuple(x:Int32, x:Int32)" Collection="[out_Astroids]" DisplayName="Add astroid to list" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[Tuple.Create(x, y)]" />
                   </If.Then>
                 </If>
               </ActivityAction>
