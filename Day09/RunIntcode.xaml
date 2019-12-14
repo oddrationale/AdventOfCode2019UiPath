@@ -301,7 +301,7 @@
                       </scg1:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                     <While.Condition>[io_InputQueue.Count = 0]</While.Condition>
-                    <Delay Duration="00:00:00.2000000" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                    <Delay Duration="00:00:00.0100000" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
                   </While>
                   <Assign DisplayName="Get input from Queue" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_27">
                     <Assign.To>
