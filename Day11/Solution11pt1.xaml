@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution11pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="904,2311" sap2010:WorkflowViewState.IdRef="Solution11pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution11pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="904,1062" sap2010:WorkflowViewState.IdRef="Solution11pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="42">
       <x:String>System.Activities</x:String>
@@ -26,7 +26,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="17">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="34">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -44,9 +44,10 @@
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Solution11pt1" sap:VirtualizedContainerService.HintSize="884,2211" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Get the number of panels painted at least once. Starting panel is black (0).&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exist and contains valid Intcode&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution11pt1" sap:VirtualizedContainerService.HintSize="884,1002" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
       <Variable x:TypeArguments="scg1:Queue(x:Int64)" Name="InputQueue" />
@@ -62,10 +63,11 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day11\input.txt" sap:VirtualizedContainerService.HintSize="842,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="842,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read Intcode" FileName="Day11\input.txt" sap:VirtualizedContainerService.HintSize="842,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:MultipleAssign DisplayName="Initialize queue and output" sap:VirtualizedContainerService.HintSize="842,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -95,11 +97,11 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="842,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Enqueue">
+    <InvokeMethod DisplayName="Enqueue 0" sap:VirtualizedContainerService.HintSize="842,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Enqueue">
       <InvokeMethod.TargetObject>
         <InArgument x:TypeArguments="scg1:Queue(x:Int64)">[InputQueue]</InArgument>
       </InvokeMethod.TargetObject>
-      <InArgument x:TypeArguments="x:Int32">1</InArgument>
+      <InArgument x:TypeArguments="x:Int32">0</InArgument>
     </InvokeMethod>
     <Parallel sap:VirtualizedContainerService.HintSize="842,133" sap2010:WorkflowViewState.IdRef="Parallel_1" CompletionCondition="[OutputIntcode &lt;&gt; &quot;&quot;]">
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day11\RunIntcode.xaml">
@@ -118,125 +120,6 @@
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
     </Parallel>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="842,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[CStr(Panels.Count)]" />
-    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="842,222" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
-      <ui:MultipleAssign.AssignOperations>
-        <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="x:Int32">[MinX]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:Int32">[Aggregate x In From p In Panels.Keys Select p.Item1 Into Min()]</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="x:Int32">[MaxX]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:Int32">[Aggregate x In From p In Panels.Keys Select p.Item1 Into Max()]</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="x:Int32">[MinY]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:Int32">[Aggregate y In From p In Panels.Keys Select p.Item2 Into Min()]</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="x:Int32">[MaxY]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:Int32">[Aggregate y In From p In Panels.Keys Select p.Item2 Into Max()]</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="s:String[][]">[Registration]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="s:String[][]">[New String(MaxY - MinY)() {}]</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-        </scg:List>
-      </ui:MultipleAssign.AssignOperations>
-    </ui:MultipleAssign>
-    <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="842,612" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[Enumerable.Range(0, MaxY - MinY + 1)]">
-      <ui:ForEach.Body>
-        <ActivityAction x:TypeArguments="x:Int32">
-          <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="x:Int32" Name="y" />
-          </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="382,478" sap2010:WorkflowViewState.IdRef="Sequence_3">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <Assign sap:VirtualizedContainerService.HintSize="340,60" sap2010:WorkflowViewState.IdRef="Assign_1">
-              <Assign.To>
-                <OutArgument x:TypeArguments="s:String[]">[Registration(y)]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="s:String[]">[New String(MaxX - MinX) {}]</InArgument>
-              </Assign.Value>
-            </Assign>
-            <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="340,286" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Enumerable.Range(0, MaxX - MinX + 1)]">
-              <ui:ForEach.Body>
-                <ActivityAction x:TypeArguments="x:Int32">
-                  <ActivityAction.Argument>
-                    <DelegateInArgument x:TypeArguments="x:Int32" Name="x" />
-                  </ActivityAction.Argument>
-                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,152" sap2010:WorkflowViewState.IdRef="Sequence_2">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                    <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
-                      <Assign.To>
-                        <OutArgument x:TypeArguments="x:String">[Registration(y)(x)]</OutArgument>
-                      </Assign.To>
-                      <Assign.Value>
-                        <InArgument x:TypeArguments="x:String">.</InArgument>
-                      </Assign.Value>
-                    </Assign>
-                  </Sequence>
-                </ActivityAction>
-              </ui:ForEach.Body>
-            </ui:ForEach>
-          </Sequence>
-        </ActivityAction>
-      </ui:ForEach.Body>
-    </ui:ForEach>
-    <ui:ForEach x:TypeArguments="s:Tuple(x:Int32, x:Int32)" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="842,286" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Panels.Keys]">
-      <ui:ForEach.Body>
-        <ActivityAction x:TypeArguments="s:Tuple(x:Int32, x:Int32)">
-          <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32)" Name="panel" />
-          </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,152" sap2010:WorkflowViewState.IdRef="Sequence_4">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <Assign DisplayName="Assign4" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
-              <Assign.To>
-                <OutArgument x:TypeArguments="x:String">[Registration(panel.Item2 - MinY)(panel.Item1 - MinX)]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="x:String">[Panels(panel)]</InArgument>
-              </Assign.Value>
-            </Assign>
-          </Sequence>
-        </ActivityAction>
-      </ui:ForEach.Body>
-    </ui:ForEach>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="842,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[String.Join(vbNewLine, (From y In Registration Select String.Join(&quot;&quot;, y).Replace(&quot;.&quot;, &quot; &quot;)).Reverse())]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="842,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Panels: &quot; &amp; Panels.Count]" />
   </Sequence>
 </Activity>
