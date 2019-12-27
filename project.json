@@ -3,7 +3,8 @@
   "description": "Advent of Code 2019 solutions in UiPath Studio",
   "main": "Main.xaml",
   "dependencies": {
-    "UiPath.System.Activities": "[19.10.1]"
+    "UiPath.System.Activities": "[19.10.1]",
+    "UiPath.UIAutomation.Activities": "[19.10.1]"
   },
   "webServices": [],
   "schemaVersion": "4.0",

@@ -7,7 +7,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>911,2772</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>911,2864</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>PaintHull_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -54,6 +54,7 @@
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -61,7 +62,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg1:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence DisplayName="PaintHull" sap:VirtualizedContainerService.HintSize="891,2672" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Paint the ship hull&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="PaintHull" sap:VirtualizedContainerService.HintSize="891,2804" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int64" Name="ColorOutput" />
       <Variable x:TypeArguments="x:Int64" Name="DirectionOutput" />
@@ -72,19 +73,20 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg1:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <While sap:VirtualizedContainerService.HintSize="849,2580" sap2010:WorkflowViewState.IdRef="While_2" Condition="True">
-      <Sequence sap:VirtualizedContainerService.HintSize="803,2422" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <While DisplayName="Run infinite loop" sap:VirtualizedContainerService.HintSize="849,2580" sap2010:WorkflowViewState.IdRef="While_2" Condition="True">
+      <Sequence DisplayName="Paint" sap:VirtualizedContainerService.HintSize="803,2422" sap2010:WorkflowViewState.IdRef="Sequence_2">
         <sap:WorkflowViewStateService.ViewState>
           <scg1:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg1:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <While sap:VirtualizedContainerService.HintSize="761,218" sap2010:WorkflowViewState.IdRef="While_1" Condition="[io_OutputQueue.Count &lt; 2]">
+        <While DisplayName="Wait for both outputs" sap:VirtualizedContainerService.HintSize="761,218" sap2010:WorkflowViewState.IdRef="While_1" Condition="[io_OutputQueue.Count &lt; 2]">
           <Delay Duration="00:00:00.0010000" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
         </While>
-        <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="761,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+        <ui:MultipleAssign DisplayName="Get the outputs" sap:VirtualizedContainerService.HintSize="761,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
           <ui:MultipleAssign.AssignOperations>
             <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="8">
               <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -108,7 +110,7 @@
                   <OutArgument x:TypeArguments="x:String">[io_Panels(Panel)]</OutArgument>
                 </ui:AssignOperation.To>
                 <ui:AssignOperation.Value>
-                  <InArgument x:TypeArguments="x:String">[If(ColorOutput = 0, ".", "#")]</InArgument>
+                  <InArgument x:TypeArguments="x:String">[If(ColorOutput = 0, " ", "#")]</InArgument>
                 </ui:AssignOperation.Value>
               </ui:AssignOperation>
             </scg1:List>
