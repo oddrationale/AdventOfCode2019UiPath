@@ -171,12 +171,12 @@
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Int32" Name="y" />
           </ActivityAction.Argument>
-          <Assign DisplayName="Fill awway with all black panels" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign DisplayName="Fill with all black panels" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
             <Assign.To>
               <OutArgument x:TypeArguments="s:Char[]">[Registration(y)]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="s:Char[]">[StrDup(MaxX - MinX + 1, " ").ToCharArray()]</InArgument>
+              <InArgument x:TypeArguments="s:Char[]">[StrDup(MaxX - MinX + 1, ".").ToCharArray()]</InArgument>
             </Assign.Value>
           </Assign>
         </ActivityAction>
