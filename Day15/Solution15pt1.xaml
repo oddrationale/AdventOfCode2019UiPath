@@ -1,6 +1,6 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution15pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="904,497" sap2010:WorkflowViewState.IdRef="Solution15pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution15pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="904,629" sap2010:WorkflowViewState.IdRef="Solution15pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sxl="clr-namespace:System.Xml.Linq;assembly=System.Xml.Linq" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
-    <scg1:List x:TypeArguments="x:String" Capacity="21">
+    <scg1:List x:TypeArguments="x:String" Capacity="42">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -22,10 +22,11 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
     </scg1:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg1:List x:TypeArguments="AssemblyReference" Capacity="16">
+    <scg1:List x:TypeArguments="AssemblyReference" Capacity="18">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -42,11 +43,16 @@
       <AssemblyReference>System.Xaml</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg1:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Solution15pt1" sap:VirtualizedContainerService.HintSize="884,397" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Solution15pt1" sap:VirtualizedContainerService.HintSize="884,569" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
+      <Variable x:TypeArguments="sxl:XElement" Name="Map" />
+      <Variable x:TypeArguments="scg:Queue(x:Int64)" Default="[New Queue(Of Int64)]" Name="OutputQueue" />
+      <Variable x:TypeArguments="scg:Queue(x:Int64)" Default="[New Queue(Of Int64)]" Name="InputQueue" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg1:Dictionary x:TypeArguments="x:String, x:Object">
@@ -54,23 +60,23 @@
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day15\input.txt" sap:VirtualizedContainerService.HintSize="842,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <Parallel sap:VirtualizedContainerService.HintSize="842,133" sap2010:WorkflowViewState.IdRef="Parallel_1">
-      <Parallel.Variables>
-        <Variable x:TypeArguments="scg:Queue(x:Int64)" Default="[New Queue(Of Int64)]" Name="InputQueue" />
-      </Parallel.Variables>
+    <Parallel sap:VirtualizedContainerService.HintSize="842,133" sap2010:WorkflowViewState.IdRef="Parallel_1" CompletionCondition="[Map IsNot Nothing]">
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day15\RunIntcode.xaml">
         <ui:InvokeWorkflowFile.Arguments>
           <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[Input]</InArgument>
           <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
           <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_InputQueue">[InputQueue]</InOutArgument>
-          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue" />
+          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue">[OutputQueue]</InOutArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ControlJoystick workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day15\ControlJoystick.xaml">
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ExploreMapSM workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Day15/ExploreMap.xaml">
         <ui:InvokeWorkflowFile.Arguments>
+          <OutArgument x:TypeArguments="sxl:XElement" x:Key="out_Map">[Map]</OutArgument>
           <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_InputQueue">[InputQueue]</InOutArgument>
+          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue">[OutputQueue]</InOutArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
     </Parallel>
+    <ui:WriteTextFile DisplayName="Write Text File" FileName="map.xml" sap:VirtualizedContainerService.HintSize="842,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[Map.ToString()]" />
   </Sequence>
 </Activity>
