@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="FindRepeat" this:FindRepeat.in_InitialPos="[{2, -7, 8, -1}]" this:FindRepeat.in_InitialVel="[{0, 0, 0, 0}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="FindRepeat" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_InitialPos" Type="InArgument(s:Int32[])">
       <x:Property.Attributes>
@@ -15,7 +15,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>546,774</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>546,1023</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>FindRepeat_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -64,7 +64,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="FindRepeat" sap:VirtualizedContainerService.HintSize="526,714" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;The x, y, z positions are independent of each other. I.e., changes in one dimension does not effect the other dimensions. This workflow finds the number of cycles required to return back to the same initial position and velocity for one dimension. &#xD;&#xA;&#xD;&#xA;In this case, in_InitialPos is the positions of one dimension for the four moons. Same with in_InitialVel. For example, all the x positions and velocity. Or all the y positions and velocity. This allows us to analyze each dimension separately.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="FindRepeat" sap:VirtualizedContainerService.HintSize="526,963" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="s:Int32[]" Name="Pos" />
       <Variable x:TypeArguments="s:Int32[]" Name="Vel" />
@@ -73,9 +73,10 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="484,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign DisplayName="Get the starting pos and vel" sap:VirtualizedContainerService.HintSize="484,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -97,8 +98,8 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <DoWhile DisplayName="Do While" sap:VirtualizedContainerService.HintSize="484,353" sap2010:WorkflowViewState.IdRef="DoWhile_1" Condition="[Not Vel.SequenceEqual(in_InitialVel)]">
-      <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,191" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+    <DoWhile DisplayName="Cycle" sap:VirtualizedContainerService.HintSize="484,380" sap2010:WorkflowViewState.IdRef="DoWhile_1" Condition="[Not Vel.SequenceEqual(in_InitialVel)]">
+      <ui:MultipleAssign sap2010:Annotation.AnnotationText="Gravity will be an array of the change in position." DisplayName="Perform one cycle" sap:VirtualizedContainerService.HintSize="338,218" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
         <ui:MultipleAssign.AssignOperations>
           <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
             <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
@@ -106,12 +107,7 @@
                 <OutArgument x:TypeArguments="s:Int32[]">[Gravity]</OutArgument>
               </ui:AssignOperation.To>
               <ui:AssignOperation.Value>
-                <InArgument x:TypeArguments="s:Int32[]" xml:space="preserve">[(From p In Pos
-Select
-  Aggregate g In 
-    From other In Pos 
-	Select If(p=other, 0, If(p&lt;other, 1, -1)) 
-  Into Sum()).ToArray()]</InArgument>
+                <InArgument x:TypeArguments="s:Int32[]">[Pos.Select(Function(p) Pos.Select(Function(other) If(p=other, 0, If(p&lt;other, 1, -1))).Sum()).ToArray()]</InArgument>
               </ui:AssignOperation.Value>
             </ui:AssignOperation>
             <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
@@ -140,9 +136,14 @@ Select
             </ui:AssignOperation>
           </scg:List>
         </ui:MultipleAssign.AssignOperations>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
       </ui:MultipleAssign>
     </DoWhile>
-    <Assign sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign DisplayName="Get the Cycle count" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="s:UInt64">[out_Cycles]</OutArgument>
       </Assign.To>

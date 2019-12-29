@@ -1,4 +1,12 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution12pt2" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="396,848" sap2010:WorkflowViewState.IdRef="Solution12_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution12pt2" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="out_Cycles" Type="OutArgument(s:UInt64)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>478,2084</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>Solution12_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
       <x:String>System.Activities</x:String>
@@ -46,57 +54,122 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Solution12pt2" sap:VirtualizedContainerService.HintSize="376,788" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Find the number of steps for the same position and velocity to be repeated again.&#xD;&#xA;&#xD;&#xA;Two things make this method possible. (1) The moon motions is completely cyclical. Meaning the next repeating pos/vel will be the initial pos/vel. (2) The x, y, z dimensions of the moon's pos/vel are independent of each other. Meaning, changes in the x dimension does not effect the y and z dimensions. And same for the other dimensions.&#xD;&#xA;&#xD;&#xA;Based on this knowledge, we can find the number of steps for each dimension to repeat separately. Then find the LCM of the three cycle counts to get the total cycle count.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exists and has the initial moon positions&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution12pt2" sap:VirtualizedContainerService.HintSize="458,2024" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="s:Int32[]" Default="[{3,4,-10,-3}]" Name="x" />
-      <Variable x:TypeArguments="s:Int32[]" Default="[{3,-16,-6,0}]" Name="y" />
-      <Variable x:TypeArguments="s:Int32[]" Default="[{0,2,5,-13}]" Name="z" />
-      <Variable x:TypeArguments="s:UInt64" Name="xcycles" />
-      <Variable x:TypeArguments="s:UInt64" Name="ycycles" />
-      <Variable x:TypeArguments="s:UInt64" Name="zcycles" />
-      <Variable x:TypeArguments="s:UInt64" Name="xycycles" />
-      <Variable x:TypeArguments="s:UInt64" Name="cycles" />
+      <Variable x:TypeArguments="s:UInt64" Name="XCycles" />
+      <Variable x:TypeArguments="s:UInt64" Name="YCycles" />
+      <Variable x:TypeArguments="s:UInt64" Name="ZCycles" />
+      <Variable x:TypeArguments="s:UInt64" Name="X_YCycles" />
+      <Variable x:TypeArguments="x:String" Name="Input" />
+      <Variable x:TypeArguments="scg:ICollection(scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32)))" Default="[New List(Of Dictionary(Of String, Tuple(Of Int32, Int32, Int32)))]" Name="Moons" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FindRepeat workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day12\FindRepeat.xaml">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read input file" FileName="Day12\input.txt" sap:VirtualizedContainerService.HintSize="416,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Each line is a moon. There are four lines for the four moons: Io, Europa, Ganymede, and Callisto." DisplayName="Read the input to a data structure" sap:VirtualizedContainerService.HintSize="416,727" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Split(Input, vbLf)]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="line" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Add to collection" sap:VirtualizedContainerService.HintSize="380,551" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:Int32" Name="x" />
+              <Variable x:TypeArguments="x:Int32" Name="y" />
+              <Variable x:TypeArguments="x:Int32" Name="z" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:MultipleAssign DisplayName="Get the x, y, z positions" sap:VirtualizedContainerService.HintSize="338,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+              <ui:MultipleAssign.AssignOperations>
+                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:Int32">[x]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:Int32">[Integer.Parse(Split(Split(line.Replace("&lt;", "").Replace("&gt;",""), ",")(0), "=").Last())]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:Int32">[y]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:Int32">[Integer.Parse(Split(Split(line.Replace("&lt;", "").Replace("&gt;",""), ",")(1), "=").Last())]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:Int32">[z]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:Int32">[Integer.Parse(Split(Split(line.Replace("&lt;", "").Replace("&gt;",""), ",")(2), "=").Last())]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                </scg:List>
+              </ui:MultipleAssign.AssignOperations>
+            </ui:MultipleAssign>
+            <AddToCollection x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" sap2010:Annotation.AnnotationText="This creates a collection of dictionaries. Each dict represents a moon. Each moon (dict) consists of two keys: position and velocity.&#xA;&#xA;For example:&#xA;&#xA;Moons:&#xA;Io:&#xA;  - &quot;pos&quot;: -1, 0, 2&#xA;  - &quot;vel&quot;: 0, 0, 0&#xA;Europa:&#xA; - &quot;pos&quot;: 2, -10, 7&#xA; - &quot;vel&quot;: 0, 0, 0" Collection="[Moons]" DisplayName="Add To Collection" sap:VirtualizedContainerService.HintSize="338,259" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[New Dictionary(Of String, Tuple(Of Int32, Int32, Int32)) From {{&quot;pos&quot;, Tuple.Create(x,y,z)}, {&quot;vel&quot;, Tuple.Create(0,0,0)}}]">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </AddToCollection>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:ForEach>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Find how many cycles for the Xs to repeat" sap:VirtualizedContainerService.HintSize="416,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day12\FindRepeat.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialPos">[x]</InArgument>
-        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialVel">[{0, 0, 0, 0}]</InArgument>
-        <OutArgument x:TypeArguments="s:UInt64" x:Key="out_Cycles">[xcycles]</OutArgument>
+        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialPos">[Moons.Select(Function(m) m("pos").Item1).ToArray()]</InArgument>
+        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialVel">[Moons.Select(Function(m) m("vel").Item1).ToArray()]</InArgument>
+        <OutArgument x:TypeArguments="s:UInt64" x:Key="out_Cycles">[XCycles]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FindRepeat workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day12\FindRepeat.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Find how many cycles for the Ys to repeat" sap:VirtualizedContainerService.HintSize="416,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day12\FindRepeat.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialPos">[y]</InArgument>
-        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialVel">[{0, 0, 0, 0}]</InArgument>
-        <OutArgument x:TypeArguments="s:UInt64" x:Key="out_Cycles">[ycycles]</OutArgument>
+        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialPos">[Moons.Select(Function(m) m("pos").Item2).ToArray()]</InArgument>
+        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialVel">[Moons.Select(Function(m) m("vel").Item2).ToArray()]</InArgument>
+        <OutArgument x:TypeArguments="s:UInt64" x:Key="out_Cycles">[YCycles]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FindRepeat workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Day12\FindRepeat.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Find how many cycles for the Zs to repeat" sap:VirtualizedContainerService.HintSize="416,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Day12\FindRepeat.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialPos">[z]</InArgument>
-        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialVel">[{0, 0, 0, 0}]</InArgument>
-        <OutArgument x:TypeArguments="s:UInt64" x:Key="out_Cycles">[zcycles]</OutArgument>
+        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialPos">[Moons.Select(Function(m) m("pos").Item3).ToArray()]</InArgument>
+        <InArgument x:TypeArguments="s:Int32[]" x:Key="in_InitialVel">[Moons.Select(Function(m) m("vel").Item3).ToArray()]</InArgument>
+        <OutArgument x:TypeArguments="s:UInt64" x:Key="out_Cycles">[ZCycles]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke LCM workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Day12\LCM.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="LCM between X and Y cycles" sap:VirtualizedContainerService.HintSize="416,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Day12\LCM.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="s:UInt64" x:Key="in_Num1">[CULng(xcycles)]</InArgument>
-        <InArgument x:TypeArguments="s:UInt64" x:Key="in_Num2">[CULng(ycycles)]</InArgument>
-        <OutArgument x:TypeArguments="s:UInt64" x:Key="out_LCM">[xycycles]</OutArgument>
+        <InArgument x:TypeArguments="s:UInt64" x:Key="in_Num1">[XCycles]</InArgument>
+        <InArgument x:TypeArguments="s:UInt64" x:Key="in_Num2">[YCycles]</InArgument>
+        <OutArgument x:TypeArguments="s:UInt64" x:Key="out_LCM">[X_YCycles]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke LCM workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Day12\LCM.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="LCM between X_Y and Z cycles" sap:VirtualizedContainerService.HintSize="416,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Day12\LCM.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="s:UInt64" x:Key="in_Num1">[xycycles]</InArgument>
-        <InArgument x:TypeArguments="s:UInt64" x:Key="in_Num2">[CULng(zcycles)]</InArgument>
-        <OutArgument x:TypeArguments="s:UInt64" x:Key="out_LCM">[cycles]</OutArgument>
+        <InArgument x:TypeArguments="s:UInt64" x:Key="in_Num1">[X_YCycles]</InArgument>
+        <InArgument x:TypeArguments="s:UInt64" x:Key="in_Num2">[ZCycles]</InArgument>
+        <OutArgument x:TypeArguments="s:UInt64" x:Key="out_LCM">[out_Cycles]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[CStr(cycles)]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="416,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Steps: &quot; &amp; out_Cycles]" />
   </Sequence>
 </Activity>

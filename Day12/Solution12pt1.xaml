@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>634,2189</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>592,2504</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Solution12pt1_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
@@ -34,7 +34,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="16">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="32">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -51,9 +51,11 @@
       <AssemblyReference>System.Xaml</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Solution12pt1" sap:VirtualizedContainerService.HintSize="614,2129" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Calculate the total energy in the system after in_Steps steps.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exists and has the initial moon positions&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution12pt1" sap:VirtualizedContainerService.HintSize="572,2444" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
       <Variable x:TypeArguments="scg:List(scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32)))" Default="[New List(Of Dictionary(Of String, Tuple(Of Int32, Int32, Int32)))]" Name="Moons" />
@@ -61,16 +63,17 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day12\input.txt" sap:VirtualizedContainerService.HintSize="572,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="572,448" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Split(Input, vbLf)]">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read input file" FileName="Day12\input.txt" sap:VirtualizedContainerService.HintSize="530,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Each line is a moon. There are four lines for the four moons: Io, Europa, Ganymede, and Callisto." DisplayName="Read the input to a data structure" sap:VirtualizedContainerService.HintSize="530,727" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Split(Input, vbLf)]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="x:String">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:String" Name="line" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="380,314" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Add to collection" sap:VirtualizedContainerService.HintSize="380,551" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <Sequence.Variables>
               <Variable x:TypeArguments="x:Int32" Name="x" />
               <Variable x:TypeArguments="x:Int32" Name="y" />
@@ -81,7 +84,7 @@
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+            <ui:MultipleAssign DisplayName="Get the x, y, z positions" sap:VirtualizedContainerService.HintSize="338,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
               <ui:MultipleAssign.AssignOperations>
                 <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                   <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -111,7 +114,13 @@
                 </scg:List>
               </ui:MultipleAssign.AssignOperations>
             </ui:MultipleAssign>
-            <AddToCollection x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" Collection="[Moons]" DisplayName="Add To Collection" sap:VirtualizedContainerService.HintSize="338,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[New Dictionary(Of String, Tuple(Of Int32, Int32, Int32)) From {{&quot;pos&quot;, Tuple.Create(x,y,z)}, {&quot;vel&quot;, Tuple.Create(0,0,0)}}]" />
+            <AddToCollection x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" sap2010:Annotation.AnnotationText="This creates a collection of dictionaries. Each dict represents a moon. Each moon (dict) consists of two keys: position and velocity.&#xD;&#xA;&#xD;&#xA;For example:&#xD;&#xA;&#xD;&#xA;Moons:&#xD;&#xA;Io:&#xD;&#xA;  - &quot;pos&quot;: -1, 0, 2&#xD;&#xA;  - &quot;vel&quot;: 0, 0, 0&#xD;&#xA;Europa:&#xD;&#xA; - &quot;pos&quot;: 2, -10, 7&#xD;&#xA; - &quot;vel&quot;: 0, 0, 0" Collection="[Moons]" DisplayName="Add To Collection" sap:VirtualizedContainerService.HintSize="338,259" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[New Dictionary(Of String, Tuple(Of Int32, Int32, Int32)) From {{&quot;pos&quot;, Tuple.Create(x,y,z)}, {&quot;vel&quot;, Tuple.Create(0,0,0)}}]">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </AddToCollection>
           </Sequence>
         </ActivityAction>
       </ui:ForEach.Body>
@@ -119,28 +128,29 @@
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ForEach>
-    <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="572,1172" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[Enumerable.Range(0, in_Steps)]">
+    <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="Iterate through the steps" sap:VirtualizedContainerService.HintSize="530,1080" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[Enumerable.Range(0, in_Steps)]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="x:Int32">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Int32" Name="i" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="536,1038" sap2010:WorkflowViewState.IdRef="Sequence_5">
+          <Sequence DisplayName="Step" sap:VirtualizedContainerService.HintSize="494,946" sap2010:WorkflowViewState.IdRef="Sequence_5">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:ForEach x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="494,712" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Moons]">
+            <ui:ForEach x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" CurrentIndex="{x:Null}" DisplayName="Compare each moon to every other moon" sap:VirtualizedContainerService.HintSize="452,620" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Moons]">
               <ui:ForEach.Body>
                 <ActivityAction x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))">
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" Name="moon" />
                   </ActivityAction.Argument>
-                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="458,578" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <Sequence DisplayName="Gravity and velocity" sap:VirtualizedContainerService.HintSize="416,486" sap2010:WorkflowViewState.IdRef="Sequence_4">
                     <Sequence.Variables>
                       <Variable x:TypeArguments="x:Int32" Name="dx" />
                       <Variable x:TypeArguments="x:Int32" Name="dy" />
@@ -151,53 +161,46 @@
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <ui:ForEach x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="416,386" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[Moons]">
+                    <ui:ForEach x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" CurrentIndex="{x:Null}" DisplayName="Compare to every other moon" sap:VirtualizedContainerService.HintSize="374,294" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[Moons]">
                       <ui:ForEach.Body>
                         <ActivityAction x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))">
                           <ActivityAction.Argument>
                             <DelegateInArgument x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" Name="othermoon" />
                           </ActivityAction.Argument>
-                          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="380,252" sap2010:WorkflowViewState.IdRef="Sequence_3">
-                            <sap:WorkflowViewStateService.ViewState>
-                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                              </scg:Dictionary>
-                            </sap:WorkflowViewStateService.ViewState>
-                            <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
-                              <ui:MultipleAssign.AssignOperations>
-                                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-                                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
-                                    <ui:AssignOperation.To>
-                                      <OutArgument x:TypeArguments="x:Int32">[dx]</OutArgument>
-                                    </ui:AssignOperation.To>
-                                    <ui:AssignOperation.Value>
-                                      <InArgument x:TypeArguments="x:Int32">[dx + If(moon("pos").Item1 = othermoon("pos").Item1, 0, If(moon("pos").Item1 &lt; othermoon("pos").Item1, 1, -1))]</InArgument>
-                                    </ui:AssignOperation.Value>
-                                  </ui:AssignOperation>
-                                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
-                                    <ui:AssignOperation.To>
-                                      <OutArgument x:TypeArguments="x:Int32">[dy]</OutArgument>
-                                    </ui:AssignOperation.To>
-                                    <ui:AssignOperation.Value>
-                                      <InArgument x:TypeArguments="x:Int32">[dy + If(moon("pos").Item2 = othermoon("pos").Item2, 0, If(moon("pos").Item2 &lt; othermoon("pos").Item2, 1, -1))]</InArgument>
-                                    </ui:AssignOperation.Value>
-                                  </ui:AssignOperation>
-                                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
-                                    <ui:AssignOperation.To>
-                                      <OutArgument x:TypeArguments="x:Int32">[dz]</OutArgument>
-                                    </ui:AssignOperation.To>
-                                    <ui:AssignOperation.Value>
-                                      <InArgument x:TypeArguments="x:Int32">[dz + If(moon("pos").Item3 = othermoon("pos").Item3, 0, If(moon("pos").Item3 &lt; othermoon("pos").Item3, 1, -1))]</InArgument>
-                                    </ui:AssignOperation.Value>
-                                  </ui:AssignOperation>
-                                </scg:List>
-                              </ui:MultipleAssign.AssignOperations>
-                            </ui:MultipleAssign>
-                          </Sequence>
+                          <ui:MultipleAssign DisplayName="Apply Gravity" sap:VirtualizedContainerService.HintSize="338,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+                            <ui:MultipleAssign.AssignOperations>
+                              <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+                                  <ui:AssignOperation.To>
+                                    <OutArgument x:TypeArguments="x:Int32">[dx]</OutArgument>
+                                  </ui:AssignOperation.To>
+                                  <ui:AssignOperation.Value>
+                                    <InArgument x:TypeArguments="x:Int32">[dx + If(moon("pos").Item1 = othermoon("pos").Item1, 0, If(moon("pos").Item1 &lt; othermoon("pos").Item1, 1, -1))]</InArgument>
+                                  </ui:AssignOperation.Value>
+                                </ui:AssignOperation>
+                                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+                                  <ui:AssignOperation.To>
+                                    <OutArgument x:TypeArguments="x:Int32">[dy]</OutArgument>
+                                  </ui:AssignOperation.To>
+                                  <ui:AssignOperation.Value>
+                                    <InArgument x:TypeArguments="x:Int32">[dy + If(moon("pos").Item2 = othermoon("pos").Item2, 0, If(moon("pos").Item2 &lt; othermoon("pos").Item2, 1, -1))]</InArgument>
+                                  </ui:AssignOperation.Value>
+                                </ui:AssignOperation>
+                                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
+                                  <ui:AssignOperation.To>
+                                    <OutArgument x:TypeArguments="x:Int32">[dz]</OutArgument>
+                                  </ui:AssignOperation.To>
+                                  <ui:AssignOperation.Value>
+                                    <InArgument x:TypeArguments="x:Int32">[dz + If(moon("pos").Item3 = othermoon("pos").Item3, 0, If(moon("pos").Item3 &lt; othermoon("pos").Item3, 1, -1))]</InArgument>
+                                  </ui:AssignOperation.Value>
+                                </ui:AssignOperation>
+                              </scg:List>
+                            </ui:MultipleAssign.AssignOperations>
+                          </ui:MultipleAssign>
                         </ActivityAction>
                       </ui:ForEach.Body>
                     </ui:ForEach>
-                    <Assign sap:VirtualizedContainerService.HintSize="416,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+                    <Assign DisplayName="Calculate velocity" sap:VirtualizedContainerService.HintSize="374,60" sap2010:WorkflowViewState.IdRef="Assign_1">
                       <Assign.To>
                         <OutArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Int32)">[moon("vel")]</OutArgument>
                       </Assign.To>
@@ -215,13 +218,13 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:ForEach>
-            <ui:ForEach x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="494,194" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[Moons]">
+            <ui:ForEach x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" CurrentIndex="{x:Null}" DisplayName="Update each moon's pos" sap:VirtualizedContainerService.HintSize="452,194" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[Moons]">
               <ui:ForEach.Body>
                 <ActivityAction x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))">
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="scg:Dictionary(x:String, s:Tuple(x:Int32, x:Int32, x:Int32))" Name="moon" />
                   </ActivityAction.Argument>
-                  <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                  <Assign DisplayName="Apply update" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
                     <Assign.To>
                       <OutArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Int32)">[moon("pos")]</OutArgument>
                     </Assign.To>
@@ -242,17 +245,14 @@
         </ActivityAction>
       </ui:ForEach.Body>
     </ui:ForEach>
-    <Assign sap:VirtualizedContainerService.HintSize="572,64" sap2010:WorkflowViewState.IdRef="Assign_3">
+    <Assign DisplayName="Calculate total enerty" sap:VirtualizedContainerService.HintSize="530,60" sap2010:WorkflowViewState.IdRef="Assign_3">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int32">[out_TotalEnergy]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32" xml:space="preserve">[Aggregate m In Moons 
-Into Sum(
-(Math.Abs(m("pos").Item1) + Math.Abs(m("pos").Item2) + Math.Abs(m("pos").Item3)) * (Math.Abs(m("vel").Item1) + Math.Abs(m("vel").Item2) + Math.Abs(m("vel").Item3))
-)]</InArgument>
+        <InArgument x:TypeArguments="x:Int32">[Moons.Sum(Function(m) (Math.Abs(m("pos").Item1) + Math.Abs(m("pos").Item2) + Math.Abs(m("pos").Item3)) * (Math.Abs(m("vel").Item1) + Math.Abs(m("vel").Item2) + Math.Abs(m("vel").Item3)))]</InArgument>
       </Assign.Value>
     </Assign>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="572,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[String.Format(&quot;Total energy after {0} steps: {1}&quot;, in_Steps, out_TotalEnergy)]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="530,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[String.Format(&quot;Total energy after {0} steps: {1}&quot;, in_Steps, out_TotalEnergy)]" />
   </Sequence>
 </Activity>
