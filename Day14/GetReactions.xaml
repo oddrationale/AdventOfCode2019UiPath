@@ -1,12 +1,16 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="GetReactions" this:GetReactions.in_ReactionsStr="7 A, 1 E =&gt; 1 FUEL" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_ReactionsStr" Type="InArgument(x:String)" />
+    <x:Property Name="in_ReactionsStr" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
     <x:Property Name="out_Reactions" Type="OutArgument(scg:Dictionary(s:Tuple(x:Int64, x:String), scg:List(s:Tuple(x:Int64, x:String))))" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>436,577</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>436,1081</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetReactions_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -54,7 +58,7 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="GetReactions" sap:VirtualizedContainerService.HintSize="416,517" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Converts a string of inputs into a dictionary of the reactions. One line per reaction. For example:&#xD;&#xA;&#xD;&#xA;7 A, 1 E =&gt; 1 FUEL becomes&#xD;&#xA;Dictionary(&#xD;&#xA;  Key: Tuple(1, FUEL)&#xD;&#xA;  Value: List(&#xD;&#xA;    Tuple(7, A),&#xD;&#xA;    Tuple(1, E),&#xD;&#xA;    Tuple(-1, FUEL)&#xD;&#xA;  )&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;We add the negative value of output chemical because this will be useful when adding reactions together.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="GetReactions" sap:VirtualizedContainerService.HintSize="416,1021" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="s:Tuple(x:Int64, x:String)" Name="OutputChemical" />
       <Variable x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))" Name="InputChemicals" />
@@ -63,9 +67,10 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign sap:VirtualizedContainerService.HintSize="374,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Initialize empty dictionary" sap:VirtualizedContainerService.HintSize="374,60" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:Dictionary(s:Tuple(x:Int64, x:String), scg:List(s:Tuple(x:Int64, x:String)))">[out_Reactions]</OutArgument>
       </Assign.To>
@@ -73,13 +78,13 @@
         <InArgument x:TypeArguments="scg:Dictionary(s:Tuple(x:Int64, x:String), scg:List(s:Tuple(x:Int64, x:String)))">[New Dictionary(Of Tuple(Of Int64, String), List(Of Tuple(Of Int64, String)))]</InArgument>
       </Assign.Value>
     </Assign>
-    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="374,325" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Split(in_ReactionsStr, vbLf)]">
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For each line in the Input" sap:VirtualizedContainerService.HintSize="374,487" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Split(in_ReactionsStr, vbLf)]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="x:String">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:String" Name="r" />
           </ActivityAction.Argument>
-          <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,191" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+          <ui:MultipleAssign sap2010:Annotation.AnnotationText="Split the line by &quot;=&gt;&quot; to separate the input chemicals from the output chemicals.&#xD;&#xA;&#xD;&#xA;Split the Output Chemical by space.&#xD;&#xA;&#xD;&#xA;Split the Input Chemicals by comma, then add each Chemical to a list.&#xD;&#xA;&#xD;&#xA;Add to dictionary. Combine the Input Chemicals plus the negative Output Chemical." DisplayName="Add to dictionary" sap:VirtualizedContainerService.HintSize="338,353" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
             <ui:MultipleAssign.AssignOperations>
               <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                 <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -116,6 +121,11 @@
                 </ui:AssignOperation>
               </scg:List>
             </ui:MultipleAssign.AssignOperations>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
           </ui:MultipleAssign>
         </ActivityAction>
       </ui:ForEach.Body>

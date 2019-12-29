@@ -1,12 +1,16 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution14pt1" this:Solution14pt1.in_Amount="4100000" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution14pt1" this:Solution14pt1.in_FUEL="1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_Amount" Type="InArgument(x:Int64)" />
     <x:Property Name="out_ORE" Type="OutArgument(x:Int64)" />
+    <x:Property Name="in_FUEL" Type="InArgument(x:Int64)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>588,1454</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>546,1564</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Solution14pt1_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="42">
@@ -54,7 +58,7 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Solution14pt1" sap:VirtualizedContainerService.HintSize="568,1394" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Find the amount of ORE necessary to produce 1 FUEL.&#xD;&#xA;&#xD;&#xA;This method works by keeping track of overages using negative numbers. To add reactions together, sum the number of the same chemicals. Repeat process until left with just ORE and leftover (negative numbers).&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exists and contains the list of reactions.&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution14pt1" sap:VirtualizedContainerService.HintSize="526,1464" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
       <Variable x:TypeArguments="scg:Dictionary(s:Tuple(x:Int64, x:String), scg:List(s:Tuple(x:Int64, x:String)))" Name="Reactions" />
@@ -66,189 +70,92 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day14\input.txt" sap:VirtualizedContainerService.HintSize="526,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetReactions workflow" sap:VirtualizedContainerService.HintSize="526,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day14\GetReactions.xaml">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day14\input.txt" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetReactions workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day14\GetReactions.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:String" x:Key="in_ReactionsStr">[Input]</InArgument>
         <OutArgument x:TypeArguments="scg:Dictionary(s:Tuple(x:Int64, x:String), scg:List(s:Tuple(x:Int64, x:String)))" x:Key="out_Reactions">[Reactions]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="526,51" sap2010:WorkflowViewState.IdRef="CommentOut_1">
-      <ui:CommentOut.Body>
-        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="614,962" sap2010:WorkflowViewState.IdRef="Sequence_4">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <DoWhile DisplayName="Do While" sap:VirtualizedContainerService.HintSize="572,870" sap2010:WorkflowViewState.IdRef="DoWhile_2" Condition="[out_ORE &lt;=1000000000000L]">
-            <Sequence sap:VirtualizedContainerService.HintSize="526,709" sap2010:WorkflowViewState.IdRef="Sequence_3">
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-              <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="484,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_3">
-                <ui:MultipleAssign.AssignOperations>
-                  <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-                    <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
-                      <ui:AssignOperation.To>
-                        <OutArgument x:TypeArguments="x:Int64">[in_Amount]</OutArgument>
-                      </ui:AssignOperation.To>
-                      <ui:AssignOperation.Value>
-                        <InArgument x:TypeArguments="x:Int64">[in_Amount + 1]</InArgument>
-                      </ui:AssignOperation.Value>
-                    </ui:AssignOperation>
-                    <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_9">
-                      <ui:AssignOperation.To>
-                        <OutArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))">[Chemicals]</OutArgument>
-                      </ui:AssignOperation.To>
-                      <ui:AssignOperation.Value>
-                        <InArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))">[New List(Of Tuple(Of Int64, String)) From {Tuple.Create(in_Amount, "FUEL")}]</InArgument>
-                      </ui:AssignOperation.Value>
-                    </ui:AssignOperation>
-                  </scg:List>
-                </ui:MultipleAssign.AssignOperations>
-              </ui:MultipleAssign>
-              <While sap:VirtualizedContainerService.HintSize="484,348" sap2010:WorkflowViewState.IdRef="While_2" Condition="[Chemicals.Where(Function(c) c.Item1 &gt; 0 AndAlso c.Item2 &lt;&gt; &quot;ORE&quot;).Count() &gt; 0]">
-                <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,191" sap2010:WorkflowViewState.IdRef="MultipleAssign_4">
-                  <ui:MultipleAssign.AssignOperations>
-                    <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
-                      <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_10">
-                        <ui:AssignOperation.To>
-                          <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[FirstInList]</OutArgument>
-                        </ui:AssignOperation.To>
-                        <ui:AssignOperation.Value>
-                          <InArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[Chemicals.Where(Function(c) c.Item1 &gt; 0 AndAlso c.Item2 &lt;&gt; "ORE").FirstOrDefault()]</InArgument>
-                        </ui:AssignOperation.Value>
-                      </ui:AssignOperation>
-                      <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_11">
-                        <ui:AssignOperation.To>
-                          <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[Key]</OutArgument>
-                        </ui:AssignOperation.To>
-                        <ui:AssignOperation.Value>
-                          <InArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[Reactions.Keys.Where(Function(c) c.Item2 = FirstInList.Item2).FirstOrDefault()]</InArgument>
-                        </ui:AssignOperation.Value>
-                      </ui:AssignOperation>
-                      <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_12">
-                        <ui:AssignOperation.To>
-                          <OutArgument x:TypeArguments="x:Int64">[Multiple]</OutArgument>
-                        </ui:AssignOperation.To>
-                        <ui:AssignOperation.Value>
-                          <InArgument x:TypeArguments="x:Int64">[CLng(Math.Ceiling(FirstInList.Item1 / Key.Item1))]</InArgument>
-                        </ui:AssignOperation.Value>
-                      </ui:AssignOperation>
-                      <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_13">
-                        <ui:AssignOperation.To>
-                          <OutArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))">[Chemicals]</OutArgument>
-                        </ui:AssignOperation.To>
-                        <ui:AssignOperation.Value>
-                          <InArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))">[Chemicals.Concat(Reactions(Key).Select(Function(c) Tuple.Create(c.Item1 * Multiple, c.Item2))).GroupBy(Function(c) c.Item2).Select(Function(g) Tuple.Create(g.Select(Function(c) c.Item1).Sum(), g.Key)).Where(Function(c) c.Item1 &lt;&gt; 0).ToList()]</InArgument>
-                        </ui:AssignOperation.Value>
-                      </ui:AssignOperation>
-                    </scg:List>
-                  </ui:MultipleAssign.AssignOperations>
-                </ui:MultipleAssign>
-              </While>
-              <Assign sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_3">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="x:Int64">[out_ORE]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="x:Int64">[Chemicals.Where(Function(c) c.Item2 = "ORE").FirstOrDefault().Item1]</InArgument>
-                </Assign.Value>
-              </Assign>
-            </Sequence>
-          </DoWhile>
-        </Sequence>
-      </ui:CommentOut.Body>
+    <Assign sap2010:Annotation.AnnotationText="In this case, 1 FUEL." DisplayName="Initialize the Chemicals formula" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="Assign_4">
+      <Assign.To>
+        <OutArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))">[Chemicals]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))">[New List(Of Tuple(Of Int64, String)) From {Tuple.Create(in_FUEL, "FUEL")}]</InArgument>
+      </Assign.Value>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-    </ui:CommentOut>
-    <Sequence sap:VirtualizedContainerService.HintSize="526,710" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    </Assign>
+    <While sap2010:Annotation.AnnotationText="Reduce any chemical greater than 1 that is not ORE." DisplayName="See if there are any chemicals to reduce" sap:VirtualizedContainerService.HintSize="484,553" sap2010:WorkflowViewState.IdRef="While_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="484,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+      <While.Condition>[Chemicals.Where(Function(c) c.Item1 &gt; 0 AndAlso c.Item2 &lt;&gt; "ORE").Count() &gt; 0]</While.Condition>
+      <ui:MultipleAssign sap2010:Annotation.AnnotationText="Get the first item in the list that is not ORE.&#xD;&#xA;&#xD;&#xA;Find the Reaction key in the dictionary.&#xD;&#xA;&#xD;&#xA;Find out how many time the reaction can be performed.&#xD;&#xA;&#xD;&#xA;Add the chemicals together:&#xD;&#xA;  - Add the two lists together, after multiplying&#xD;&#xA;  - Group by like chemicals&#xD;&#xA;  - Create the Tuples with the sum&#xD;&#xA;  - If item is reduced to 0, remove from list." DisplayName="Add Chemicals" sap:VirtualizedContainerService.HintSize="338,368" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
         <ui:MultipleAssign.AssignOperations>
-          <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
+          <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
               <ui:AssignOperation.To>
-                <OutArgument x:TypeArguments="x:Int64">[in_Amount]</OutArgument>
+                <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[FirstInList]</OutArgument>
               </ui:AssignOperation.To>
               <ui:AssignOperation.Value>
-                <InArgument x:TypeArguments="x:Int64">[4215655L]</InArgument>
+                <InArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[Chemicals.Where(Function(c) c.Item1 &gt; 0 AndAlso c.Item2 &lt;&gt; "ORE").First()]</InArgument>
               </ui:AssignOperation.Value>
             </ui:AssignOperation>
-            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+              <ui:AssignOperation.To>
+                <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[Key]</OutArgument>
+              </ui:AssignOperation.To>
+              <ui:AssignOperation.Value>
+                <InArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[Reactions.Keys.Where(Function(c) c.Item2 = FirstInList.Item2).First()]</InArgument>
+              </ui:AssignOperation.Value>
+            </ui:AssignOperation>
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+              <ui:AssignOperation.To>
+                <OutArgument x:TypeArguments="x:Int64">[Multiple]</OutArgument>
+              </ui:AssignOperation.To>
+              <ui:AssignOperation.Value>
+                <InArgument x:TypeArguments="x:Int64">[CLng(Math.Ceiling(FirstInList.Item1 / Key.Item1))]</InArgument>
+              </ui:AssignOperation.Value>
+            </ui:AssignOperation>
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
               <ui:AssignOperation.To>
                 <OutArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))">[Chemicals]</OutArgument>
               </ui:AssignOperation.To>
               <ui:AssignOperation.Value>
-                <InArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))">[New List(Of Tuple(Of Int64, String)) From {Tuple.Create(in_Amount, "FUEL")}]</InArgument>
+                <InArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))" xml:space="preserve">[Chemicals _
+  .Concat(Reactions(Key).Select(Function(c) Tuple.Create(c.Item1 * Multiple, c.Item2))) _
+  .GroupBy(Function(c) c.Item2) _
+  .Select(Function(g) Tuple.Create(g.Select(Function(c) c.Item1).Sum(), g.Key)) _
+  .Where(Function(c) c.Item1 &lt;&gt; 0).ToList()]</InArgument>
               </ui:AssignOperation.Value>
             </ui:AssignOperation>
           </scg:List>
         </ui:MultipleAssign.AssignOperations>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
       </ui:MultipleAssign>
-      <While sap:VirtualizedContainerService.HintSize="484,349" sap2010:WorkflowViewState.IdRef="While_1" Condition="[Chemicals.Where(Function(c) c.Item1 &gt; 0 AndAlso c.Item2 &lt;&gt; &quot;ORE&quot;).Count() &gt; 0]">
-        <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,191" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
-          <ui:MultipleAssign.AssignOperations>
-            <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
-              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
-                <ui:AssignOperation.To>
-                  <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[FirstInList]</OutArgument>
-                </ui:AssignOperation.To>
-                <ui:AssignOperation.Value>
-                  <InArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[Chemicals.Where(Function(c) c.Item1 &gt; 0 AndAlso c.Item2 &lt;&gt; "ORE").FirstOrDefault()]</InArgument>
-                </ui:AssignOperation.Value>
-              </ui:AssignOperation>
-              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
-                <ui:AssignOperation.To>
-                  <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[Key]</OutArgument>
-                </ui:AssignOperation.To>
-                <ui:AssignOperation.Value>
-                  <InArgument x:TypeArguments="s:Tuple(x:Int64, x:String)">[Reactions.Keys.Where(Function(c) c.Item2 = FirstInList.Item2).FirstOrDefault()]</InArgument>
-                </ui:AssignOperation.Value>
-              </ui:AssignOperation>
-              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
-                <ui:AssignOperation.To>
-                  <OutArgument x:TypeArguments="x:Int64">[Multiple]</OutArgument>
-                </ui:AssignOperation.To>
-                <ui:AssignOperation.Value>
-                  <InArgument x:TypeArguments="x:Int64">[CLng(Math.Ceiling(FirstInList.Item1 / Key.Item1))]</InArgument>
-                </ui:AssignOperation.Value>
-              </ui:AssignOperation>
-              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
-                <ui:AssignOperation.To>
-                  <OutArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))">[Chemicals]</OutArgument>
-                </ui:AssignOperation.To>
-                <ui:AssignOperation.Value>
-                  <InArgument x:TypeArguments="scg:List(s:Tuple(x:Int64, x:String))">[Chemicals.Concat(Reactions(Key).Select(Function(c) Tuple.Create(c.Item1 * Multiple, c.Item2))).GroupBy(Function(c) c.Item2).Select(Function(g) Tuple.Create(g.Select(Function(c) c.Item1).Sum(), g.Key)).Where(Function(c) c.Item1 &lt;&gt; 0).ToList()]</InArgument>
-                </ui:AssignOperation.Value>
-              </ui:AssignOperation>
-            </scg:List>
-          </ui:MultipleAssign.AssignOperations>
-        </ui:MultipleAssign>
-      </While>
-      <Assign sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_2">
-        <Assign.To>
-          <OutArgument x:TypeArguments="x:Int64">[out_ORE]</OutArgument>
-        </Assign.To>
-        <Assign.Value>
-          <InArgument x:TypeArguments="x:Int64">[Chemicals.Where(Function(c) c.Item2 = "ORE").FirstOrDefault().Item1]</InArgument>
-        </Assign.Value>
-      </Assign>
-    </Sequence>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="526,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[CStr(out_ORE)]" />
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="526,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[CStr(in_Amount)]" />
+    </While>
+    <Assign DisplayName="Get the amount of ORE" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int64">[out_ORE]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int64">[Chemicals.Where(Function(c) c.Item2 = "ORE").First().Item1]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="484,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[String.Format(&quot;{0} ORE for {1} FUEL&quot;, out_ORE, in_FUEL)]" />
   </Sequence>
 </Activity>
