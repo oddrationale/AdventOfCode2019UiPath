@@ -7,7 +7,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>911,2904</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>911,2864</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>PaintHull_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -62,7 +62,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg1:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Paint the ship hull&#xA;&#xA;Pre-conditions:&#xA;None&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="PaintHull" sap:VirtualizedContainerService.HintSize="891,2804" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Paint the ship hull. &quot;.&quot; is black. &quot;#&quot; is white.&#xA;&#xA;Pre-conditions:&#xA;None&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="PaintHull" sap:VirtualizedContainerService.HintSize="891,2804" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int64" Name="ColorOutput" />
       <Variable x:TypeArguments="x:Int64" Name="DirectionOutput" />
@@ -110,7 +110,7 @@
                   <OutArgument x:TypeArguments="x:String">[io_Panels(Panel)]</OutArgument>
                 </ui:AssignOperation.To>
                 <ui:AssignOperation.Value>
-                  <InArgument x:TypeArguments="x:String">[If(ColorOutput = 0, ".", "#")]</InArgument>
+                  <InArgument x:TypeArguments="x:String">[If(ColorOutput = 0, ChrW(65294), ChrW(65283))]</InArgument>
                 </ui:AssignOperation.Value>
               </ui:AssignOperation>
             </scg1:List>
@@ -323,14 +323,14 @@
             <OutArgument x:TypeArguments="x:String">[PanelColor]</OutArgument>
           </Assign.To>
           <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[If(io_Panels.ContainsKey(Panel), io_Panels(Panel), ".")]</InArgument>
+            <InArgument x:TypeArguments="x:String">[If(io_Panels.ContainsKey(Panel), io_Panels(Panel), ChrW(65294))]</InArgument>
           </Assign.Value>
         </Assign>
         <InvokeMethod DisplayName="Read the current panel's color" sap:VirtualizedContainerService.HintSize="761,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Enqueue">
           <InvokeMethod.TargetObject>
             <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
           </InvokeMethod.TargetObject>
-          <InArgument x:TypeArguments="x:Int64">[If(PanelColor = ".", 0, 1)]</InArgument>
+          <InArgument x:TypeArguments="x:Int64">[If(PanelColor = ChrW(65294), 0, 1)]</InArgument>
         </InvokeMethod>
       </Sequence>
     </While>

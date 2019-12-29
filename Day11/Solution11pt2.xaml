@@ -176,7 +176,7 @@
               <OutArgument x:TypeArguments="s:Char[]">[Registration(y)]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="s:Char[]">[StrDup(MaxX - MinX + 1, ".").ToCharArray()]</InArgument>
+              <InArgument x:TypeArguments="s:Char[]">[StrDup(MaxX - MinX + 1, ChrW(65294)).ToCharArray()]</InArgument>
             </Assign.Value>
           </Assign>
         </ActivityAction>
