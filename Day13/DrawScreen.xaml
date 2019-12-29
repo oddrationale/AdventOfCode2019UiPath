@@ -1,12 +1,23 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="DrawScreen" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="DrawScreen" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="io_Queue" Type="InOutArgument(scg:Queue(x:Int64))" />
-    <x:Property Name="io_InputQueue" Type="InOutArgument(scg:Queue(x:Int64))" />
+    <x:Property Name="io_Screen" Type="InOutArgument(s:Char[][])">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="in_Instructions" Type="InArgument(s:Int64[])">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="out_Paddle" Type="InOutArgument(s:Tuple(x:Int64, x:Int64))" />
+    <x:Property Name="out_Ball" Type="InOutArgument(s:Tuple(x:Int64, x:Int64))" />
+    <x:Property Name="io_Score" Type="InOutArgument(x:Int64)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>954,3591</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>707,2417</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>DrawScreen_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -52,272 +63,189 @@
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
-    <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+    <scg:Dictionary x:TypeArguments="x:String, x:Object">
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
-    </scg1:Dictionary>
+    </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence DisplayName="DrawScreen" sap:VirtualizedContainerService.HintSize="934,3531" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Get the input instructions and draw / update the screen. Returns the position of the ball and the paddle.&#xA;&#xA;Pre-conditions:&#xA;None&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="DrawScreen" sap:VirtualizedContainerService.HintSize="687,2357" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="scg1:List(s:Tuple(x:Int64, x:Int64, x:Int64))" Name="Instructions" />
-      <Variable x:TypeArguments="s:Int64[][]" Name="Groups" />
+      <Variable x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)[]" Name="Tiles" />
       <Variable x:TypeArguments="x:Int64" Name="MaxX" />
       <Variable x:TypeArguments="x:Int64" Name="MaxY" />
-      <Variable x:TypeArguments="s:Char[][]" Name="Screen" />
-      <Variable x:TypeArguments="x:Int32" Default="0" Name="QueueCount" />
-      <Variable x:TypeArguments="x:Int32" Name="Score" />
-      <Variable x:TypeArguments="s:Tuple(x:Int64, x:Int64)" Name="Paddle" />
-      <Variable x:TypeArguments="s:Tuple(x:Int64, x:Int64)" Name="Ball" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
-      <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-      </scg1:Dictionary>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <While sap:VirtualizedContainerService.HintSize="892,3439" sap2010:WorkflowViewState.IdRef="While_2" Condition="True">
-      <Sequence sap:VirtualizedContainerService.HintSize="846,3281" sap2010:WorkflowViewState.IdRef="Sequence_4">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg1:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <While sap:VirtualizedContainerService.HintSize="804,372" sap2010:WorkflowViewState.IdRef="While_1" Condition="[QueueCount = 0 OrElse QueueCount &lt;&gt; io_Queue.Count]">
-          <Sequence sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <If Condition="[io_Screen Is Nothing]" DisplayName="If screen is blank" sap:VirtualizedContainerService.HintSize="645,366" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <ui:MultipleAssign sap2010:Annotation.AnnotationText="Tiles are in groups of threes." DisplayName="Initialize the screen" sap:VirtualizedContainerService.HintSize="338,218" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+          <ui:MultipleAssign.AssignOperations>
+            <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)[]">[Tiles]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)[]">[Enumerable.Range(0, in_Instructions.Length \ 3).Select(Function(t) in_Instructions.Skip(t * 3).Take(3)).Select(Function(t) Tuple.Create(t(0), t(1), t(2))).ToArray()]</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="x:Int64">[MaxX]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="x:Int64">[Tiles.Select(Function(t) t.Item1).Max() + 1]</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="x:Int64">[MaxY]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="x:Int64">[Tiles.Select(Function(t) t.Item2).Max() + 1]</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="s:Char[][]">[io_Screen]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="s:Char[][]">[Enumerable.Range(0, CInt(MaxY)).Select(Function(i) StrDup(CInt(MaxX), ChrW(65287)).ToCharArray()).ToArray()]</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+            </scg:List>
+          </ui:MultipleAssign.AssignOperations>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:MultipleAssign>
+      </If.Then>
+      <If.Else>
+        <Assign DisplayName="Get screen updates" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)[]">[Tiles]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)[]">[Enumerable.Range(0, in_Instructions.Length \ 3).Select(Function(t) in_Instructions.Skip(t * 3).Take(3)).Select(Function(t) Tuple.Create(t(0), t(1), t(2))).ToArray()]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Else>
+    </If>
+    <ui:ForEach x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)" CurrentIndex="{x:Null}" DisplayName="For each tile" sap:VirtualizedContainerService.HintSize="645,1626" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Tiles]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)" Name="tile" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Draw the tile on the screen" sap:VirtualizedContainerService.HintSize="538,1492" sap2010:WorkflowViewState.IdRef="Sequence_3">
             <sap:WorkflowViewStateService.ViewState>
-              <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              </scg1:Dictionary>
+              </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Delay Duration="00:00:00.1000000" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
-            <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
-              <Assign.To>
-                <OutArgument x:TypeArguments="x:Int32">[QueueCount]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="x:Int32">[io_Queue.Count]</InArgument>
-              </Assign.Value>
-            </Assign>
-          </Sequence>
-        </While>
-        <If Condition="[Screen Is Nothing]" sap:VirtualizedContainerService.HintSize="804,370" sap2010:WorkflowViewState.IdRef="If_2">
-          <If.Then>
-            <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,222" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
-              <ui:MultipleAssign.AssignOperations>
-                <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="8">
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="s:Int64[][]">[Groups]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="s:Int64[][]">[io_Queue.ToArray().Select(Function(t, i) New With {Key .index = i, Key .value = t}).GroupBy(Function(x) x.index Mod 3).Select(Function(grp) grp.Select(Function(g) g.value).ToArray()).ToArray()]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:Int64">[MaxX]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:Int64">[Groups(0).Max() + 1]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:Int64">[MaxY]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:Int64">[Groups(1).Max() + 1]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_9">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="s:Char[][]">[Screen]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="s:Char[][]">[Enumerable.Range(0, CInt(MaxY)).Select(Function(i) StrDup(CInt(MaxX), ChrW(9617)).ToCharArray()).ToArray()]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_10">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="scg1:List(s:Tuple(x:Int64, x:Int64, x:Int64))">[Instructions]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="scg1:List(s:Tuple(x:Int64, x:Int64, x:Int64))">[Groups(0).Zip(Groups(1), Function(x, y) Tuple.Create(x, y)).Zip(Groups(2), Function(xy, tileID) Tuple.Create(xy.Item1, xy.Item2, tileID)).ToList()]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                </scg1:List>
-              </ui:MultipleAssign.AssignOperations>
-            </ui:MultipleAssign>
-          </If.Then>
-          <If.Else>
-            <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
-              <ui:MultipleAssign.AssignOperations>
-                <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="8">
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="s:Int64[][]">[Groups]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="s:Int64[][]">[io_Queue.ToArray().Select(Function(t, i) New With {Key .index = i, Key .value = t}).GroupBy(Function(x) x.index Mod 3).Select(Function(grp) grp.Select(Function(g) g.value).ToArray()).ToArray()]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="scg1:List(s:Tuple(x:Int64, x:Int64, x:Int64))">[Instructions]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="scg1:List(s:Tuple(x:Int64, x:Int64, x:Int64))">[Groups(0).Zip(Groups(1), Function(x, y) Tuple.Create(x, y)).Zip(Groups(2), Function(xy, tileID) Tuple.Create(xy.Item1, xy.Item2, tileID)).ToList()]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                </scg1:List>
-              </ui:MultipleAssign.AssignOperations>
-            </ui:MultipleAssign>
-          </If.Else>
-        </If>
-        <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="804,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Clear">
-          <InvokeMethod.TargetObject>
-            <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_Queue]</InArgument>
-          </InvokeMethod.TargetObject>
-        </InvokeMethod>
-        <ui:ForEach x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="804,1626" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Instructions]">
-          <ui:ForEach.Body>
-            <ActivityAction x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64, x:Int64)" Name="ins" />
-              </ActivityAction.Argument>
-              <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="538,1492" sap2010:WorkflowViewState.IdRef="Sequence_2">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg1:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <If Condition="[ins.Item1 = -1]" sap:VirtualizedContainerService.HintSize="496,362" sap2010:WorkflowViewState.IdRef="If_1">
-                  <If.Then>
-                    <Sequence sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_5">
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                        </scg1:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_7">
-                        <Assign.To>
-                          <OutArgument x:TypeArguments="x:Int32">[Score]</OutArgument>
-                        </Assign.To>
-                        <Assign.Value>
-                          <InArgument x:TypeArguments="x:Int32">[CInt(ins.Item3)]</InArgument>
-                        </Assign.Value>
-                      </Assign>
-                      <ui:Continue sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Continue_1" />
-                    </Sequence>
-                  </If.Then>
-                </If>
-                <Switch x:TypeArguments="x:Int32" DisplayName="Switch" Expression="[CInt(ins.Item3)]" sap:VirtualizedContainerService.HintSize="496,998" sap2010:WorkflowViewState.IdRef="Switch`1_1">
-                  <Assign x:Key="0" DisplayName="Empty tile" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:Char">[Screen(CInt(ins.Item2))(CInt(ins.Item1))]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:Char">[ChrW(9617)]</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                  <Assign x:Key="1" DisplayName="Wall tile" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:Char">[Screen(CInt(ins.Item2))(CInt(ins.Item1))]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:Char">[ChrW(9608)]</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                  <Assign x:Key="2" DisplayName="Block tile" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:Char">[Screen(CInt(ins.Item2))(CInt(ins.Item1))]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:Char">[ChrW(9619)]</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                  <ui:MultipleAssign x:Key="3" DisplayName="Paddle tile" sap:VirtualizedContainerService.HintSize="338,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_3">
-                    <ui:MultipleAssign.AssignOperations>
-                      <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-                        <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_11">
-                          <ui:AssignOperation.To>
-                            <OutArgument x:TypeArguments="x:Char">[Screen(CInt(ins.Item2))(CInt(ins.Item1))]</OutArgument>
-                          </ui:AssignOperation.To>
-                          <ui:AssignOperation.Value>
-                            <InArgument x:TypeArguments="x:Char">[ChrW(9620)]</InArgument>
-                          </ui:AssignOperation.Value>
-                        </ui:AssignOperation>
-                        <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_12">
-                          <ui:AssignOperation.To>
-                            <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)">[Paddle]</OutArgument>
-                          </ui:AssignOperation.To>
-                          <ui:AssignOperation.Value>
-                            <InArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)">[Tuple.Create(ins.Item1, ins.Item2)]</InArgument>
-                          </ui:AssignOperation.Value>
-                        </ui:AssignOperation>
-                      </scg1:List>
-                    </ui:MultipleAssign.AssignOperations>
-                  </ui:MultipleAssign>
-                  <ui:MultipleAssign x:Key="4" DisplayName="Ball tile" sap:VirtualizedContainerService.HintSize="338,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_4">
-                    <ui:MultipleAssign.AssignOperations>
-                      <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-                        <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_13">
-                          <ui:AssignOperation.To>
-                            <OutArgument x:TypeArguments="x:Char">[Screen(CInt(ins.Item2))(CInt(ins.Item1))]</OutArgument>
-                          </ui:AssignOperation.To>
-                          <ui:AssignOperation.Value>
-                            <InArgument x:TypeArguments="x:Char">[ChrW(9603)]</InArgument>
-                          </ui:AssignOperation.Value>
-                        </ui:AssignOperation>
-                        <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_14">
-                          <ui:AssignOperation.To>
-                            <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)">[Ball]</OutArgument>
-                          </ui:AssignOperation.To>
-                          <ui:AssignOperation.Value>
-                            <InArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)">[Tuple.Create(ins.Item1, ins.Item2)]</InArgument>
-                          </ui:AssignOperation.Value>
-                        </ui:AssignOperation>
-                      </scg1:List>
-                    </ui:MultipleAssign.AssignOperations>
-                  </ui:MultipleAssign>
-                </Switch>
-              </Sequence>
-            </ActivityAction>
-          </ui:ForEach.Body>
-        </ui:ForEach>
-        <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="804,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[String.Join(vbNewLine, (From y In Screen Select String.Join(&quot;&quot;, y))) &amp; vbNewLine &amp; &quot;Score: &quot; &amp; Score]" />
-        <If Condition="[Paddle.Item1 = Ball.Item1]" sap:VirtualizedContainerService.HintSize="804,428" sap2010:WorkflowViewState.IdRef="If_4">
-          <If.Then>
-            <InvokeMethod DisplayName="Stay" sap:VirtualizedContainerService.HintSize="238,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_2" MethodName="Enqueue">
-              <InvokeMethod.TargetObject>
-                <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
-              </InvokeMethod.TargetObject>
-              <InArgument x:TypeArguments="x:Int64">0</InArgument>
-            </InvokeMethod>
-          </If.Then>
-          <If.Else>
-            <If Condition="[Paddle.Item1 &lt; Ball.Item1]" sap:VirtualizedContainerService.HintSize="521,280" sap2010:WorkflowViewState.IdRef="If_3">
+            <If Condition="[tile.Item1 = -1]" DisplayName="Check score" sap:VirtualizedContainerService.HintSize="496,362" sap2010:WorkflowViewState.IdRef="If_2">
               <If.Then>
-                <InvokeMethod DisplayName="Right" sap:VirtualizedContainerService.HintSize="238,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_3" MethodName="Enqueue">
-                  <InvokeMethod.TargetObject>
-                    <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
-                  </InvokeMethod.TargetObject>
-                  <InArgument x:TypeArguments="x:Int64">1</InArgument>
-                </InvokeMethod>
+                <Sequence DisplayName="Update" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Update score" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Int64">[io_Score]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Int64">[tile.Item3]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <ui:Continue sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Continue_1" />
+                </Sequence>
               </If.Then>
-              <If.Else>
-                <InvokeMethod DisplayName="Left" sap:VirtualizedContainerService.HintSize="238,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_4" MethodName="Enqueue">
-                  <InvokeMethod.TargetObject>
-                    <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
-                  </InvokeMethod.TargetObject>
-                  <InArgument x:TypeArguments="x:Int64">-1</InArgument>
-                </InvokeMethod>
-              </If.Else>
             </If>
-          </If.Else>
-        </If>
-      </Sequence>
-    </While>
+            <Switch x:TypeArguments="x:Int64" DisplayName="Draw tile" Expression="[tile.Item3]" sap:VirtualizedContainerService.HintSize="496,998" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+              <Assign x:Key="0" DisplayName="Empty tile (＇)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Char">[io_Screen(CInt(tile.Item2))(CInt(tile.Item1))]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Char">[ChrW(65287)]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign x:Key="1" DisplayName="Wall tile (％)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Char">[io_Screen(CInt(tile.Item2))(CInt(tile.Item1))]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Char">[ChrW(65285)]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign x:Key="2" DisplayName="Block tile (＃)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Char">[io_Screen(CInt(tile.Item2))(CInt(tile.Item1))]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Char">[ChrW(65283)]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:MultipleAssign x:Key="3" DisplayName="Paddle tile (￣)" sap:VirtualizedContainerService.HintSize="338,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+                <ui:MultipleAssign.AssignOperations>
+                  <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                    <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+                      <ui:AssignOperation.To>
+                        <OutArgument x:TypeArguments="x:Char">[io_Screen(CInt(tile.Item2))(CInt(tile.Item1))]</OutArgument>
+                      </ui:AssignOperation.To>
+                      <ui:AssignOperation.Value>
+                        <InArgument x:TypeArguments="x:Char">[ChrW(65507)]</InArgument>
+                      </ui:AssignOperation.Value>
+                    </ui:AssignOperation>
+                    <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
+                      <ui:AssignOperation.To>
+                        <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)">[out_Paddle]</OutArgument>
+                      </ui:AssignOperation.To>
+                      <ui:AssignOperation.Value>
+                        <InArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)">[Tuple.Create(tile.Item1, tile.Item2)]</InArgument>
+                      </ui:AssignOperation.Value>
+                    </ui:AssignOperation>
+                  </scg:List>
+                </ui:MultipleAssign.AssignOperations>
+              </ui:MultipleAssign>
+              <ui:MultipleAssign x:Key="4" DisplayName="Ball tile (ｏ)" sap:VirtualizedContainerService.HintSize="338,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_3">
+                <ui:MultipleAssign.AssignOperations>
+                  <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                    <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
+                      <ui:AssignOperation.To>
+                        <OutArgument x:TypeArguments="x:Char">[io_Screen(CInt(tile.Item2))(CInt(tile.Item1))]</OutArgument>
+                      </ui:AssignOperation.To>
+                      <ui:AssignOperation.Value>
+                        <InArgument x:TypeArguments="x:Char">[ChrW(65359)]</InArgument>
+                      </ui:AssignOperation.Value>
+                    </ui:AssignOperation>
+                    <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
+                      <ui:AssignOperation.To>
+                        <OutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)">[out_Ball]</OutArgument>
+                      </ui:AssignOperation.To>
+                      <ui:AssignOperation.Value>
+                        <InArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)">[Tuple.Create(tile.Item1, tile.Item2)]</InArgument>
+                      </ui:AssignOperation.Value>
+                    </ui:AssignOperation>
+                  </scg:List>
+                </ui:MultipleAssign.AssignOperations>
+              </ui:MultipleAssign>
+            </Switch>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <WriteLine DisplayName="Draw Screen" sap:VirtualizedContainerService.HintSize="645,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[String.Join(vbNewLine, (From y In io_Screen Select String.Join(&quot;&quot;, y))) &amp; vbNewLine &amp; &quot;Score: &quot; &amp; io_Score]" />
   </Sequence>
 </Activity>

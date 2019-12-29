@@ -1,14 +1,19 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ControlJoystick" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ControlJoystick" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="io_InputQueue" Type="InOutArgument(scg:Queue(x:Int64))" />
+    <x:Property Name="io_InputQueue" Type="InOutArgument(scg:Queue(x:Int64))">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="io_OutputQueue" Type="InOutArgument(scg:Queue(x:Int64))" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1644,539</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>876,1152</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ControlJoystick_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <sco:Collection x:TypeArguments="x:String">
+    <scg1:List x:TypeArguments="x:String" Capacity="21">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -30,10 +35,10 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
-    </sco:Collection>
+    </scg1:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <sco:Collection x:TypeArguments="AssemblyReference">
+    <scg1:List x:TypeArguments="AssemblyReference" Capacity="18">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -50,68 +55,300 @@
       <AssemblyReference>System.Xaml</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
-    </sco:Collection>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+    </scg1:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="ControlJoystick" sap:VirtualizedContainerService.HintSize="1624,439" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <sap:WorkflowViewStateService.ViewState>
+    <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+      <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
+    </scg1:Dictionary>
+  </sap:WorkflowViewStateService.ViewState>
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Manually control the joystick to play the game.&#xA;&#xA;Left - Moves paddle left&#xA;Down - Leaves paddle where it is&#xA;Right - Moves paddle right&#xA;&#xA;Pre-conditions:&#xA;None&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="ControlJoystick" sap:VirtualizedContainerService.HintSize="856,1092" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Int32" Name="QueueCount" />
+      <Variable x:TypeArguments="s:Char[][]" Name="Screen" />
+      <Variable x:TypeArguments="x:Int64" Name="Score" />
+    </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg1:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Parallel sap:VirtualizedContainerService.HintSize="1582,347" sap2010:WorkflowViewState.IdRef="Parallel_1">
-      <ui:MonitorEvents ContinueOnError="{x:Null}" DisplayName="Monitor Events" sap:VirtualizedContainerService.HintSize="456,301" sap2010:WorkflowViewState.IdRef="MonitorEvents_2" RepeatForever="True">
+    <While DisplayName="Wait for OutputQueue" sap:VirtualizedContainerService.HintSize="814,372" sap2010:WorkflowViewState.IdRef="While_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg1:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <While.Condition>[QueueCount = 0 OrElse QueueCount &lt;&gt; io_OutputQueue.Count]</While.Condition>
+      <Sequence DisplayName="Wait" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg1:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <Delay Duration="00:00:00.1000000" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
+        <Assign DisplayName="Update count" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:Int32">[QueueCount]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:Int32">[io_OutputQueue.Count]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </Sequence>
+    </While>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawScreen workflow" sap:VirtualizedContainerService.HintSize="814,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day13\DrawScreen.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InOutArgument x:TypeArguments="s:Char[][]" x:Key="io_Screen">[Screen]</InOutArgument>
+        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_Instructions">[io_OutputQueue.ToArray()]</InArgument>
+        <InOutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)" x:Key="out_Paddle" />
+        <InOutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)" x:Key="out_Ball" />
+        <InOutArgument x:TypeArguments="x:Int64" x:Key="io_Score">[Score]</InOutArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg1:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:InvokeWorkflowFile>
+    <InvokeMethod DisplayName="Queue.Clear()" sap:VirtualizedContainerService.HintSize="814,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_4" MethodName="Clear">
+      <InvokeMethod.TargetObject>
+        <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_OutputQueue]</InArgument>
+      </InvokeMethod.TargetObject>
+    </InvokeMethod>
+    <Parallel DisplayName="Monitor for keyboard inputs" sap:VirtualizedContainerService.HintSize="814,97" sap2010:WorkflowViewState.IdRef="Parallel_1">
+      <ui:MonitorEvents ContinueOnError="{x:Null}" DisplayName="Left" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="MonitorEvents_2" RepeatForever="True">
         <ui:MonitorEvents.Handler>
           <ActivityAction x:TypeArguments="x:Object">
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="x:Object" Name="args" />
             </ActivityAction.Argument>
-            <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="238,133" sap2010:WorkflowViewState.IdRef="InvokeMethod_2" MethodName="Enqueue">
-              <InvokeMethod.TargetObject>
-                <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
-              </InvokeMethod.TargetObject>
-              <InArgument x:TypeArguments="x:Int64">-1</InArgument>
-            </InvokeMethod>
+            <Sequence DisplayName="Move left" sap:VirtualizedContainerService.HintSize="526,936" sap2010:WorkflowViewState.IdRef="Sequence_4">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg1:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <InvokeMethod DisplayName="Enqueue -1" sap:VirtualizedContainerService.HintSize="484,133" sap2010:WorkflowViewState.IdRef="InvokeMethod_2" MethodName="Enqueue">
+                <InvokeMethod.TargetObject>
+                  <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
+                </InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="x:Int64">-1</InArgument>
+              </InvokeMethod>
+              <While DisplayName="Wait for OutputQueue" sap:VirtualizedContainerService.HintSize="484,371" sap2010:WorkflowViewState.IdRef="While_2">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg1:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <While.Condition>[QueueCount = 0 OrElse QueueCount &lt;&gt; io_OutputQueue.Count]</While.Condition>
+                <Sequence DisplayName="Wait" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg1:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Delay Duration="00:00:00.1000000" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Delay_2" />
+                  <Assign DisplayName="Update count" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Int32">[QueueCount]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Int32">[io_OutputQueue.Count]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </Sequence>
+              </While>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawScreen workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day13\DrawScreen.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InOutArgument x:TypeArguments="s:Char[][]" x:Key="io_Screen">[Screen]</InOutArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_Instructions">[io_OutputQueue.ToArray()]</InArgument>
+                  <InOutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)" x:Key="out_Paddle" />
+                  <InOutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)" x:Key="out_Ball" />
+                  <InOutArgument x:TypeArguments="x:Int64" x:Key="io_Score">[Score]</InOutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg1:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+              <InvokeMethod DisplayName="Queue.Clear()" sap:VirtualizedContainerService.HintSize="484,133" sap2010:WorkflowViewState.IdRef="InvokeMethod_5" MethodName="Clear">
+                <InvokeMethod.TargetObject>
+                  <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_OutputQueue]</InArgument>
+                </InvokeMethod.TargetObject>
+              </InvokeMethod>
+            </Sequence>
           </ActivityAction>
         </ui:MonitorEvents.Handler>
         <ui:MonitorEvents.Triggers>
           <ui:HotkeyTrigger DisplayName="Hotkey Trigger" EventMode="EVENT_BLOCK" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="HotkeyTrigger_2" Key="left" KeyModifiers="None" UseWindowsHotKey="False" />
         </ui:MonitorEvents.Triggers>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg1:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
       </ui:MonitorEvents>
-      <ui:MonitorEvents ContinueOnError="{x:Null}" DisplayName="Monitor Events" sap:VirtualizedContainerService.HintSize="456,301" sap2010:WorkflowViewState.IdRef="MonitorEvents_1" RepeatForever="True">
+      <ui:MonitorEvents ContinueOnError="{x:Null}" DisplayName="Down (stay)" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="MonitorEvents_1" RepeatForever="True">
         <ui:MonitorEvents.Handler>
           <ActivityAction x:TypeArguments="x:Object">
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="x:Object" Name="args" />
             </ActivityAction.Argument>
-            <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="238,133" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Enqueue">
-              <InvokeMethod.TargetObject>
-                <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
-              </InvokeMethod.TargetObject>
-              <InArgument x:TypeArguments="x:Int64">0</InArgument>
-            </InvokeMethod>
+            <Sequence DisplayName="Stay put" sap:VirtualizedContainerService.HintSize="526,936" sap2010:WorkflowViewState.IdRef="Sequence_6">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg1:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <InvokeMethod DisplayName="Enqueue 0" sap:VirtualizedContainerService.HintSize="484,133" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Enqueue">
+                <InvokeMethod.TargetObject>
+                  <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
+                </InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="x:Int64">0</InArgument>
+              </InvokeMethod>
+              <While DisplayName="Wait for OutputQueue" sap:VirtualizedContainerService.HintSize="484,371" sap2010:WorkflowViewState.IdRef="While_3">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg1:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <While.Condition>[QueueCount = 0 OrElse QueueCount &lt;&gt; io_OutputQueue.Count]</While.Condition>
+                <Sequence DisplayName="Wait" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg1:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Delay Duration="00:00:00.1000000" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Delay_3" />
+                  <Assign DisplayName="Update count" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Int32">[QueueCount]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Int32">[io_OutputQueue.Count]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </Sequence>
+              </While>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawScreen workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Day13\DrawScreen.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InOutArgument x:TypeArguments="s:Char[][]" x:Key="io_Screen">[Screen]</InOutArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_Instructions">[io_OutputQueue.ToArray()]</InArgument>
+                  <InOutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)" x:Key="out_Paddle" />
+                  <InOutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)" x:Key="out_Ball" />
+                  <InOutArgument x:TypeArguments="x:Int64" x:Key="io_Score">[Score]</InOutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg1:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+              <InvokeMethod DisplayName="Queue.Clear()" sap:VirtualizedContainerService.HintSize="484,133" sap2010:WorkflowViewState.IdRef="InvokeMethod_6" MethodName="Clear">
+                <InvokeMethod.TargetObject>
+                  <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_OutputQueue]</InArgument>
+                </InvokeMethod.TargetObject>
+              </InvokeMethod>
+            </Sequence>
           </ActivityAction>
         </ui:MonitorEvents.Handler>
         <ui:MonitorEvents.Triggers>
           <ui:HotkeyTrigger DisplayName="Hotkey Trigger" EventMode="EVENT_BLOCK" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="HotkeyTrigger_1" Key="down" KeyModifiers="None" UseWindowsHotKey="False" />
         </ui:MonitorEvents.Triggers>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg1:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
       </ui:MonitorEvents>
-      <ui:MonitorEvents ContinueOnError="{x:Null}" DisplayName="Monitor Events" sap:VirtualizedContainerService.HintSize="456,301" sap2010:WorkflowViewState.IdRef="MonitorEvents_3" RepeatForever="True">
+      <ui:MonitorEvents ContinueOnError="{x:Null}" DisplayName="Right" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="MonitorEvents_3" RepeatForever="True">
         <ui:MonitorEvents.Handler>
           <ActivityAction x:TypeArguments="x:Object">
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="x:Object" Name="args" />
             </ActivityAction.Argument>
-            <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="238,133" sap2010:WorkflowViewState.IdRef="InvokeMethod_3" MethodName="Enqueue">
-              <InvokeMethod.TargetObject>
-                <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
-              </InvokeMethod.TargetObject>
-              <InArgument x:TypeArguments="x:Int64">1</InArgument>
-            </InvokeMethod>
+            <Sequence DisplayName="Move rightSequence" sap:VirtualizedContainerService.HintSize="526,936" sap2010:WorkflowViewState.IdRef="Sequence_8">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg1:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <InvokeMethod DisplayName="Enqueue 1" sap:VirtualizedContainerService.HintSize="484,133" sap2010:WorkflowViewState.IdRef="InvokeMethod_3" MethodName="Enqueue">
+                <InvokeMethod.TargetObject>
+                  <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
+                </InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="x:Int64">1</InArgument>
+              </InvokeMethod>
+              <While DisplayName="Wait for OutputQueue" sap:VirtualizedContainerService.HintSize="484,371" sap2010:WorkflowViewState.IdRef="While_4">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg1:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <While.Condition>[QueueCount = 0 OrElse QueueCount &lt;&gt; io_OutputQueue.Count]</While.Condition>
+                <Sequence DisplayName="Wait" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg1:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Delay Duration="00:00:00.1000000" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Delay_4" />
+                  <Assign DisplayName="Update count" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Int32">[QueueCount]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Int32">[io_OutputQueue.Count]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </Sequence>
+              </While>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawScreen workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Day13\DrawScreen.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InOutArgument x:TypeArguments="s:Char[][]" x:Key="io_Screen">[Screen]</InOutArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_Instructions">[io_OutputQueue.ToArray()]</InArgument>
+                  <InOutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)" x:Key="out_Paddle" />
+                  <InOutArgument x:TypeArguments="s:Tuple(x:Int64, x:Int64)" x:Key="out_Ball" />
+                  <InOutArgument x:TypeArguments="x:Int64" x:Key="io_Score">[Score]</InOutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg1:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+              <InvokeMethod DisplayName="Queue.Clear()" sap:VirtualizedContainerService.HintSize="484,133" sap2010:WorkflowViewState.IdRef="InvokeMethod_7" MethodName="Clear">
+                <InvokeMethod.TargetObject>
+                  <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_OutputQueue]</InArgument>
+                </InvokeMethod.TargetObject>
+              </InvokeMethod>
+            </Sequence>
           </ActivityAction>
         </ui:MonitorEvents.Handler>
         <ui:MonitorEvents.Triggers>
           <ui:HotkeyTrigger DisplayName="Hotkey Trigger" EventMode="EVENT_BLOCK" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="HotkeyTrigger_3" Key="right" KeyModifiers="None" UseWindowsHotKey="False" />
         </ui:MonitorEvents.Triggers>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg1:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
       </ui:MonitorEvents>
     </Parallel>
   </Sequence>
