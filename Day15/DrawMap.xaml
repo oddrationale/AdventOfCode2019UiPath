@@ -5,7 +5,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>943,1854</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>943,1853</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>DrawMap_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -62,7 +62,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence DisplayName="DrawMap" sap:VirtualizedContainerService.HintSize="923,1794" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Draw the Xml map to screen.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="DrawMap" sap:VirtualizedContainerService.HintSize="923,1793" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" Name="MaxX" />
       <Variable x:TypeArguments="x:Int32" Name="MaxY" />
@@ -74,9 +74,10 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="881,222" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign DisplayName="Initial map canvas" sap:VirtualizedContainerService.HintSize="881,222" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -116,87 +117,73 @@
               <OutArgument x:TypeArguments="s:Char[][]">[MapCanvas]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="s:Char[][]">[New Char(MaxY - MinY)() {}]</InArgument>
+              <InArgument x:TypeArguments="s:Char[][]">[Enumerable.Range(0, CInt(MaxY - MinY + 1)).Select(Function(i) StrDup(CInt(MaxX - MinX + 1), ChrW(65283)).ToCharArray()).ToArray()]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Initialize a x by y array with all black panels." DisplayName="For Each y" sap:VirtualizedContainerService.HintSize="881,221" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Enumerable.Range(0, MapCanvas.Length)]">
-      <ui:ForEach.Body>
-        <ActivityAction x:TypeArguments="x:Int32">
-          <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="x:Int32" Name="y" />
-          </ActivityAction.Argument>
-          <Assign DisplayName="Fill with all blank panels" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
-            <Assign.To>
-              <OutArgument x:TypeArguments="s:Char[]">[MapCanvas(y)]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="s:Char[]">[StrDup(MaxX - MinX + 1, ChrW(9617)).ToCharArray()]</InArgument>
-            </Assign.Value>
-          </Assign>
-        </ActivityAction>
-      </ui:ForEach.Body>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-    </ui:ForEach>
-    <ui:ForEach x:TypeArguments="sxl:XElement" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="881,1078" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[in_Map.DescendantsAndSelf()]">
+    <ui:ForEach x:TypeArguments="sxl:XElement" CurrentIndex="{x:Null}" DisplayName="Draw each tile" sap:VirtualizedContainerService.HintSize="881,1206" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[in_Map.DescendantsAndSelf()]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="sxl:XElement">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sxl:XElement" Name="tile" />
           </ActivityAction.Argument>
-          <Sequence sap:VirtualizedContainerService.HintSize="845,944" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Draw" sap:VirtualizedContainerService.HintSize="845,1072" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <If Condition="[tile.@status = &quot;&quot;]" sap:VirtualizedContainerService.HintSize="803,752" sap2010:WorkflowViewState.IdRef="If_1">
+            <If Condition="[tile.@status = &quot;&quot;]" DisplayName="Check if status is blank" sap:VirtualizedContainerService.HintSize="803,880" sap2010:WorkflowViewState.IdRef="If_1">
               <If.Then>
-                <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+                <Assign DisplayName="Unexplored (？)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:Char">[TileChar]</OutArgument>
                   </Assign.To>
                   <Assign.Value>
-                    <InArgument x:TypeArguments="x:Char">[ChrW(9619)]</InArgument>
+                    <InArgument x:TypeArguments="x:Char">[ChrW(65311)]</InArgument>
                   </Assign.Value>
                 </Assign>
               </If.Then>
               <If.Else>
-                <Switch x:TypeArguments="x:Int32" DisplayName="Switch" Expression="[Integer.Parse(tile.@status)]" sap:VirtualizedContainerService.HintSize="496,604" sap2010:WorkflowViewState.IdRef="Switch`1_1">
-                  <Assign x:Key="0" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                <Switch x:TypeArguments="x:Int32" DisplayName="Choose the tile character" Expression="[Integer.Parse(tile.@status)]" sap:VirtualizedContainerService.HintSize="496,732" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+                  <Assign x:Key="0" DisplayName="Wall (＃)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Char">[TileChar]</OutArgument>
                     </Assign.To>
                     <Assign.Value>
-                      <InArgument x:TypeArguments="x:Char">[ChrW(9617)]</InArgument>
+                      <InArgument x:TypeArguments="x:Char">[ChrW(65283)]</InArgument>
                     </Assign.Value>
                   </Assign>
-                  <Assign x:Key="1" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+                  <Assign x:Key="1" DisplayName="Move (．)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Char">[TileChar]</OutArgument>
                     </Assign.To>
                     <Assign.Value>
-                      <InArgument x:TypeArguments="x:Char">[ChrW(9608)]</InArgument>
+                      <InArgument x:TypeArguments="x:Char">[ChrW(65294)]</InArgument>
                     </Assign.Value>
                   </Assign>
-                  <Assign x:Key="2" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                  <Assign x:Key="2" DisplayName="Oxygen (Ｏ)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Char">[TileChar]</OutArgument>
                     </Assign.To>
                     <Assign.Value>
-                      <InArgument x:TypeArguments="x:Char">[ChrW(9603)]</InArgument>
+                      <InArgument x:TypeArguments="x:Char">[ChrW(65327)]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Assign x:Key="3" DisplayName="Filled w/ Oxygen (ｏ)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_7">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Char">[TileChar]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Char">[ChrW(65359)]</InArgument>
                     </Assign.Value>
                   </Assign>
                 </Switch>
               </If.Else>
             </If>
-            <Assign DisplayName="Paint" sap:VirtualizedContainerService.HintSize="803,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+            <Assign DisplayName="Set tile character" sap:VirtualizedContainerService.HintSize="803,60" sap2010:WorkflowViewState.IdRef="Assign_5">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Char">[MapCanvas(Integer.Parse(tile.Attribute("y").Value) - MinY)(Integer.Parse(tile.Attribute("x").Value) - MinX)]</OutArgument>
               </Assign.To>
@@ -208,6 +195,6 @@
         </ActivityAction>
       </ui:ForEach.Body>
     </ui:ForEach>
-    <WriteLine DisplayName="Final image" sap:VirtualizedContainerService.HintSize="881,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[String.Join(vbNewLine, MapCanvas.Select(Function(y) String.Join(&quot;&quot;, y)).Reverse())]" />
+    <WriteLine DisplayName="Draw final image" sap:VirtualizedContainerService.HintSize="881,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[String.Join(vbNewLine, MapCanvas.Select(Function(y) String.Join(&quot;&quot;, y)).Reverse())]" />
   </Sequence>
 </Activity>

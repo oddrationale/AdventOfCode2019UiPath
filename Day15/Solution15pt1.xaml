@@ -1,6 +1,19 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution15pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="904,629" sap2010:WorkflowViewState.IdRef="Solution15pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sxl="clr-namespace:System.Xml.Linq;assembly=System.Xml.Linq" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution15pt1" this:Solution15pt1.in_MapFilePath="Day15/map.xml" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sxl="clr-namespace:System.Xml.Linq;assembly=System.Xml.Linq" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_MapFilePath" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="out_Steps" Type="OutArgument(x:Int32)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>546,1703</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>Solution15pt1_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg1:List x:TypeArguments="x:String" Capacity="42">
+    <scg:List x:TypeArguments="x:String" Capacity="42">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -23,10 +36,11 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
       <x:String>System.Xml.Serialization</x:String>
-    </scg1:List>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+    </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg1:List x:TypeArguments="AssemblyReference" Capacity="18">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="32">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -43,40 +57,104 @@
       <AssemblyReference>System.Xaml</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
-    </scg1:List>
+    </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Solution15pt1" sap:VirtualizedContainerService.HintSize="884,569" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Count the number of parent elements between the Oxygen and the starting root node.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution15pt1" sap:VirtualizedContainerService.HintSize="526,1603" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" Name="Input" />
-      <Variable x:TypeArguments="sxl:XElement" Name="Map" />
-      <Variable x:TypeArguments="scg:Queue(x:Int64)" Default="[New Queue(Of Int64)]" Name="OutputQueue" />
-      <Variable x:TypeArguments="scg:Queue(x:Int64)" Default="[New Queue(Of Int64)]" Name="InputQueue" />
+      <Variable x:TypeArguments="x:Boolean" Name="MapExists" />
+      <Variable x:TypeArguments="sxl:XDocument" Name="XDocMap" />
+      <Variable x:TypeArguments="sxl:XElement" Name="Oxygen" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
-      <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-      </scg1:Dictionary>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day15\input.txt" sap:VirtualizedContainerService.HintSize="842,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <Parallel sap:VirtualizedContainerService.HintSize="842,133" sap2010:WorkflowViewState.IdRef="Parallel_1" CompletionCondition="[Map IsNot Nothing]">
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day15\RunIntcode.xaml">
-        <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[Input]</InArgument>
-          <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
-          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_InputQueue">[InputQueue]</InOutArgument>
-          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue">[OutputQueue]</InOutArgument>
-        </ui:InvokeWorkflowFile.Arguments>
-      </ui:InvokeWorkflowFile>
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ExploreMapSM workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Day15/ExploreMap.xaml">
-        <ui:InvokeWorkflowFile.Arguments>
-          <OutArgument x:TypeArguments="sxl:XElement" x:Key="out_Map">[Map]</OutArgument>
-          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_InputQueue">[InputQueue]</InOutArgument>
-          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue">[OutputQueue]</InOutArgument>
-        </ui:InvokeWorkflowFile.Arguments>
-      </ui:InvokeWorkflowFile>
-    </Parallel>
-    <ui:WriteTextFile DisplayName="Write Text File" FileName="map.xml" sap:VirtualizedContainerService.HintSize="842,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[Map.ToString()]" />
+    <ui:PathExists DisplayName="Check if map.xml already exists" Exists="[MapExists]" sap:VirtualizedContainerService.HintSize="484,89" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="[in_MapFilePath]" PathType="File" />
+    <If Condition="[Not MapExists]" DisplayName="If map does not exist" sap:VirtualizedContainerService.HintSize="484,235" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RenderMapToXml workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day15\RenderMapToXml.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="x:String" x:Key="in_MapFilePath">[in_MapFilePath]</InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+      </If.Then>
+    </If>
+    <ui:MultipleAssign DisplayName="Load the map. Initialize the Oxygen tile." sap:VirtualizedContainerService.HintSize="484,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+      <ui:MultipleAssign.AssignOperations>
+        <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="sxl:XDocument">[XDocMap]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="sxl:XDocument">[XDocument.Load(in_MapFilePath)]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="sxl:XElement">[Oxygen]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="sxl:XElement">[XDocMap.Descendants().Where(Function(x) x.@status = "2").First()]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+        </scg:List>
+      </ui:MultipleAssign.AssignOperations>
+    </ui:MultipleAssign>
+    <While DisplayName="While the tile is not the root node" sap:VirtualizedContainerService.HintSize="484,705" sap2010:WorkflowViewState.IdRef="While_1" Condition="[Oxygen IsNot XDocMap.Root]">
+      <Sequence DisplayName="Count" sap:VirtualizedContainerService.HintSize="380,547" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:MultipleAssign DisplayName="Set Oxygen equel to its parent" sap:VirtualizedContainerService.HintSize="338,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+          <ui:MultipleAssign.AssignOperations>
+            <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="sxl:XElement">[Oxygen]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="sxl:XElement">[Oxygen.Parent]</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+                <ui:AssignOperation.To>
+                  <OutArgument x:TypeArguments="x:Int32">[out_Steps]</OutArgument>
+                </ui:AssignOperation.To>
+                <ui:AssignOperation.Value>
+                  <InArgument x:TypeArguments="x:Int32">[out_Steps + 1]</InArgument>
+                </ui:AssignOperation.Value>
+              </ui:AssignOperation>
+            </scg:List>
+          </ui:MultipleAssign.AssignOperations>
+        </ui:MultipleAssign>
+        <InvokeMethod sap2010:Annotation.AnnotationText="Made up a new status 3 for this part." DisplayName="Set the @status attribute (3)" sap:VirtualizedContainerService.HintSize="338,159" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="SetAttributeValue">
+          <InvokeMethod.TargetObject>
+            <InArgument x:TypeArguments="sxl:XElement">[Oxygen]</InArgument>
+          </InvokeMethod.TargetObject>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <InArgument x:TypeArguments="sxl:XName">["status"]</InArgument>
+          <InArgument x:TypeArguments="x:Object">["3"]</InArgument>
+        </InvokeMethod>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawMap workflow" sap:VirtualizedContainerService.HintSize="338,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day15\DrawMap.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="sxl:XElement" x:Key="in_Map">[XDocMap.Root]</InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+      </Sequence>
+    </While>
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="484,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Steps: &quot; &amp; out_Steps]" />
   </Sequence>
 </Activity>

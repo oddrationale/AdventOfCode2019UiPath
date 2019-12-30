@@ -12,7 +12,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1179,5582</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1179,5622</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>RunIntcode_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg1:List x:TypeArguments="x:String" Capacity="21">
@@ -58,6 +58,7 @@
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg1:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -291,12 +292,12 @@
                       <OutArgument x:TypeArguments="x:String">[UserInput]</OutArgument>
                     </ui:InputDialog.Result>
                   </ui:InputDialog>
-                  <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_28">
+                  <Assign DisplayName="Parse to Long" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_28">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Int64">[Input]</OutArgument>
                     </Assign.To>
                     <Assign.Value>
-                      <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(UserInput)]</InArgument>
+                      <InArgument x:TypeArguments="x:Int64">[Long.Parse(UserInput)]</InArgument>
                     </Assign.Value>
                   </Assign>
                 </Sequence>
@@ -317,7 +318,7 @@
                       </scg1:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                     <While.Condition>[io_InputQueue.Count = 0]</While.Condition>
-                    <Delay Duration="00:00:00.0100000" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                    <Delay Duration="00:00:00.0010000" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
                   </While>
                   <Assign DisplayName="Get input from Queue" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_27">
                     <Assign.To>
@@ -330,7 +331,7 @@
                 </Sequence>
               </If.Else>
             </If>
-            <ui:MultipleAssign DisplayName="Get the input from the Queue" sap:VirtualizedContainerService.HintSize="947,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_4">
+            <ui:MultipleAssign DisplayName="Get Input" sap:VirtualizedContainerService.HintSize="947,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_4">
               <ui:MultipleAssign.AssignOperations>
                 <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                   <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_12">
@@ -622,7 +623,7 @@
         </Switch>
       </Sequence>
     </DoWhile>
-    <Assign sap2010:Annotation.AnnotationText="Not really needed anymore, but kept here to maintain backwards compatibility with Day 2." DisplayName="Join array back into string" sap:VirtualizedContainerService.HintSize="1075,117" sap2010:WorkflowViewState.IdRef="Assign_9">
+    <Assign sap2010:Annotation.AnnotationText="Not really needed anymore, but kept here to maintain backwards compatibility with Day 2." DisplayName="Join array back into string" sap:VirtualizedContainerService.HintSize="1117,117" sap2010:WorkflowViewState.IdRef="Assign_9">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[out_Intcode]</OutArgument>
       </Assign.To>

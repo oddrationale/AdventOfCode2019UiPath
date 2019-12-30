@@ -7,7 +7,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>751,696</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>828,1144</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ExploreMap_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg1:List x:TypeArguments="x:String" Capacity="23">
@@ -59,17 +59,18 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg1:List>
   </TextExpression.ReferencesForImplementation>
-  <StateMachine InitialState="{x:Reference __ReferenceID5}" DisplayName="ExploreMap" sap:VirtualizedContainerService.HintSize="731,636" sap2010:WorkflowViewState.IdRef="StateMachine_1">
+  <StateMachine InitialState="{x:Reference __ReferenceID5}" sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;State machine to control droid to explore the entire map. Using XML to keep track of the Map state. We can think of the maze as a tree. Each node is one step away from the starting node.&#xD;&#xA;&#xD;&#xA;Each node represents a map Tile. Tiles have the following properties:&#xD;&#xA;&lt;tile movement=&quot;&quot; x=&quot;&quot; y=&quot;&quot; backtrack=&quot;&quot; status=&quot;&quot;&gt;&lt;/tile&gt;&#xD;&#xA;&#xD;&#xA;Movement is the movement command taken to get to the tile (up:1, down:2, left:3, right:4).&#xD;&#xA;x is the x-coordinate&#xD;&#xA;y is the y-coordinate&#xD;&#xA;backtrack is the movement command to get back to the parent tile&#xD;&#xA;status is the status from the droid (wall:0, explored:1, oxygen:2)&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;None&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="ExploreMap" sap:VirtualizedContainerService.HintSize="808,1084" sap2010:WorkflowViewState.IdRef="StateMachine_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg1:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-        <av:Point x:Key="ShapeLocation">300,2.5</av:Point>
-        <x:Double x:Key="StateContainerWidth">697</x:Double>
-        <x:Double x:Key="StateContainerHeight">600</x:Double>
-        <av:PointCollection x:Key="ConnectorLocation">333,77.5 333,107.5 333.3,107.5 333.3,109.5</av:PointCollection>
+        <av:Point x:Key="ShapeLocation">350,0</av:Point>
+        <x:Double x:Key="StateContainerWidth">774.5</x:Double>
+        <x:Double x:Key="StateContainerHeight">766.5</x:Double>
+        <av:PointCollection x:Key="ConnectorLocation">377,75 377,105 375.6,105 375.6,111</av:PointCollection>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <State x:Name="__ReferenceID5" DisplayName="Initialize map" sap:VirtualizedContainerService.HintSize="134,61" sap2010:WorkflowViewState.IdRef="State_3">
+    <State x:Name="__ReferenceID5" sap2010:Annotation.AnnotationText="Initialize the map with the starting position and the four possible child node for each direction." DisplayName="Initialize map" sap:VirtualizedContainerService.HintSize="288,118" sap2010:WorkflowViewState.IdRef="State_3">
       <State.Entry>
         <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
           <ui:MultipleAssign.AssignOperations>
@@ -101,11 +102,12 @@
       </State.Entry>
       <sap:WorkflowViewStateService.ViewState>
         <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">273,109.5</av:Point>
-          <av:Size x:Key="ShapeSize">134,61</av:Size>
+          <av:Point x:Key="ShapeLocation">246,111</av:Point>
+          <av:Size x:Key="ShapeSize">288,118</av:Size>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          <x:Double x:Key="StateContainerWidth">100</x:Double>
+          <x:Double x:Key="StateContainerWidth">254</x:Double>
           <x:Double x:Key="StateContainerHeight">25</x:Double>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg1:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <State.Transitions>
@@ -114,67 +116,87 @@
             <scg1:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Int32 x:Key="SrcConnectionPointIndex">39</x:Int32>
               <x:Int32 x:Key="DestConnectionPointIndex">38</x:Int32>
-              <av:PointCollection x:Key="ConnectorLocation">340,170.5 340,229.5</av:PointCollection>
+              <av:PointCollection x:Key="ConnectorLocation">390,229 390,259 388.5,259 388.5,319.5</av:PointCollection>
             </scg1:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <Transition.To>
-            <State x:Name="__ReferenceID0" DisplayName="Find NextTile" sap:VirtualizedContainerService.HintSize="134,61" sap2010:WorkflowViewState.IdRef="State_2">
+            <State x:Name="__ReferenceID0" sap2010:Annotation.AnnotationText="Find the next unexplored tile (status=&quot;&quot;)." DisplayName="Find NextTile" sap:VirtualizedContainerService.HintSize="231,103" sap2010:WorkflowViewState.IdRef="State_2">
               <State.Entry>
-                <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="sxl:XElement">[NextTile]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="sxl:XElement">[CurrentTile.Elements.Where(Function(x) x.@status = "").FirstOrDefault()]</InArgument>
-                  </Assign.Value>
+                <Sequence DisplayName="Next" sap:VirtualizedContainerService.HintSize="376,279" sap2010:WorkflowViewState.IdRef="Sequence_5">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg1:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg1:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                </Assign>
+                  <Assign DisplayName="Find the next tile to attempt to move to" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="sxl:XElement">[NextTile]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="sxl:XElement">[CurrentTile.Elements.Where(Function(x) x.@status = "").FirstOrDefault()]</InArgument>
+                    </Assign.Value>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg1:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Assign>
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawMap workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day15\DrawMap.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="sxl:XElement" x:Key="in_Map">[out_Map]</InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                </Sequence>
               </State.Entry>
               <sap:WorkflowViewStateService.ViewState>
                 <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                  <av:Point x:Key="ShapeLocation">273,229.5</av:Point>
-                  <av:Size x:Key="ShapeSize">134,61</av:Size>
+                  <av:Point x:Key="ShapeLocation">273,319.5</av:Point>
+                  <av:Size x:Key="ShapeSize">231,103</av:Size>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  <x:Double x:Key="StateContainerWidth">197</x:Double>
+                  <x:Double x:Key="StateContainerHeight">25</x:Double>
                 </scg1:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <State.Transitions>
-                <Transition DisplayName="Backtrack" sap:VirtualizedContainerService.HintSize="450,505" sap2010:WorkflowViewState.IdRef="Transition_4">
+                <Transition DisplayName="Backtrack" sap:VirtualizedContainerService.HintSize="483,505" sap2010:WorkflowViewState.IdRef="Transition_4">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                      <av:PointCollection x:Key="ConnectorLocation">273,275.25 243,275.25 243,285.25 134,285.25</av:PointCollection>
+                      <av:PointCollection x:Key="ConnectorLocation">273,396.75 243,396.75 243,408 137,408</av:PointCollection>
                       <x:Int32 x:Key="SrcConnectionPointIndex">57</x:Int32>
                       <x:Int32 x:Key="DestConnectionPointIndex">56</x:Int32>
                     </scg1:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <Transition.Condition>[NextTile Is Nothing AndAlso Integer.Parse(CurrentTile.@backtrack) &lt;&gt; 0]</Transition.Condition>
                   <Transition.To>
-                    <State x:Name="__ReferenceID2" DisplayName="Backtrack" sap:VirtualizedContainerService.HintSize="134,61" sap2010:WorkflowViewState.IdRef="State_4">
+                    <State x:Name="__ReferenceID2" sap2010:Annotation.AnnotationText="If no more places to move, backtrack." DisplayName="Backtrack" sap:VirtualizedContainerService.HintSize="134,118" sap2010:WorkflowViewState.IdRef="State_4">
                       <State.Entry>
-                        <Sequence sap:VirtualizedContainerService.HintSize="526,830" sap2010:WorkflowViewState.IdRef="Sequence_1">
+                        <Sequence DisplayName="Backtrack" sap:VirtualizedContainerService.HintSize="526,857" sap2010:WorkflowViewState.IdRef="Sequence_1">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg1:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                             </scg1:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Enqueue">
+                          <InvokeMethod DisplayName="Enqueue CT backtrack" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Enqueue">
                             <InvokeMethod.TargetObject>
                               <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
                             </InvokeMethod.TargetObject>
                             <InArgument x:TypeArguments="x:Int64">[Long.Parse(CurrentTile.@backtrack)]</InArgument>
                           </InvokeMethod>
-                          <While sap:VirtualizedContainerService.HintSize="484,218" sap2010:WorkflowViewState.IdRef="While_1" Condition="[io_OutputQueue.Count &lt; 1]">
-                            <Delay Duration="00:00:01" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                          <While DisplayName="Wait for output" sap:VirtualizedContainerService.HintSize="484,218" sap2010:WorkflowViewState.IdRef="While_1" Condition="[io_OutputQueue.Count &lt; 1]">
+                            <Delay Duration="00:00:00.0010000" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
                           </While>
-                          <If Condition="[io_OutputQueue.Dequeue() = 0]" sap:VirtualizedContainerService.HintSize="484,208" sap2010:WorkflowViewState.IdRef="If_1">
+                          <If sap2010:Annotation.AnnotationText="This error shold never happen. If it does, then there is a bug in the program." Condition="[io_OutputQueue.Dequeue() = 0]" DisplayName="Check if backtrack was successful" sap:VirtualizedContainerService.HintSize="484,235" sap2010:WorkflowViewState.IdRef="If_1">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                              </scg1:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
                             <If.Then>
                               <Throw Exception="[New Exception(&quot;Error. Robot got lost.&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
                             </If.Then>
                           </If>
-                          <Assign sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                          <Assign DisplayName="Set the current tile to the parent tile" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_4">
                             <Assign.To>
                               <OutArgument x:TypeArguments="sxl:XElement">[CurrentTile]</OutArgument>
                             </Assign.To>
@@ -186,16 +208,17 @@
                       </State.Entry>
                       <sap:WorkflowViewStateService.ViewState>
                         <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                          <av:Point x:Key="ShapeLocation">0,239.5</av:Point>
-                          <av:Size x:Key="ShapeSize">134,61</av:Size>
+                          <av:Point x:Key="ShapeLocation">3,319.5</av:Point>
+                          <av:Size x:Key="ShapeSize">134,118</av:Size>
                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                         </scg1:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
                       <State.Transitions>
-                        <Transition DisplayName="Go to parent" sap2010:WorkflowViewState.IdRef="Transition_3">
+                        <Transition DisplayName="Go to parent" sap:VirtualizedContainerService.HintSize="450,505" sap2010:WorkflowViewState.IdRef="Transition_3">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                              <av:PointCollection x:Key="ConnectorLocation">134,245.6 164,245.6 164,241.7 273,241.7</av:PointCollection>
+                              <av:PointCollection x:Key="ConnectorLocation">137,331.3 167,331.3 167,340.1 273,340.1</av:PointCollection>
                               <x:Int32 x:Key="SrcConnectionPointIndex">4</x:Int32>
                               <x:Int32 x:Key="DestConnectionPointIndex">13</x:Int32>
                             </scg1:Dictionary>
@@ -211,28 +234,28 @@
                 <Transition DisplayName="Try Move" sap2010:WorkflowViewState.IdRef="Transition_8">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                      <av:PointCollection x:Key="ConnectorLocation">293.1,290.5 293.1,349.5</av:PointCollection>
+                      <av:PointCollection x:Key="ConnectorLocation">307.65,422.5 307.65,489.5</av:PointCollection>
                       <x:Int32 x:Key="SrcConnectionPointIndex">11</x:Int32>
                       <x:Int32 x:Key="DestConnectionPointIndex">10</x:Int32>
                     </scg1:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <Transition.Condition>[NextTile IsNot Nothing]</Transition.Condition>
                   <Transition.To>
-                    <State x:Name="__ReferenceID3" DisplayName="Try Move" sap:VirtualizedContainerService.HintSize="572,1168" sap2010:WorkflowViewState.IdRef="State_6">
+                    <State x:Name="__ReferenceID3" sap2010:Annotation.AnnotationText="Try to move and get the response" DisplayName="Try Move" sap:VirtualizedContainerService.HintSize="231,88" sap2010:WorkflowViewState.IdRef="State_6">
                       <State.Entry>
-                        <Sequence sap:VirtualizedContainerService.HintSize="526,781" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                        <Sequence DisplayName="Try Move" sap:VirtualizedContainerService.HintSize="526,654" sap2010:WorkflowViewState.IdRef="Sequence_3">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg1:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                             </scg1:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_3" MethodName="Enqueue">
+                          <InvokeMethod DisplayName="Enqueue NT movement" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_3" MethodName="Enqueue">
                             <InvokeMethod.TargetObject>
                               <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_InputQueue]</InArgument>
                             </InvokeMethod.TargetObject>
                             <InArgument x:TypeArguments="x:Int64">[Long.Parse(NextTile.@movement)]</InArgument>
                           </InvokeMethod>
-                          <While sap:VirtualizedContainerService.HintSize="484,218" sap2010:WorkflowViewState.IdRef="While_2" Condition="[io_OutputQueue.Count &lt; 1]">
+                          <While DisplayName="Wait for output" sap:VirtualizedContainerService.HintSize="484,218" sap2010:WorkflowViewState.IdRef="While_2" Condition="[io_OutputQueue.Count &lt; 1]">
                             <Delay Duration="00:00:00.0010000" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delay_2" />
                           </While>
                           <InvokeMethod DisplayName="Set the @status attribute" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_4" MethodName="SetAttributeValue">
@@ -247,25 +270,23 @@
                             <InArgument x:TypeArguments="sxl:XName">["status"]</InArgument>
                             <InArgument x:TypeArguments="x:Object">[io_OutputQueue.Dequeue()]</InArgument>
                           </InvokeMethod>
-                          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawMap workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day15\DrawMap.xaml">
-                            <ui:InvokeWorkflowFile.Arguments>
-                              <InArgument x:TypeArguments="sxl:XElement" x:Key="in_Map">[out_Map]</InArgument>
-                            </ui:InvokeWorkflowFile.Arguments>
-                          </ui:InvokeWorkflowFile>
                         </Sequence>
                       </State.Entry>
                       <sap:WorkflowViewStateService.ViewState>
                         <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                          <av:Point x:Key="ShapeLocation">273,349.5</av:Point>
-                          <av:Size x:Key="ShapeSize">134,61</av:Size>
+                          <av:Point x:Key="ShapeLocation">273,489.5</av:Point>
+                          <av:Size x:Key="ShapeSize">231,88</av:Size>
                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          <x:Double x:Key="StateContainerWidth">197</x:Double>
+                          <x:Double x:Key="StateContainerHeight">25</x:Double>
+                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                         </scg1:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
                       <State.Transitions>
                         <Transition DisplayName="Cannot move" sap:VirtualizedContainerService.HintSize="450,505" sap2010:WorkflowViewState.IdRef="Transition_5">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                              <av:PointCollection x:Key="ConnectorLocation">373.5,349.5 373.5,290.5</av:PointCollection>
+                              <av:PointCollection x:Key="ConnectorLocation">446.25,489.5 446.25,422.5</av:PointCollection>
                               <x:Int32 x:Key="SrcConnectionPointIndex">58</x:Int32>
                               <x:Int32 x:Key="DestConnectionPointIndex">59</x:Int32>
                             </scg1:Dictionary>
@@ -278,22 +299,22 @@
                         <Transition DisplayName="Move" sap:VirtualizedContainerService.HintSize="450,505" sap2010:WorkflowViewState.IdRef="Transition_7">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                              <av:PointCollection x:Key="ConnectorLocation">293.1,410.5 293.1,459.5</av:PointCollection>
+                              <av:PointCollection x:Key="ConnectorLocation">307.65,577.5 307.65,607.5 306,607.5 306,649.5</av:PointCollection>
                               <x:Int32 x:Key="SrcConnectionPointIndex">11</x:Int32>
                               <x:Int32 x:Key="DestConnectionPointIndex">10</x:Int32>
                             </scg1:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                           <Transition.Condition>[Integer.Parse(NextTile.@status) &lt;&gt; 0]</Transition.Condition>
                           <Transition.To>
-                            <State x:Name="__ReferenceID4" DisplayName="Move" sap:VirtualizedContainerService.HintSize="134,61" sap2010:WorkflowViewState.IdRef="State_5">
+                            <State x:Name="__ReferenceID4" sap2010:Annotation.AnnotationText="If move is successful, move robot." DisplayName="Move" sap:VirtualizedContainerService.HintSize="220,117" sap2010:WorkflowViewState.IdRef="State_5">
                               <State.Entry>
-                                <Sequence sap:VirtualizedContainerService.HintSize="526,1432" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                                <Sequence DisplayName="Move" sap:VirtualizedContainerService.HintSize="526,1432" sap2010:WorkflowViewState.IdRef="Sequence_4">
                                   <sap:WorkflowViewStateService.ViewState>
                                     <scg1:Dictionary x:TypeArguments="x:String, x:Object">
                                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                     </scg1:Dictionary>
                                   </sap:WorkflowViewStateService.ViewState>
-                                  <Assign sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                                  <Assign DisplayName="Update the current tile" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_5">
                                     <Assign.To>
                                       <OutArgument x:TypeArguments="sxl:XElement">[CurrentTile]</OutArgument>
                                     </Assign.To>
@@ -345,16 +366,19 @@
                               </State.Entry>
                               <sap:WorkflowViewStateService.ViewState>
                                 <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                                  <av:Point x:Key="ShapeLocation">273,459.5</av:Point>
-                                  <av:Size x:Key="ShapeSize">134,61</av:Size>
+                                  <av:Point x:Key="ShapeLocation">273,649.5</av:Point>
+                                  <av:Size x:Key="ShapeSize">220,117</av:Size>
                                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                  <x:Double x:Key="StateContainerWidth">186</x:Double>
+                                  <x:Double x:Key="StateContainerHeight">38.632000000000176</x:Double>
+                                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                                 </scg1:Dictionary>
                               </sap:WorkflowViewStateService.ViewState>
                               <State.Transitions>
-                                <Transition DisplayName="Next" sap2010:WorkflowViewState.IdRef="Transition_6">
+                                <Transition DisplayName="Next" sap:VirtualizedContainerService.HintSize="450,505" sap2010:WorkflowViewState.IdRef="Transition_6">
                                   <sap:WorkflowViewStateService.ViewState>
                                     <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                                      <av:PointCollection x:Key="ConnectorLocation">407,493.05 437,493.05 437,284.4 407,284.4</av:PointCollection>
+                                      <av:PointCollection x:Key="ConnectorLocation">493,713.85 523,713.85 523,412.2 504,412.2</av:PointCollection>
                                       <x:Int32 x:Key="SrcConnectionPointIndex">40</x:Int32>
                                       <x:Int32 x:Key="DestConnectionPointIndex">68</x:Int32>
                                     </scg1:Dictionary>
@@ -374,19 +398,20 @@
                 <Transition DisplayName="Null" sap2010:WorkflowViewState.IdRef="Transition_9">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                      <av:PointCollection x:Key="ConnectorLocation">407,238.65 437,238.65 437,269.15 513,269.15</av:PointCollection>
+                      <av:PointCollection x:Key="ConnectorLocation">504,334.95 534,334.95 534,396.45 573,396.45</av:PointCollection>
                       <x:Int32 x:Key="SrcConnectionPointIndex">8</x:Int32>
                       <x:Int32 x:Key="DestConnectionPointIndex">49</x:Int32>
                     </scg1:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <Transition.Condition>[NextTile Is Nothing AndAlso Integer.Parse(CurrentTile.@backtrack) = 0]</Transition.Condition>
                   <Transition.To>
-                    <State x:Name="__ReferenceID1" DisplayName="End" sap:VirtualizedContainerService.HintSize="134,61" sap2010:WorkflowViewState.IdRef="State_1" IsFinal="True">
+                    <State x:Name="__ReferenceID1" sap2010:Annotation.AnnotationText="Entire map has been explored." DisplayName="End" sap:VirtualizedContainerService.HintSize="134,103" sap2010:WorkflowViewState.IdRef="State_1" IsFinal="True">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-                          <av:Point x:Key="ShapeLocation">513,229.5</av:Point>
-                          <av:Size x:Key="ShapeSize">134,61</av:Size>
+                          <av:Point x:Key="ShapeLocation">573,329.5</av:Point>
+                          <av:Size x:Key="ShapeSize">134,103</av:Size>
                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                         </scg1:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
                     </State>
