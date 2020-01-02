@@ -1,4 +1,12 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution01pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="619,1245" sap2010:WorkflowViewState.IdRef="Solution01_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution01pt1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="out_TotalFuelRequirement" Type="OutArgument(x:Int32)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>396,699</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>Solution01_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
       <x:String>System.Activities</x:String>
@@ -43,13 +51,12 @@
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Calculate the total fuel requirement for all the modules in the input file.&#xA;&#xA;Pre-conditions:&#xA;Day01\input.txt file must exist and contain only numeric characters.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution01pt1" sap:VirtualizedContainerService.HintSize="599,1185" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Calculate the total fuel requirement for all the modules in the input file.&#xA;&#xA;Pre-conditions:&#xA;Input file must exist and contain only numeric characters.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution01pt1" sap:VirtualizedContainerService.HintSize="376,599" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
-      <Variable x:TypeArguments="x:Int32" Name="TotalFuelRequirement" />
-      <Variable x:TypeArguments="x:Int32" Name="FuelRequirement" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -57,54 +64,20 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read the input file" Encoding="UTF-8" FileName="Day01\input.txt" sap:VirtualizedContainerService.HintSize="557,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <Assign DisplayName="Initialize TotalFuelRequirement to zero" sap:VirtualizedContainerService.HintSize="557,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read the input file" Encoding="UTF-8" FileName="Day01\input.txt" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <Assign sap2010:Annotation.AnnotationText="&quot;\&quot; performs integer division" DisplayName="Calculate Total Fuel Requirement" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
-        <OutArgument x:TypeArguments="x:Int32">[TotalFuelRequirement]</OutArgument>
+        <OutArgument x:TypeArguments="x:Int32">[out_TotalFuelRequirement]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32">0</InArgument>
+        <InArgument x:TypeArguments="x:Int32">[Split(Input, vbLf).Select(Function(m) Integer.Parse(m) \ 3 - 2).Sum()]</InArgument>
       </Assign.Value>
-    </Assign>
-    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Split file on LF because the downloaded file has LF line endings." DisplayName="For Each Module" sap:VirtualizedContainerService.HintSize="557,588" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Split(Input, vbLf)]">
-      <ui:ForEach.Body>
-        <ActivityAction x:TypeArguments="x:String">
-          <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="x:String" Name="item" />
-          </ActivityAction.Argument>
-          <If Condition="[Not String.IsNullOrWhiteSpace(item)]" DisplayName="If line is not empty" sap:VirtualizedContainerService.HintSize="521,427" sap2010:WorkflowViewState.IdRef="If_1">
-            <If.Then>
-              <Sequence DisplayName="Calculate Fuel Requirement and add to total" sap:VirtualizedContainerService.HintSize="376,279" sap2010:WorkflowViewState.IdRef="Sequence_3">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CalculateFuelRequirement workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day01\CalculateFuelRequirement.xaml">
-                  <ui:InvokeWorkflowFile.Arguments>
-                    <InArgument x:TypeArguments="x:Int32" x:Key="in_Mass">[CInt(item)]</InArgument>
-                    <OutArgument x:TypeArguments="x:Int32" x:Key="out_FuelRequirement">[FuelRequirement]</OutArgument>
-                  </ui:InvokeWorkflowFile.Arguments>
-                </ui:InvokeWorkflowFile>
-                <Assign DisplayName="Add to Total" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_3">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="x:Int32">[TotalFuelRequirement]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="x:Int32">[TotalFuelRequirement + FuelRequirement]</InArgument>
-                  </Assign.Value>
-                </Assign>
-              </Sequence>
-            </If.Then>
-          </If>
-        </ActivityAction>
-      </ui:ForEach.Body>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-    </ui:ForEach>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="557,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Total Fuel Requirment: &quot; &amp; TotalFuelRequirement]" />
+    </Assign>
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Total Fuel Requirment: &quot; &amp; out_TotalFuelRequirement]" />
   </Sequence>
 </Activity>
