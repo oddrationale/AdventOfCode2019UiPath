@@ -15,7 +15,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>324,806</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>324,846</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Solution04pt0_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -40,6 +40,7 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -61,6 +62,7 @@
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Find the number of passwords that match these criteria:&#xA;- It is a six-digit number.&#xA;- The value is within the range given in your puzzle input.&#xA;- Two adjacent digits are the same (like 22 in 122345).&#xA;- Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).&#xA;&#xA;Pre-conditions:&#xA;None&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution04pt1" sap:VirtualizedContainerService.HintSize="304,746" sap2010:WorkflowViewState.IdRef="Sequence_1">
@@ -75,10 +77,10 @@
         <OutArgument x:TypeArguments="x:Int32">[out_Count]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32" xml:space="preserve">[Aggregate pw In Enumerable.Range(in_Min, in_Max - in_Min + 1)
-Where CStr(pw).SequenceEqual(From i In CStr(pw) Order By i Select i)
-Where (Aggregate i In Enumerable.Range(0, CStr(pw).Length) Where CStr(pw).Contains(StrDup(2, CStr(pw)(i))) Into Count) &gt; 0
-Into Count]</InArgument>
+        <InArgument x:TypeArguments="x:Int32" xml:space="preserve">[Enumerable.Range(in_Min, in_Max - in_Min + 1) _
+  .Where(Function(pw) CStr(pw) = String.Concat(CStr(pw).OrderBy(Function(c) c))) _
+  .Where(Function(pw) CStr(pw).Where(Function(c) CStr(pw).Contains(StrDup(2, c))).Count() &gt; 0) _
+  .Count()]</InArgument>
       </Assign.Value>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
