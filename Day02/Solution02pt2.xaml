@@ -1,12 +1,12 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="Solution02pt2_BruteForce" this:Solution02pt2_BruteForce.in_TargetOutput="19690720" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_TargetOutput" Type="InArgument(x:Int32)" />
-    <x:Property Name="out_Answer" Type="InArgument(x:Int32)" />
+    <x:Property Name="out_Output" Type="InArgument(x:Int32)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>702,1661</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>702,1833</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Solution02pt2_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
@@ -34,7 +34,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="17">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="18">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -52,11 +52,13 @@
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Find the input values (aka, Noun and Verb) for a given target output. This solution uses a brute force method by searching through all the inputs (0-99, inclusive) to find the solution. See Solution02pt2-Mathematical.xaml for a mathematical solution.&#xA;&#xA;Pre-conditions:&#xA;Day02\input.txt file must exist and contain only have valid Intcode.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution02pt2-BruteForce" sap:VirtualizedContainerService.HintSize="682,1601" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Find the input values (aka, Noun and Verb) for a given target output. This solution uses a brute force method by searching through all the inputs (0-99, inclusive) to find the solution. See Solution02pt2-Mathematical.xaml for a mathematical solution.&#xA;&#xA;Pre-conditions:&#xA;Day02\input.txt file must exist and contain only have valid Intcode.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution02pt2-BruteForce" sap:VirtualizedContainerService.HintSize="682,1773" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" Name="Output" />
+      <Variable x:TypeArguments="x:String" Name="Input" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -64,6 +66,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read the input text file" FileName="Day02\input.txt" sap:VirtualizedContainerService.HintSize="640,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
     <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="For each noun from 0-99" sap:VirtualizedContainerService.HintSize="640,1246" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Enumerable.Range(0, 100)]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="x:Int32">
@@ -88,11 +91,12 @@
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Solution02pt1 workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day02\Solution02pt1.xaml">
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunGravityAssistProgram workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day02\RunGravityAssistProgram.xaml">
                       <ui:InvokeWorkflowFile.Arguments>
                         <InArgument x:TypeArguments="x:Int32" x:Key="in_Noun">[noun]</InArgument>
                         <InArgument x:TypeArguments="x:Int32" x:Key="in_Verb">[verb]</InArgument>
-                        <OutArgument x:TypeArguments="x:Int32" x:Key="out_Answer">[Output]</OutArgument>
+                        <OutArgument x:TypeArguments="x:Int32" x:Key="out_Output">[Output]</OutArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_GravityAssistProgram">[Input]</InArgument>
                       </ui:InvokeWorkflowFile.Arguments>
                     </ui:InvokeWorkflowFile>
                     <If Condition="[Output = in_TargetOutput]" DisplayName="If the output equals the target output" sap:VirtualizedContainerService.HintSize="484,419" sap2010:WorkflowViewState.IdRef="If_1">
@@ -105,7 +109,7 @@
                           </sap:WorkflowViewStateService.ViewState>
                           <Assign sap2010:Annotation.AnnotationText="Answer should be the two number concatenated together. Or 100 * noun + verb" DisplayName="Format the answer" sap:VirtualizedContainerService.HintSize="262,117" sap2010:WorkflowViewState.IdRef="Assign_1">
                             <Assign.To>
-                              <OutArgument x:TypeArguments="x:Int32">[out_Answer]</OutArgument>
+                              <OutArgument x:TypeArguments="x:Int32">[out_Output]</OutArgument>
                             </Assign.To>
                             <Assign.Value>
                               <InArgument x:TypeArguments="x:Int32">[100 * noun + verb]</InArgument>
@@ -124,7 +128,7 @@
                 </ActivityAction>
               </ui:ForEach.Body>
             </ui:ForEach>
-            <If Condition="[out_Answer &lt;&gt; 0]" DisplayName="If answer has been found already, then break" sap:VirtualizedContainerService.HintSize="562,208" sap2010:WorkflowViewState.IdRef="If_2">
+            <If Condition="[out_Output &lt;&gt; 0]" DisplayName="If answer has been found already, then break" sap:VirtualizedContainerService.HintSize="562,208" sap2010:WorkflowViewState.IdRef="If_2">
               <If.Then>
                 <ui:Break sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Break_2" />
               </If.Then>
@@ -133,6 +137,6 @@
         </ActivityAction>
       </ui:ForEach.Body>
     </ui:ForEach>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="640,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[&quot;Final answer: &quot; &amp; out_Answer]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="640,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[&quot;Output: &quot; &amp; out_Output]" />
   </Sequence>
 </Activity>
