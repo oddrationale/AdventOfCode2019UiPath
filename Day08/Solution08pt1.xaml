@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution08pt1" this:Solution08pt1.in_Width="25" this:Solution08pt1.in_Height="6" this:Solution08pt1.in_SifInputFilePath="Day08\input.txt" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution08pt1" this:Solution08pt1.in_Width="25" this:Solution08pt1.in_Height="6" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Width" Type="InArgument(x:Int32)">
       <x:Property.Attributes>
@@ -10,17 +10,12 @@
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
-    <x:Property Name="in_SifInputFilePath" Type="InArgument(x:String)">
-      <x:Property.Attributes>
-        <RequiredArgumentAttribute />
-      </x:Property.Attributes>
-    </x:Property>
     <x:Property Name="out_Checksum" Type="OutArgument(x:Int32)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>400,896</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1016,988</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Solution08pt1_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
@@ -66,9 +61,15 @@
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Calculates the checksum by finding the layer with the fewest 0. Then for that layer, output the number of 1 digits multiplied by the number of 2 digits.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exists and contains a valid Space Image Format image.&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution08pt1" sap:VirtualizedContainerService.HintSize="380,836" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Calculates the checksum by finding the layer with the fewest 0. Then for that layer, output the number of 1 digits multiplied by the number of 2 digits.&#xA;&#xA;Pre-conditions:&#xA;Input file exists and contains a valid Space Image Format image.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution08pt1" sap:VirtualizedContainerService.HintSize="426,783" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="SifStr" />
       <Variable x:TypeArguments="s:Int32[]" Name="SifArr" />
@@ -82,8 +83,8 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[SifStr]" DisplayName="Read Space Image Format file" FileName="[in_SifInputFilePath]" sap:VirtualizedContainerService.HintSize="338,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Convert to array of Int.&#xD;&#xA;Calculate the number of pixels per layer.&#xD;&#xA;Split the Array into the layers (2D array).&#xD;&#xA;Find the array with the least zeros.&#xD;&#xA;Calculate the checksum." DisplayName="Calc checksum" sap:VirtualizedContainerService.HintSize="338,309" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:ReadTextFile Content="[SifStr]" DisplayName="Read Space Image Format file" FileName="Day08\input.txt" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Convert to array of Int.&#xA;Calculate the number of pixels per layer.&#xA;Split the Array into the layers (2D array).&#xA;Find the array with the least zeros.&#xA;Calculate the checksum." DisplayName="Calc checksum" sap:VirtualizedContainerService.HintSize="384,309" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -91,7 +92,7 @@
               <OutArgument x:TypeArguments="s:Int32[]">[SifArr]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="s:Int32[]">[Array.ConvertAll(SifStr.ToCharArray(), Function(c) Int32.Parse(c))]</InArgument>
+              <InArgument x:TypeArguments="s:Int32[]">[SifStr.ToCharArray().Select(Function(c) Val(c)).ToArray()]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
@@ -107,7 +108,9 @@
               <OutArgument x:TypeArguments="s:Int32[][]">[SifLayers]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="s:Int32[][]">[(From i In Enumerable.Range(0, SifArr.Length \ Pixels) Select SifArr.Skip(i * Pixels).Take(Pixels).ToArray()).ToArray()]</InArgument>
+              <InArgument x:TypeArguments="s:Int32[][]" xml:space="preserve">[Enumerable.Range(0, SifArr.Length \ Pixels).
+	Select(Function(i) SifArr.Skip(i * Pixels).Take(Pixels).ToArray()).
+	ToArray()]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
@@ -115,7 +118,7 @@
               <OutArgument x:TypeArguments="s:Int32[]">[SifLayerMinZeros]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="s:Int32[]">[(From layer In SifLayers Order By (Aggregate p In layer Into Count(p = 0))).FirstOrDefault()]</InArgument>
+              <InArgument x:TypeArguments="s:Int32[]">[SifLayers.OrderBy(Function(layer) layer.Count(Function(p) p = 0)).FirstOrDefault()]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
@@ -123,7 +126,7 @@
               <OutArgument x:TypeArguments="x:Int32">[out_Checksum]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:Int32">[(Aggregate p In SifLayerMinZeros Into Count(p = 1)) * (Aggregate p In SifLayerMinZeros Into Count(p = 2))]</InArgument>
+              <InArgument x:TypeArguments="x:Int32">[SifLayerMinZeros.Count(Function(p) p = 1) * SifLayerMinZeros.Count(Function(p) p = 2)]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
         </scg:List>
@@ -134,6 +137,6 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:MultipleAssign>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="338,61" sap2010:WorkflowViewState.IdRef="WriteLine_4" Text="[&quot;Checksum: &quot; &amp; out_Checksum]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="384,61" sap2010:WorkflowViewState.IdRef="WriteLine_4" Text="[&quot;Checksum: &quot; &amp; out_Checksum]" />
   </Sequence>
 </Activity>
