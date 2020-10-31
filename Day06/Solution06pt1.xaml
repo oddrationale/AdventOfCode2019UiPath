@@ -1,6 +1,6 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution06pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="546,1648" sap2010:WorkflowViewState.IdRef="Solution06pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution06pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1016,1536" sap2010:WorkflowViewState.IdRef="Solution06pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="21">
+    <scg:List x:TypeArguments="x:String" Capacity="42">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -22,10 +22,11 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="17">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="34">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -43,14 +44,20 @@
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Finds the total number of direct and indirect orbits in the map data (input data). This solution works by counting the number of planets one step away from the COM (Center of Mass). Then counts the number of planets two steps away, then three steps, until the last planet.&#xD;&#xA;&#xD;&#xA;To calculate the total number of orbits just do: (1 * # of planets 1 step away) + (2 * # of planets 2 steps away) + ...&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exists and has valid mapping of orbits&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution06pt1" sap:VirtualizedContainerService.HintSize="526,1548" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Finds the total number of direct and indirect orbits in the map data (input data). This solution works by counting the number of planets one step away from the COM (Center of Mass). Then counts the number of planets two steps away, then three steps, until the last planet.&#xA;&#xA;To calculate the total number of orbits just do: (1 * # of planets 1 step away) + (2 * # of planets 2 steps away) + ...&#xA;&#xA;Pre-conditions:&#xA;Input file exists and has valid mapping of orbits&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution06pt1" sap:VirtualizedContainerService.HintSize="526,1371" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
       <Variable x:TypeArguments="scg:List(s:Tuple(x:String, x:String))" Name="OrbitMap" />
       <Variable x:TypeArguments="scg:List(x:String)" Name="Planets" />
-      <Variable x:TypeArguments="scg:List(scg:List(x:String))" Name="OrbitHierachy" />
+      <Variable x:TypeArguments="scg:List(scg:List(x:String))" Name="OrbitHierarchy" />
       <Variable x:TypeArguments="scg:List(x:String)" Name="Orbiters" />
       <Variable x:TypeArguments="x:Int32" Name="Checksum" />
     </Sequence.Variables>
@@ -60,8 +67,8 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read map data" FileName="Day06\input.txt" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:MultipleAssign sap2010:Annotation.AnnotationText="The OrbitMap is a List(Of Tuple(Of String, String)). The first item in the tuple is the Planet and the second item is the one that is Orbiting the first.&#xD;&#xA;&#xD;&#xA;Initialize the list of Planets to COM, which is the starting point.&#xD;&#xA;&#xD;&#xA;OrbitHierachy is a List of Lists. For example, [planets one step away, planets two steps away, planets three steps away, ...]" DisplayName="Initialize values" sap:VirtualizedContainerService.HintSize="484,322" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read map data" FileName="Day06\input.txt" sap:VirtualizedContainerService.HintSize="484,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="The OrbitMap is a List(Of Tuple(Of String, String)). The first item in the tuple is the Planet and the second item is the one that is Orbiting the first.&#xA;&#xA;Initialize the list of Planets to COM, which is the starting point.&#xA;&#xA;OrbitHierachy is a List of Lists. For example, [planets one step away, planets two steps away, planets three steps away, ...]" DisplayName="Initialize values" sap:VirtualizedContainerService.HintSize="484,322" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -69,7 +76,7 @@
               <OutArgument x:TypeArguments="scg:List(s:Tuple(x:String, x:String))">[OrbitMap]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="scg:List(s:Tuple(x:String, x:String))">[(From orbit In Split(Input, vbLf) Select Tuple.Create(Split(orbit, ")").First(), Split(orbit, ")").Last())).ToList()]</InArgument>
+              <InArgument x:TypeArguments="scg:List(s:Tuple(x:String, x:String))">[Split(Input, vbLf).Select(Function(orbit) Tuple.Create(Split(orbit, ")").First(), Split(orbit, ")").Last())).ToList()]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
@@ -82,7 +89,7 @@
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
             <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="scg:List(scg:List(x:String))">[OrbitHierachy]</OutArgument>
+              <OutArgument x:TypeArguments="scg:List(scg:List(x:String))">[OrbitHierarchy]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
               <InArgument x:TypeArguments="scg:List(scg:List(x:String))">[New List(Of List(Of String)) From {Planets}]</InArgument>
@@ -96,37 +103,54 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:MultipleAssign>
-    <While DisplayName="While there are still more planets orbiting" sap:VirtualizedContainerService.HintSize="484,499" sap2010:WorkflowViewState.IdRef="While_1" Condition="[Planets.Count &gt; 0]">
-      <Sequence DisplayName="Create Hierarchy" sap:VirtualizedContainerService.HintSize="376,341" sap2010:WorkflowViewState.IdRef="Sequence_4">
+    <While DisplayName="While there are still more planets orbiting" sap:VirtualizedContainerService.HintSize="484,375" sap2010:WorkflowViewState.IdRef="While_1" Condition="[Planets.Count &gt; 0]">
+      <ui:MultipleAssign sap2010:Annotation.AnnotationText="1. Get the next list/level of Orbiters&#xD;&#xA;2. Add the Orbiters to the Orbit Hierarchy&#xD;&#xA;3. Orbiters become the new list of planets" DisplayName="Get next list of Orbiters" sap:VirtualizedContainerService.HintSize="334,217" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+        <ui:MultipleAssign.AssignOperations>
+          <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+              <ui:AssignOperation.To>
+                <OutArgument x:TypeArguments="scg:List(x:String)">[Orbiters]</OutArgument>
+              </ui:AssignOperation.To>
+              <ui:AssignOperation.Value>
+                <InArgument x:TypeArguments="scg:List(x:String)" xml:space="preserve">[Planets.
+	Select(Function(planet) OrbitMap.
+		Where(Function(orbit) orbit.Item1 = planet).
+		Select(Function(orbit) orbit.Item2)).
+	SelectMany(Function(planets) planets).
+	ToList()]</InArgument>
+              </ui:AssignOperation.Value>
+            </ui:AssignOperation>
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
+              <ui:AssignOperation.To>
+                <OutArgument x:TypeArguments="scg:List(scg:List(x:String))">[OrbitHierarchy]</OutArgument>
+              </ui:AssignOperation.To>
+              <ui:AssignOperation.Value>
+                <InArgument x:TypeArguments="scg:List(scg:List(x:String))">[OrbitHierarchy.Append(Orbiters).ToList()]</InArgument>
+              </ui:AssignOperation.Value>
+            </ui:AssignOperation>
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
+              <ui:AssignOperation.To>
+                <OutArgument x:TypeArguments="scg:List(x:String)">[Planets]</OutArgument>
+              </ui:AssignOperation.To>
+              <ui:AssignOperation.Value>
+                <InArgument x:TypeArguments="scg:List(x:String)">[Orbiters]</InArgument>
+              </ui:AssignOperation.Value>
+            </ui:AssignOperation>
+          </scg:List>
+        </ui:MultipleAssign.AssignOperations>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrbits workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day06\GetOrbits.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:List(s:Tuple(x:String, x:String))" x:Key="in_OrbitMap">[OrbitMap]</InArgument>
-            <InArgument x:TypeArguments="scg:List(x:String)" x:Key="in_Planets">[Planets]</InArgument>
-            <OutArgument x:TypeArguments="scg:List(x:String)" x:Key="out_Orbiters">[Orbiters]</OutArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <AddToCollection x:TypeArguments="scg:List(x:String)" Collection="[OrbitHierachy]" DisplayName="Append list of planets" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[Orbiters]" />
-        <Assign DisplayName="Go to next planets" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_3">
-          <Assign.To>
-            <OutArgument x:TypeArguments="scg:List(x:String)">[Planets]</OutArgument>
-          </Assign.To>
-          <Assign.Value>
-            <InArgument x:TypeArguments="scg:List(x:String)">[Orbiters]</InArgument>
-          </Assign.Value>
-        </Assign>
-      </Sequence>
+      </ui:MultipleAssign>
     </While>
     <Assign DisplayName="Get the Checksum" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_4">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int32">[Checksum]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32">[Aggregate i In Enumerable.Range(0, OrbitHierachy.Count) Into Sum(i * OrbitHierachy(i).Count)]</InArgument>
+        <InArgument x:TypeArguments="x:Int32">[OrbitHierarchy.Select(Function(p, i) i * p.Count()).Sum()]</InArgument>
       </Assign.Value>
     </Assign>
     <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="484,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[&quot;Checksum: &quot; &amp; Checksum]" />
