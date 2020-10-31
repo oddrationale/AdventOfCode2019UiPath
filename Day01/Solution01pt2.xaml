@@ -5,7 +5,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>546,1051</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1016,1103</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Solution01pt2_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -53,9 +53,14 @@
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Calculate the total fuel requirement for all the modules in the input file, but this time also including the cost of the fuel itself.&#xA;&#xA;Pre-conditions:&#xA;Input file must exist and contain only numeric characters.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution01pt2" sap:VirtualizedContainerService.HintSize="526,991" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Calculate the total fuel requirement for all the modules in the input file, but this time also including the cost of the fuel itself.&#xA;&#xA;Pre-conditions:&#xA;Input file must exist and contain only numeric characters.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution01pt2" sap:VirtualizedContainerService.HintSize="526,938" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
       <Variable x:TypeArguments="x:Int32" Name="FuelRequirement" />
@@ -67,17 +72,17 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read the input file" Encoding="UTF-8" FileName="Day01\input.txt" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read the input file" Encoding="UTF-8" FileName="Day01\input.txt" sap:VirtualizedContainerService.HintSize="484,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
     <Assign DisplayName="Get initial list of modules" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_3">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:List(x:Int32)">[Modules]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="scg:List(x:Int32)">[Split(Input, vbLf).Select(Function(m) Integer.Parse(m)).ToList()]</InArgument>
+        <InArgument x:TypeArguments="scg:List(x:Int32)">[Split(Input, vbLf).Select(Function(m) CInt(m)).ToList()]</InArgument>
       </Assign.Value>
     </Assign>
     <DoWhile DisplayName="While Fuel Requirement &gt; 0" sap:VirtualizedContainerService.HintSize="484,379" sap2010:WorkflowViewState.IdRef="DoWhile_1" Condition="[FuelRequirement &gt; 0]">
-      <ui:MultipleAssign sap2010:Annotation.AnnotationText="Get new list of module fuel requirements.&#xD;&#xA;Get the sum.&#xD;&#xA;Add the sum to the total." DisplayName="Calculate fuel requirement" sap:VirtualizedContainerService.HintSize="338,217" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+      <ui:MultipleAssign sap2010:Annotation.AnnotationText="Get new list of module fuel requirements.&#xA;Get the sum.&#xA;Add the sum to the total." DisplayName="Calculate fuel requirement" sap:VirtualizedContainerService.HintSize="334,217" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
         <ui:MultipleAssign.AssignOperations>
           <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
             <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">

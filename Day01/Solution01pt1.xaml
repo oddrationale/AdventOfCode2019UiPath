@@ -5,7 +5,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>396,699</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1016,856</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Solution01_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
@@ -52,9 +52,15 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Calculate the total fuel requirement for all the modules in the input file.&#xA;&#xA;Pre-conditions:&#xA;Input file must exist and contain only numeric characters.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution01pt1" sap:VirtualizedContainerService.HintSize="376,599" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Calculate the total fuel requirement for all the modules in the input file.&#xA;&#xA;Pre-conditions:&#xA;Input file must exist and contain only numeric characters.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution01pt1" sap:VirtualizedContainerService.HintSize="426,535" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
     </Sequence.Variables>
@@ -64,13 +70,13 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read the input file" Encoding="UTF-8" FileName="Day01\input.txt" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <Assign sap2010:Annotation.AnnotationText="&quot;\&quot; performs integer division" DisplayName="Calculate Total Fuel Requirement" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read the input file" Encoding="UTF-8" FileName="Day01\input.txt" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <Assign sap2010:Annotation.AnnotationText="&quot;\&quot; performs integer division" DisplayName="Calculate Total Fuel Requirement" sap:VirtualizedContainerService.HintSize="384,91" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int32">[out_TotalFuelRequirement]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32">[Split(Input, vbLf).Select(Function(m) Integer.Parse(m) \ 3 - 2).Sum()]</InArgument>
+        <InArgument x:TypeArguments="x:Int32">[Split(Input, vbLf).Select(Function(m) CInt(m) \ 3 - 2).Sum()]</InArgument>
       </Assign.Value>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -78,6 +84,6 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Total Fuel Requirment: &quot; &amp; out_TotalFuelRequirement]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="384,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Total Fuel Requirment: &quot; &amp; out_TotalFuelRequirement]" />
   </Sequence>
 </Activity>
