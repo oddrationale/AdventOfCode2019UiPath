@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution10pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="400,930" sap2010:WorkflowViewState.IdRef="Solution10pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution10pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1016,1047" sap2010:WorkflowViewState.IdRef="Solution10pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
       <x:String>System.Activities</x:String>
@@ -44,14 +44,21 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Find the best location for the giant laser that has the most visibility to other astroids.&#xA;&#xA;Pre-conditions:&#xA;Input file exists and contains astroid map.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution10pt1" sap:VirtualizedContainerService.HintSize="380,870" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Find the best location for the giant laser that has the most visibility to other astroids.&#xA;&#xA;Pre-conditions:&#xA;Input file exists and contains astroid map.&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution10pt1" sap:VirtualizedContainerService.HintSize="426,842" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
       <Variable x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))" Name="Astroids" />
       <Variable x:TypeArguments="s:Int32[]" Name="Counts" />
       <Variable x:TypeArguments="s:Tuple(x:Int32, x:Int32)" Name="MonitoringStation" />
+      <Variable x:TypeArguments="s:Char[][]" Name="AstroidMap" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -59,35 +66,49 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Get the astroid map" FileName="Day10\input.txt" sap:VirtualizedContainerService.HintSize="338,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAstroids workflow" sap:VirtualizedContainerService.HintSize="338,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day10\GetAstroids.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:String" x:Key="in_AstroidMap">[Input]</InArgument>
-        <OutArgument x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))" x:Key="out_Astroids">[Astroids]</OutArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-    </ui:InvokeWorkflowFile>
-    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Find which quadrant the astroid is in, using Right or Left of the chosen astroid. Then calculate the slope. All astroids with the same slope are in a straight line from the starting astroid. So by removing duplicates based on slope, we are able to get the count of &quot;visible&quot; astroid for a starting astroid." DisplayName="Find best location" sap:VirtualizedContainerService.HintSize="338,231" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Get the astroid map" FileName="Day10\input.txt" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="1. Convert input to an 2D Array of Chars.&#xD;&#xA;2. Find all the astroids as a list of Tuples with each astroid's x, y coordinates. Upper left is (0, 0).&#xD;&#xA;3. For each astroid, count the number of visible astroids. Split the map into quandrants based on the current astroid's position. Calculate the slope of each other astroid from the current astroid's position. All astroids with the same slope in the same quandrant are in the same &quot;line of sight&quot;. So remove duplicates based on the slope and quadrant. Subtract one to not count the current astroid.&#xD;&#xA;4. Get the index of the astroid with the highest count." DisplayName="Find best location for Monitoring Station" sap:VirtualizedContainerService.HintSize="384,383" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="s:Char[][]">[AstroidMap]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="s:Char[][]">[Split(Input, vbLf).Select(Function(line) line.ToCharArray()).ToArray()]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))">[Astroids]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="scg:List(s:Tuple(x:Int32, x:Int32))" xml:space="preserve">[AstroidMap.
+	Select(Function(row, y) row.
+		Select(Function(c, x) If(c = "#"c, Tuple.Create(x, y), Nothing))).
+	SelectMany(Function(a) a).
+	Where(Function(a) a IsNot Nothing).
+	ToList()]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
             <ui:AssignOperation.To>
               <OutArgument x:TypeArguments="s:Int32[]">[Counts]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="s:Int32[]" xml:space="preserve">[(From astroid In Astroids
-Select
-    (Aggregate i In
-        From d In Astroids
-        Select New With {
-            Key .Right = d.Item1 - astroid.Item1 &gt; 0,
-            Key .Down = d.Item2 - astroid.Item2 &gt; 0,
-            Key .Slope = (d.Item2 - astroid.Item2) / (d.Item1 - astroid.Item1)
-        }
-        Distinct
-    Into Count()) -1).ToArray()]</InArgument>
+              <InArgument x:TypeArguments="s:Int32[]" xml:space="preserve">[Astroids.
+	Select(Function(astroid) Astroids.
+		Select(Function(otherAstroid) New With {
+			Key .Right = otherAstroid.Item1 - astroid.Item1 &gt; 0,
+			Key .Down = otherAstroid.Item2 - astroid.Item2 &gt; 0,
+			Key .Slope = (otherAstroid.Item2 - astroid.Item2) / (otherAstroid.Item1 - astroid.Item1)
+		}).
+		Distinct().
+		Count() - 1).
+	ToArray()]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
             <ui:AssignOperation.To>
               <OutArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32)">[MonitoringStation]</OutArgument>
             </ui:AssignOperation.To>
@@ -103,6 +124,6 @@ Select
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:MultipleAssign>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="338,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[String.Format(&quot;Best is {0},{1} with {2} other asteroids detected.&quot;, MonitoringStation.Item1, MonitoringStation.Item2, Counts.Max())]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="384,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[String.Format(&quot;Best is {0},{1} with {2} other asteroids detected.&quot;, MonitoringStation.Item1, MonitoringStation.Item2, Counts.Max())]" />
   </Sequence>
 </Activity>
