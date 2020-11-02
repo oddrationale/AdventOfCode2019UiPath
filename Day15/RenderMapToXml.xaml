@@ -9,7 +9,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>904,776</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>981,856</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Solution15pt1_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg1:List x:TypeArguments="x:String" Capacity="42">
@@ -38,7 +38,7 @@
     </scg1:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg1:List x:TypeArguments="AssemblyReference" Capacity="18">
+    <scg1:List x:TypeArguments="AssemblyReference" Capacity="36">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -57,9 +57,14 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
     </scg1:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Explore the entire map and output an Xml representation of the map (see ExploreMap.xaml for how Xml is structured). Although exploring the whole map is not required fo Part 1, it is needed anyways for Part 2.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exists and contains valid Intcode&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="RenderMapToXml" sap:VirtualizedContainerService.HintSize="884,716" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Explore the entire map and output an Xml representation of the map (see ExploreMap.xaml for how Xml is structured). Although exploring the whole map is not required fo Part 1, it is needed anyways for Part 2.&#xA;&#xA;Pre-conditions:&#xA;Input file exists and contains valid Intcode&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="RenderMapToXml" sap:VirtualizedContainerService.HintSize="884,688" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
       <Variable x:TypeArguments="sxl:XElement" Name="Map" />
@@ -72,17 +77,26 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day15\input.txt" sap:VirtualizedContainerService.HintSize="842,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <Parallel sap:VirtualizedContainerService.HintSize="842,133" sap2010:WorkflowViewState.IdRef="Parallel_1" CompletionCondition="[Map IsNot Nothing]">
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day15\RunIntcode.xaml">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day15\input.txt" sap:VirtualizedContainerService.HintSize="842,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <Parallel sap:VirtualizedContainerService.HintSize="842,158" sap2010:WorkflowViewState.IdRef="Parallel_1" CompletionCondition="[Map IsNot Nothing]">
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Shared\RunIntcode.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[Input]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">
+            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Input" />
+          </InArgument>
+          <InArgument x:TypeArguments="x:Int32" x:Key="in_MemSize">
+            <Literal x:TypeArguments="x:Int32" Value="4096" />
+          </InArgument>
+          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_InputQueue">
+            <mva:VisualBasicReference x:TypeArguments="scg:Queue(x:Int64)" ExpressionText="InputQueue" />
+          </InOutArgument>
+          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue">
+            <mva:VisualBasicReference x:TypeArguments="scg:Queue(x:Int64)" ExpressionText="OutputQueue" />
+          </InOutArgument>
           <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
-          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_InputQueue">[InputQueue]</InOutArgument>
-          <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue">[OutputQueue]</InOutArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ExploreMap workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Day15/ExploreMap.xaml">
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ExploreMap workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Day15/ExploreMap.xaml">
         <ui:InvokeWorkflowFile.Arguments>
           <OutArgument x:TypeArguments="sxl:XElement" x:Key="out_Map">[Map]</OutArgument>
           <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_InputQueue">[InputQueue]</InOutArgument>
