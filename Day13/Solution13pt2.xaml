@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution13pt2" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="904,800" sap2010:WorkflowViewState.IdRef="Solution13pt2_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution13pt2" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="903,877" sap2010:WorkflowViewState.IdRef="Solution13pt2_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
       <x:String>System.Activities</x:String>
@@ -44,9 +44,14 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xD;&#xA;Play the breakout game and get the final score after beating the game.&#xD;&#xA;&#xD;&#xA;Pre-conditions:&#xD;&#xA;Input file exists and contains valid Intcode&#xD;&#xA;&#xD;&#xA;Post-conditions:&#xD;&#xA;None" DisplayName="Solution13pt2" sap:VirtualizedContainerService.HintSize="884,740" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Play the breakout game and get the final score after beating the game.&#xA;&#xA;Pre-conditions:&#xA;Input file exists and contains valid Intcode&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution13pt2" sap:VirtualizedContainerService.HintSize="884,712" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
       <Variable x:TypeArguments="s:String[]" Name="IntcodeStrArray" />
@@ -60,7 +65,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day13\input.txt" sap:VirtualizedContainerService.HintSize="842,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day13\input.txt" sap:VirtualizedContainerService.HintSize="842,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
     <ui:MultipleAssign sap2010:Annotation.AnnotationText="Read the input to an array.&#xA;Overwrite position 0 with &quot;2&quot; to play for free!" DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="842,171" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
@@ -88,16 +93,27 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:MultipleAssign>
-    <Parallel sap:VirtualizedContainerService.HintSize="842,133" sap2010:WorkflowViewState.IdRef="Parallel_1" CompletionCondition="[Not String.IsNullOrEmpty(Intcode)]">
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day13\RunIntcode.xaml">
+    <Parallel sap:VirtualizedContainerService.HintSize="842,158" sap2010:WorkflowViewState.IdRef="Parallel_1" CompletionCondition="[Not String.IsNullOrEmpty(Intcode)]">
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Shared\RunIntcode.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[String.Join(",", IntcodeStrArray)]</InArgument>
-          <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode">[Intcode]</OutArgument>
-          <InOutArgument x:TypeArguments="scg1:Queue(x:Int64)" x:Key="io_InputQueue">[InputQueue]</InOutArgument>
-          <InOutArgument x:TypeArguments="scg1:Queue(x:Int64)" x:Key="io_OutputQueue">[OutputQueue]</InOutArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">
+            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Join(&quot;,&quot;, IntcodeStrArray)" />
+          </InArgument>
+          <InArgument x:TypeArguments="x:Int32" x:Key="in_MemSize">
+            <Literal x:TypeArguments="x:Int32" Value="4096" />
+          </InArgument>
+          <InOutArgument x:TypeArguments="scg1:Queue(x:Int64)" x:Key="io_InputQueue">
+            <mva:VisualBasicReference x:TypeArguments="scg1:Queue(x:Int64)" ExpressionText="InputQueue" />
+          </InOutArgument>
+          <InOutArgument x:TypeArguments="scg1:Queue(x:Int64)" x:Key="io_OutputQueue">
+            <mva:VisualBasicReference x:TypeArguments="scg1:Queue(x:Int64)" ExpressionText="OutputQueue" />
+          </InOutArgument>
+          <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode">
+            <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Intcode" />
+          </OutArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawScreen workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day13/PlayGame.xaml">
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawScreen workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day13/PlayGame.xaml">
         <ui:InvokeWorkflowFile.Arguments>
           <InOutArgument x:TypeArguments="scg1:Queue(x:Int64)" x:Key="io_InputQueue">[InputQueue]</InOutArgument>
           <InOutArgument x:TypeArguments="scg1:Queue(x:Int64)" x:Key="io_OutputQueue">[OutputQueue]</InOutArgument>

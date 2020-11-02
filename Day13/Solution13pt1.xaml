@@ -5,7 +5,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>396,943</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>632,1085</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Solution13pt1_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg1:List x:TypeArguments="x:String" Capacity="21">
@@ -33,7 +33,7 @@
     </scg1:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg1:List x:TypeArguments="AssemblyReference" Capacity="18">
+    <scg1:List x:TypeArguments="AssemblyReference" Capacity="36">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -52,9 +52,14 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
     </scg1:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Count the number of block tiles (tile id = 2) in the output.&#xA;&#xA;Pre-conditions:&#xA;Input file exists and contains valid Intcode&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution13pt1" sap:VirtualizedContainerService.HintSize="376,883" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Count the number of block tiles (tile id = 2) in the output.&#xA;&#xA;Pre-conditions:&#xA;Input file exists and contains valid Intcode&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution13pt1" sap:VirtualizedContainerService.HintSize="426,880" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
       <Variable x:TypeArguments="scg:Queue(x:Int64)" Default="[New Queue(Of Int64)]" Name="OutputQueue" />
@@ -66,16 +71,23 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day13\input.txt" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day13\RunIntcode.xaml">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day13\input.txt" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="384,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Shared\RunIntcode.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[Input]</InArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
+        <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Input" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="in_MemSize">
+          <Literal x:TypeArguments="x:Int32" Value="4096" />
+        </InArgument>
         <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_InputQueue" />
-        <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue">[OutputQueue]</InOutArgument>
+        <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue">
+          <mva:VisualBasicReference x:TypeArguments="scg:Queue(x:Int64)" ExpressionText="OutputQueue" />
+        </InOutArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <Assign sap2010:Annotation.AnnotationText="List out the index and the value of each item in the queue. Group by threes. The third group (last group) has the tile IDs. Count the number of 2s." DisplayName="Count block tiles" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign sap2010:Annotation.AnnotationText="List out the index and the value of each item in the queue. Group by threes. The third group (last group) has the tile IDs. Count the number of 2s." DisplayName="Count block tiles" sap:VirtualizedContainerService.HintSize="384,132" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int32">[out_Count]</OutArgument>
       </Assign.To>
@@ -88,7 +100,7 @@
         </scg1:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawScreen workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Day13\DrawScreen.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DrawScreen workflow" sap:VirtualizedContainerService.HintSize="384,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Day13\DrawScreen.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InOutArgument x:TypeArguments="s:Char[][]" x:Key="io_Screen">[Screen]</InOutArgument>
         <InArgument x:TypeArguments="s:Int64[]" x:Key="in_Instructions">[OutputQueue.ToArray()]</InArgument>
@@ -97,6 +109,6 @@
         <InOutArgument x:TypeArguments="x:Int64" x:Key="io_Score" />
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Block tiles: &quot; &amp; out_Count]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="384,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Block tiles: &quot; &amp; out_Count]" />
   </Sequence>
 </Activity>
