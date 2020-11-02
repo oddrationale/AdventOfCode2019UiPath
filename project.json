@@ -4,6 +4,7 @@
   "main": "Main.xaml",
   "dependencies": {
     "UiPath.System.Activities": "[20.10.1]",
+    "UiPath.Testing.Activities": "[1.2.4]",
     "UiPath.UIAutomation.Activities": "[20.10.6]"
   },
   "webServices": [],
@@ -34,7 +35,13 @@
     "processOptions": {
       "ignoredFiles": []
     },
-    "fileInfoCollection": [],
+    "fileInfoCollection": [
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "1f7c0023-4f79-44ed-aab6-434ce180893f",
+        "fileName": "Day01\\_Test01.xaml"
+      }
+    ],
     "modernBehavior": false
   },
   "expressionLanguage": "VisualBasic",
