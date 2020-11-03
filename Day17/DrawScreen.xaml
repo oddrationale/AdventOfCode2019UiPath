@@ -1,11 +1,11 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="DrawScreen" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="DrawScreen" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:st="clr-namespace:System.Text;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="io_OutputQueue" Type="InOutArgument(scg:Queue(x:Int64))" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>634,893</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1032,1580</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>DrawScreen_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -30,6 +30,12 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -52,30 +58,105 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="DrawScreen" sap:VirtualizedContainerService.HintSize="614,833" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="DrawScreen" sap:VirtualizedContainerService.HintSize="1042,1415" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="st:StringBuilder" Name="Line">
+        <Variable.Default>
+          <mva:VisualBasicValue x:TypeArguments="st:StringBuilder" ExpressionText="New StringBuilder()" />
+        </Variable.Default>
+      </Variable>
+      <Variable x:TypeArguments="x:Int64" Name="C" />
+      <Variable x:TypeArguments="x:Boolean" Name="Ascii">
+        <Variable.Default>
+          <Literal x:TypeArguments="x:Boolean" Value="True" />
+        </Variable.Default>
+      </Variable>
+    </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg1:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <While sap:VirtualizedContainerService.HintSize="572,741" sap2010:WorkflowViewState.IdRef="While_2" Condition="True">
-      <Sequence sap:VirtualizedContainerService.HintSize="526,583" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <While sap:VirtualizedContainerService.HintSize="1000,1323" sap2010:WorkflowViewState.IdRef="While_2">
+      <While.Condition>
+        <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="Ascii" />
+      </While.Condition>
+      <Sequence sap:VirtualizedContainerService.HintSize="954,1165" sap2010:WorkflowViewState.IdRef="Sequence_2">
         <sap:WorkflowViewStateService.ViewState>
           <scg1:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg1:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <While sap:VirtualizedContainerService.HintSize="484,218" sap2010:WorkflowViewState.IdRef="While_1" Condition="[io_OutputQueue.Count &lt; 1221]">
+        <While sap:VirtualizedContainerService.HintSize="912,218" sap2010:WorkflowViewState.IdRef="While_1">
+          <While.Condition>
+            <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="io_OutputQueue.Count = 0" />
+          </While.Condition>
           <Delay Duration="00:00:00.0100000" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
         </While>
-        <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="484,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[String.Join(&quot;&quot;, io_OutputQueue.ToArray().Select(Function(c) Chr(CInt(c))))]" />
-        <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Clear">
-          <InvokeMethod.TargetObject>
-            <InArgument x:TypeArguments="scg:Queue(x:Int64)">[io_OutputQueue]</InArgument>
-          </InvokeMethod.TargetObject>
-        </InvokeMethod>
+        <If Condition="[io_OutputQueue.Peek() &lt; 128]" sap:VirtualizedContainerService.HintSize="912,815" sap2010:WorkflowViewState.IdRef="If_3">
+          <If.Then>
+            <Sequence sap:VirtualizedContainerService.HintSize="605,667" sap2010:WorkflowViewState.IdRef="Sequence_4">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg1:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="563,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Int64">[C]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Int64">[io_OutputQueue.Dequeue()]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <If Condition="[C &lt;&gt; 10]" sap:VirtualizedContainerService.HintSize="563,475" sap2010:WorkflowViewState.IdRef="If_1">
+                <If.Then>
+                  <InvokeMethod DisplayName="Append to Line" sap:VirtualizedContainerService.HintSize="238,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_2" MethodName="Append">
+                    <InvokeMethod.TargetObject>
+                      <InArgument x:TypeArguments="st:StringBuilder">[Line]</InArgument>
+                    </InvokeMethod.TargetObject>
+                    <InArgument x:TypeArguments="x:String">
+                      <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="CStr(ChrW(CInt(C) + 65248))" />
+                    </InArgument>
+                  </InvokeMethod>
+                </If.Then>
+                <If.Else>
+                  <Sequence DisplayName="Print" sap:VirtualizedContainerService.HintSize="280,327" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg1:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="238,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[Line.ToString()]" />
+                    <InvokeMethod DisplayName="Clear()" sap:VirtualizedContainerService.HintSize="238,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_3" MethodName="Clear">
+                      <InvokeMethod.TargetObject>
+                        <InArgument x:TypeArguments="st:StringBuilder">[Line]</InArgument>
+                      </InvokeMethod.TargetObject>
+                    </InvokeMethod>
+                  </Sequence>
+                </If.Else>
+              </If>
+            </Sequence>
+          </If.Then>
+          <If.Else>
+            <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Boolean">[Ascii]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+              </Assign.Value>
+            </Assign>
+          </If.Else>
+        </If>
       </Sequence>
     </While>
   </Sequence>

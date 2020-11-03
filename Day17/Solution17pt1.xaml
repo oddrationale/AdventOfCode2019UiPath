@@ -1,6 +1,6 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution17pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="400,774" sap2010:WorkflowViewState.IdRef="Solution17pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution17pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="980,1083" sap2010:WorkflowViewState.IdRef="Solution17pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
-    <scg1:List x:TypeArguments="x:String" Capacity="21">
+    <scg1:List x:TypeArguments="x:String" Capacity="42">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -22,6 +22,7 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
     </scg1:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -44,9 +45,16 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg1:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Solution17pt1" sap:VirtualizedContainerService.HintSize="380,714" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Calculate the sum of the alignment parameters. Run the IntCode progam to get the Map. Convert the Map to a MapList of Tuples, consisting of the x, y, and character at that position (0, 0 is top left). Filter for all the Scaffolds, then find the Intersections be looking for scaffolds with another scoffold in exists in all four directions (up, down, left, right). &#xA;&#xA;Pre-conditions:&#xA;Input file exists&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution17pt1" sap:VirtualizedContainerService.HintSize="426,878" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Intcode" />
       <Variable x:TypeArguments="scg:Queue(x:Int64)" Default="[New Queue(Of Int64)]" Name="OutputQueue" />
@@ -59,19 +67,26 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg1:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Intcode]" DisplayName="Read Text File" FileName="Day17\input.txt" sap:VirtualizedContainerService.HintSize="338,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="338,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Shared\RunIntcode.xaml">
+    <ui:ReadTextFile Content="[Intcode]" DisplayName="Read Text File" FileName="Day17\input.txt" sap:VirtualizedContainerService.HintSize="384,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RunIntcode workflow" sap:VirtualizedContainerService.HintSize="384,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Shared\RunIntcode.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">[Intcode]</InArgument>
-        <InArgument x:TypeArguments="x:Int32" x:Key="in_MemSize">4096</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Intcode">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Intcode" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="in_MemSize">
+          <Literal x:TypeArguments="x:Int32" Value="4096" />
+        </InArgument>
         <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_InputQueue" />
-        <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue">[OutputQueue]</InOutArgument>
+        <InOutArgument x:TypeArguments="scg:Queue(x:Int64)" x:Key="io_OutputQueue">
+          <mva:VisualBasicReference x:TypeArguments="scg:Queue(x:Int64)" ExpressionText="OutputQueue" />
+        </InOutArgument>
         <OutArgument x:TypeArguments="x:String" x:Key="out_Intcode" />
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="338,222" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="384,222" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="8">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -103,10 +118,12 @@
               <OutArgument x:TypeArguments="scg1:List(s:Tuple(x:Int32, x:Int32, x:Char))">[Intersections]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="scg1:List(s:Tuple(x:Int32, x:Int32, x:Char))" xml:space="preserve">[Scaffolds.Where(Function(scaffold) Scaffolds.Contains(Tuple.Create(scaffold.Item1 + 1, scaffold.Item2, "#"C)) AndAlso
-Scaffolds.Contains(Tuple.Create(scaffold.Item1 - 1, scaffold.Item2, "#"C)) AndAlso
-Scaffolds.Contains(Tuple.Create(scaffold.Item1, scaffold.Item2 + 1, "#"C)) AndAlso
-Scaffolds.Contains(Tuple.Create(scaffold.Item1, scaffold.Item2 - 1, "#"C))).ToList()]</InArgument>
+              <InArgument x:TypeArguments="scg1:List(s:Tuple(x:Int32, x:Int32, x:Char))" xml:space="preserve">[Scaffolds.Where(
+	Function(scaffold) Scaffolds.Contains(Tuple.Create(scaffold.Item1 + 1, scaffold.Item2, "#"C)) AndAlso
+								  Scaffolds.Contains(Tuple.Create(scaffold.Item1 - 1, scaffold.Item2, "#"C)) AndAlso
+								  Scaffolds.Contains(Tuple.Create(scaffold.Item1, scaffold.Item2 + 1, "#"C)) AndAlso
+								  Scaffolds.Contains(Tuple.Create(scaffold.Item1, scaffold.Item2 - 1, "#"C))).
+	ToList()]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
@@ -120,6 +137,6 @@ Scaffolds.Contains(Tuple.Create(scaffold.Item1, scaffold.Item2 - 1, "#"C))).ToLi
         </scg1:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="338,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[CStr(AlignmentParams.Sum())]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="384,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[CStr(AlignmentParams.Sum())]" />
   </Sequence>
 </Activity>
