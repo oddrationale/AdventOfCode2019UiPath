@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution18pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1138,1403" sap2010:WorkflowViewState.IdRef="Solution18pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution18pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1113,1403" sap2010:WorkflowViewState.IdRef="Solution18pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="29">
       <x:String>System.Activities</x:String>
@@ -103,7 +103,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:MultipleAssign>
-    <ui:ForEach x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="412,438" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Map.Where(Function(t) t.Item3 &lt;&gt; &quot;.&quot;c AndAlso t.Item3 &lt;&gt; &quot;#&quot;c).OrderBy(Function(t) t.item3).ToArray()]">
+    <ui:ForEach x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="412,438" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Map.Where(Function(t) t.Item3 &lt;&gt; &quot;.&quot;c AndAlso t.Item3 &lt;&gt; &quot;#&quot;c).OrderBy(Function(t) t.item3)]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)">
           <ActivityAction.Argument>
@@ -120,15 +120,9 @@
             </sap:WorkflowViewStateService.ViewState>
             <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FindNearbyNodes workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day18\FindNearbyNodes.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]" x:Key="in_Map">
-                  <mva:VisualBasicValue x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]" ExpressionText="Map" />
-                </InArgument>
-                <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" x:Key="in_StartTile">
-                  <mva:VisualBasicValue x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" ExpressionText="tile" />
-                </InArgument>
-                <OutArgument x:TypeArguments="s:Tuple(x:Char, x:Int32)[]" x:Key="out_AdjacentNodes">
-                  <mva:VisualBasicReference x:TypeArguments="s:Tuple(x:Char, x:Int32)[]" ExpressionText="AdjacentNodes" />
-                </OutArgument>
+                <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]" x:Key="in_Map">[Map]</InArgument>
+                <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" x:Key="in_StartTile">[tile]</InArgument>
+                <OutArgument x:TypeArguments="s:Tuple(x:Char, x:Int32)[]" x:Key="out_AdjacentNodes">[AdjacentNodes]</OutArgument>
               </ui:InvokeWorkflowFile.Arguments>
             </ui:InvokeWorkflowFile>
             <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_1">
