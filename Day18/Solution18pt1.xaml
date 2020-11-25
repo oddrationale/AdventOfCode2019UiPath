@@ -1,6 +1,6 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution18pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="989,1410" sap2010:WorkflowViewState.IdRef="Solution18pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sxl="clr-namespace:System.Xml.Linq;assembly=System.Xml.Linq" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution18pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1138,1403" sap2010:WorkflowViewState.IdRef="Solution18pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="50">
+    <scg:List x:TypeArguments="x:String" Capacity="29">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -63,12 +63,11 @@
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Convert mapt to grid&#xA;Traverse map (xml)&#xA;Adjancency list&#xA; &#xA;&#xA;Pre-conditions:&#xA;Input file exists&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution18pt1" sap:VirtualizedContainerService.HintSize="454,1245" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Convert mapt to grid&#xA;Traverse map (xml)&#xA;Adjancency list&#xA; &#xA;&#xA;Pre-conditions:&#xA;Input file exists&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution18pt1" sap:VirtualizedContainerService.HintSize="454,1198" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
-      <Variable x:TypeArguments="sxl:XElement" Name="Map" />
-      <Variable x:TypeArguments="sxl:XElement[]" Name="Nodes" />
-      <Variable x:TypeArguments="sxl:XElement" Name="AdjacencyList" />
+      <Variable x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]" Name="Map" />
+      <Variable x:TypeArguments="scg:Dictionary(x:Char, s:Tuple(x:Char, x:Int32)[])" Name="AdjacencyList" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -77,71 +76,73 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day18\input.txt" sap:VirtualizedContainerService.HintSize="412,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="412,129" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Map: Tuple(Of x:int, y:int, c:char)" DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="412,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
             <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="sxl:XElement">[Map]</OutArgument>
+              <OutArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]">[Map]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="sxl:XElement" xml:space="preserve">[&lt;map&gt;
-	&lt;%=
-		Split(Input, vbLf).
-			Select(Function(line, y) line.ToCharArray().Select(Function(c, x) &lt;tile x=&lt;%= x %&gt; y=&lt;%= y %&gt; type=&lt;%= c %&gt;&gt;&lt;/tile&gt;)).
-			SelectMany(Function(t) t) 
-	%&gt;
-&lt;/map&gt;]</InArgument>
+              <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]">[Split(Input, vbLf).Select(Function(line, y) line.ToCharArray().Select(Function(c, x) Tuple.Create(x, y, c))).SelectMany(Function(t) t).ToArray()]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
             <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="sxl:XElement">[AdjacencyList]</OutArgument>
+              <OutArgument x:TypeArguments="scg:Dictionary(x:Char, s:Tuple(x:Char, x:Int32)[])">[AdjacencyList]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="sxl:XElement">[&lt;adjacency-list&gt;&lt;/adjacency-list&gt;]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:Char, s:Tuple(x:Char, x:Int32)[])">[New Dictionary(Of Char, Tuple(Of Char, Int32)())]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </ui:MultipleAssign>
-    <ui:ForEach x:TypeArguments="sxl:XElement" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="412,516" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Map.Elements().&#xD;&#xA;&#x9;Where(Function(e) e.@type &lt;&gt; &quot;.&quot; AndAlso e.@type &lt;&gt; &quot;#&quot;)]">
+    <ui:ForEach x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="412,438" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Map.Where(Function(t) t.Item3 &lt;&gt; &quot;.&quot;c AndAlso t.Item3 &lt;&gt; &quot;#&quot;c).OrderBy(Function(t) t.item3).ToArray()]">
       <ui:ForEach.Body>
-        <ActivityAction x:TypeArguments="sxl:XElement">
+        <ActivityAction x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)">
           <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="sxl:XElement" Name="node" />
+            <DelegateInArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" Name="tile" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="376,378" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="376,304" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="s:Tuple(x:Char, x:Int32)[]" Name="AdjacentNodes" />
+            </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FindNearbyNodes workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Day18\FindNearbyNodes.xaml">
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FindNearbyNodes workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day18\FindNearbyNodes.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="sxl:XElement" x:Key="in_Map">
-                  <mva:VisualBasicValue x:TypeArguments="sxl:XElement" ExpressionText="Map" />
+                <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]" x:Key="in_Map">
+                  <mva:VisualBasicValue x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]" ExpressionText="Map" />
                 </InArgument>
-                <InArgument x:TypeArguments="sxl:XElement" x:Key="in_StartNode">
-                  <mva:VisualBasicValue x:TypeArguments="sxl:XElement" ExpressionText="New XElement(node)" />
+                <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" x:Key="in_StartTile">
+                  <mva:VisualBasicValue x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" ExpressionText="tile" />
                 </InArgument>
-                <OutArgument x:TypeArguments="sxl:XElement[]" x:Key="out_Nodes">
-                  <mva:VisualBasicReference x:TypeArguments="sxl:XElement[]" ExpressionText="Nodes" />
+                <OutArgument x:TypeArguments="s:Tuple(x:Char, x:Int32)[]" x:Key="out_AdjacentNodes">
+                  <mva:VisualBasicReference x:TypeArguments="s:Tuple(x:Char, x:Int32)[]" ExpressionText="AdjacentNodes" />
                 </OutArgument>
               </ui:InvokeWorkflowFile.Arguments>
             </ui:InvokeWorkflowFile>
-            <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="334,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Add">
-              <InvokeMethod.TargetObject>
-                <InArgument x:TypeArguments="sxl:XElement">[AdjacencyList]</InArgument>
-              </InvokeMethod.TargetObject>
-              <InArgument x:TypeArguments="sxl:XElement">
-                <mva:VisualBasicValue x:TypeArguments="sxl:XElement" ExpressionText="&lt;node name=&lt;%= node.@type %&gt;&gt;&lt;%= Nodes %&gt;&lt;/node&gt;" />
-              </InArgument>
-            </InvokeMethod>
+            <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+              <Assign.To>
+                <OutArgument x:TypeArguments="s:Tuple(x:Char, x:Int32)[]">[AdjacencyList(tile.Item3)]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="s:Tuple(x:Char, x:Int32)[]">[AdjacentNodes]</InArgument>
+              </Assign.Value>
+            </Assign>
           </Sequence>
         </ActivityAction>
       </ui:ForEach.Body>
     </ui:ForEach>
-    <ui:WriteTextFile DisplayName="Write Text File" FileName="Day18\adjacency-list.xml" sap:VirtualizedContainerService.HintSize="412,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_2" Text="[AdjacencyList.ToString()]" />
+    <ui:WriteTextFile DisplayName="Write Text File" FileName="Day18/AdjacencyList.txt" sap:VirtualizedContainerService.HintSize="412,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_3" Text="[String.Join(vbNewLine, AdjacencyList.Select(Function(kv) String.Format(&quot;{0}: {1}&quot;, kv.Key, String.Join(&quot;, &quot;, kv.Value.Select(Function(a) a.Item1 &amp; a.Item2)))))]" />
   </Sequence>
 </Activity>
