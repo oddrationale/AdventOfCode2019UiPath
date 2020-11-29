@@ -1,4 +1,12 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Solution18pt1" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1113,1403" sap2010:WorkflowViewState.IdRef="Solution18pt1_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Solution18pt1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System.Core" xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="out_Steps" Type="OutArgument(x:Int32)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1137,2230</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>Solution18pt1_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="29">
       <x:String>System.Activities</x:String>
@@ -63,11 +71,15 @@
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;Convert mapt to grid&#xA;Traverse map (xml)&#xA;Adjancency list&#xA; &#xA;&#xA;Pre-conditions:&#xA;Input file exists&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution18pt1" sap:VirtualizedContainerService.HintSize="454,1198" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description:&#xA;This solution uses a brute force BFS (https://en.wikipedia.org/wiki/Breadth-first_search) to find all the keys. Basically traverse the map until you find all the keys. But you need to keep track of the keys collected to know whether you can enter a door. So the Queue keeps track of the following information:&#xD;&#xA;&#xD;&#xA;- The current map tile as a Tuple&#xD;&#xA;- The list of current keys as a String&#xD;&#xA;- The number of steps so far as a Integer&#xD;&#xA;&#xD;&#xA;In the Seen list, need to keep track of not only the tile, but also the keys.&#xD;&#xA;&#xD;&#xA;Takes about 20 minutes.&#xA;&#xA;Pre-conditions:&#xA;Input file exists&#xA;&#xA;Post-conditions:&#xA;None" DisplayName="Solution18pt1" sap:VirtualizedContainerService.HintSize="604,2025" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Input" />
       <Variable x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]" Name="Map" />
-      <Variable x:TypeArguments="scg:Dictionary(x:Char, s:Tuple(x:Char, x:Int32)[])" Name="AdjacencyList" />
+      <Variable x:TypeArguments="scg1:HashSet(x:Char)" Name="AllKeys" />
+      <Variable x:TypeArguments="scg2:Queue(s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32))" Name="Q" />
+      <Variable x:TypeArguments="scg1:HashSet(s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String))" Name="Seen" />
+      <Variable x:TypeArguments="s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32)[]" Name="NextNodes" />
+      <Variable x:TypeArguments="s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32)" Name="Node" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -75,8 +87,8 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day18\input.txt" sap:VirtualizedContainerService.HintSize="412,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Map: Tuple(Of x:int, y:int, c:char)" DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="412,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:ReadTextFile Content="[Input]" DisplayName="Read Text File" FileName="Day18\input-test.txt" sap:VirtualizedContainerService.HintSize="562,79" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Setup Map&#xD;&#xA;Create list of the Keys&#xD;&#xA;Initialize the Seen list&#xD;&#xA;Initialize the Queue" DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="562,263" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -87,12 +99,28 @@
               <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]">[Split(Input, vbLf).Select(Function(line, y) line.ToCharArray().Select(Function(c, x) Tuple.Create(x, y, c))).SelectMany(Function(t) t).ToArray()]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
             <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="scg:Dictionary(x:Char, s:Tuple(x:Char, x:Int32)[])">[AdjacencyList]</OutArgument>
+              <OutArgument x:TypeArguments="scg1:HashSet(x:Char)">[AllKeys]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="scg:Dictionary(x:Char, s:Tuple(x:Char, x:Int32)[])">[New Dictionary(Of Char, Tuple(Of Char, Int32)())]</InArgument>
+              <InArgument x:TypeArguments="scg1:HashSet(x:Char)">[New HashSet(Of Char)(Map.Select(Function(t) t.Item3).Where(Function(c) Char.IsLower(c)))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="scg1:HashSet(s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String))">[Seen]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="scg1:HashSet(s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String))">[New HashSet(Of Tuple(Of Tuple(Of Int32, Int32, Char), String))({Tuple.Create(Map.Where(Function(t) t.Item3 = "@"c).First(), "")})]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="scg2:Queue(s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32))">[Q]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="scg2:Queue(s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32))">[New Queue(Of Tuple(Of Tuple(Of Int32, Int32, Char), String, Int32))({Tuple.Create(Map.Where(Function(t) t.Item3 = "@"c).First(), "", 0)})]</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
         </scg:List>
@@ -103,40 +131,65 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:MultipleAssign>
-    <ui:ForEach x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="412,438" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Map.Where(Function(t) t.Item3 &lt;&gt; &quot;.&quot;c AndAlso t.Item3 &lt;&gt; &quot;#&quot;c).OrderBy(Function(t) t.item3)]">
-      <ui:ForEach.Body>
-        <ActivityAction x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)">
-          <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" Name="tile" />
-          </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="376,304" sap2010:WorkflowViewState.IdRef="Sequence_2">
-            <Sequence.Variables>
-              <Variable x:TypeArguments="s:Tuple(x:Char, x:Int32)[]" Name="AdjacentNodes" />
-            </Sequence.Variables>
+    <ui:InterruptibleWhile Condition="[Q.Any()]" DisplayName="While items in Q" sap:VirtualizedContainerService.HintSize="562,1128" sap2010:WorkflowViewState.IdRef="InterruptibleWhile_1">
+      <ui:InterruptibleWhile.Body>
+        <Sequence DisplayName="Process Q" sap:VirtualizedContainerService.HintSize="526,963" sap2010:WorkflowViewState.IdRef="Sequence_5">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Assign DisplayName="Dequeue" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+            <Assign.To>
+              <OutArgument x:TypeArguments="s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32)">[Node]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32)">[Q.Dequeue()]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <If Condition="[AllKeys.SetEquals(Node.Item2.ToCharArray())]" DisplayName="If we have all the keys" sap:VirtualizedContainerService.HintSize="484,361" sap2010:WorkflowViewState.IdRef="If_1">
+            <If.Then>
+              <Sequence DisplayName="Output result and exit" sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Int32">[out_Steps]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Int32">[node.Item3]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <ui:Break sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Break_1" />
+              </Sequence>
+            </If.Then>
+          </If>
+          <ui:ForEach x:TypeArguments="s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32)" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Find the four adjacent tiles.&#xD;&#xA;Filter out walls.&#xD;&#xA;Keep &quot;.&quot;, &quot;@&quot;, keys, and any door that we have the key.&#xD;&#xA;Update the key list and the steps count.&#xD;&#xA;Make sure it is not already in the Seen list." DisplayName="For each adjacent cells" sap:VirtualizedContainerService.HintSize="484,370" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Map.&#xD;&#xA;&#x9;Where(Function(t) (t.Item1 = Node.Item1.Item1 + 1 AndAlso t.Item2 = Node.Item1.Item2) OrElse&#xD;&#xA;&#x9;&#x9;(t.Item1 = Node.Item1.Item1 - 1 AndAlso t.Item2 = Node.Item1.Item2) OrElse&#xD;&#xA;&#x9;&#x9;(t.Item1 = Node.Item1.Item1 AndAlso t.Item2 + 1 = Node.Item1.Item2) OrElse&#xD;&#xA;&#x9;&#x9;(t.Item1 = Node.Item1.Item1 AndAlso t.Item2 - 1 = Node.Item1.Item2)).&#xD;&#xA;&#x9;Where(Function(t) t.Item3 &lt;&gt; &quot;#&quot;c).&#xD;&#xA;&#x9;Where(Function(t) t.Item3 = &quot;.&quot;c OrElse Char.IsLower(t.Item3) OrElse t.Item3 = &quot;@&quot; OrElse Node.Item2.ToCharArray().Contains(Char.ToLower(t.Item3))).&#xD;&#xA;&#x9;Select(Function(t) Tuple.Create(t, If(Char.IsLower(t.Item3), String.Join(&quot;&quot;, (Node.Item2 &amp; t.Item3).ToCharArray().Distinct()), Node.Item2), Node.Item3 + 1)).&#xD;&#xA;&#x9;Where(Function(t) Seen.Add(Tuple.Create(t.Item1, String.Join(&quot;&quot;, t.Item2.ToCharArray().OrderBy(Function(c) c))))).&#xD;&#xA;&#x9;ToArray()]">
+            <ui:ForEach.Body>
+              <ActivityAction x:TypeArguments="s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32)">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32)" Name="n" />
+                </ActivityAction.Argument>
+                <InvokeMethod DisplayName="Enqueue" sap:VirtualizedContainerService.HintSize="238,135" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Enqueue">
+                  <InvokeMethod.TargetObject>
+                    <InArgument x:TypeArguments="scg2:Queue(s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32))">[Q]</InArgument>
+                  </InvokeMethod.TargetObject>
+                  <InArgument x:TypeArguments="s:Tuple(s:Tuple(x:Int32, x:Int32, x:Char), x:String, x:Int32)">[n]</InArgument>
+                </InvokeMethod>
+              </ActivityAction>
+            </ui:ForEach.Body>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FindNearbyNodes workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Day18\FindNearbyNodes.xaml">
-              <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)[]" x:Key="in_Map">[Map]</InArgument>
-                <InArgument x:TypeArguments="s:Tuple(x:Int32, x:Int32, x:Char)" x:Key="in_StartTile">[tile]</InArgument>
-                <OutArgument x:TypeArguments="s:Tuple(x:Char, x:Int32)[]" x:Key="out_AdjacentNodes">[AdjacentNodes]</OutArgument>
-              </ui:InvokeWorkflowFile.Arguments>
-            </ui:InvokeWorkflowFile>
-            <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_1">
-              <Assign.To>
-                <OutArgument x:TypeArguments="s:Tuple(x:Char, x:Int32)[]">[AdjacencyList(tile.Item3)]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="s:Tuple(x:Char, x:Int32)[]">[AdjacentNodes]</InArgument>
-              </Assign.Value>
-            </Assign>
-          </Sequence>
-        </ActivityAction>
-      </ui:ForEach.Body>
-    </ui:ForEach>
-    <ui:WriteTextFile DisplayName="Write Text File" FileName="Day18/AdjacencyList.txt" sap:VirtualizedContainerService.HintSize="412,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_3" Text="[String.Join(vbNewLine, AdjacencyList.Select(Function(kv) String.Format(&quot;{0}: {1}&quot;, kv.Key, String.Join(&quot;, &quot;, kv.Value.Select(Function(a) a.Item1 &amp; a.Item2)))))]" />
+          </ui:ForEach>
+        </Sequence>
+      </ui:InterruptibleWhile.Body>
+    </ui:InterruptibleWhile>
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="562,61" sap2010:WorkflowViewState.IdRef="WriteLine_6" Text="[&quot;Steps: &quot; &amp; out_Steps]" />
   </Sequence>
 </Activity>
